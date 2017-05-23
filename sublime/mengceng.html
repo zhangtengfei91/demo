@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	.button{
+		width: 50px;height: 30px;
+	}	
+	</style>
+    
+</head>
+<body onload="show()">
+<button class="button" onclick="changeColor()">点我</button>
+<p id="para">1111</p>
+<script src="jquery-3.1.1.js"></script>
+<script src="jquery-3.1.1.min.js"></script>
+
+<script  type="text/javascript">
+
+	
+function show(){
+		var div1=document.createElement("div");
+		div1.setAttribute("id","test1");
+        div1.style.backgroundColor="red";
+        div1.style.width="300px";
+        div1.style.height="300px";
+        document.body.appendChild(div1);
+
+     
+        // document.getElementByTagName("div").style.background-color="red";
+
+}
+	
+        function changeColor(){
+
+            var div2=document.getElementsByTagName("div");//document.getElement获取的是集合
+            $("#test1").toggle();//
+            
+            $("#para").toggle();//toggle元素只能切换元素的可见状态
+            var d=new Date();
+            alert(d);
+            
+           
+        }
+
+	</script>
+</body>
+</html>

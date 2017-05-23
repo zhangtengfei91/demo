@@ -1,0 +1,32 @@
+<html>
+        <body>
+                <script type="text/javascript">
+                                function changeTip(list)
+                                {
+                                        list.title =
+list.options[list.selectedIndex].title;
+                                }
+                </script>
+                <select title="major item" name="bug_severity"
+id="bug_severity" onchange="changeTip(this)">
+                        <option title="blocker item" value="blocker">blocker
+                        </option>
+                        <option title="critical item" value="critical">critical
+                        </option>
+                        <option title="major item" value="major" selected>major
+                        </option>
+                        <option title="requirement item"
+value="Requirement">Requirement
+                        </option>
+                        <option title="normal item" value="normal">normal
+                        </option>
+                        <option title="minor item" value="minor">minor
+                        </option>
+                        <option title="trivial item" value="trivial">trivial
+                        </option>
+                        <option title="enhancement item"
+value="enhancement">enhancement
+                        </option>
+                </select>
+        </body>
+</html>

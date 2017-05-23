@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    
+        body {
+            display: flex;
+            align-items: center; 
+            justify-content: center; /*定义body的里的元素水平居中*/
+        }
+        .content {
+            width: 280px;
+            height: 250px;
+        
+            background-color: yellow;
+
+                 
+        }
+
+    </style>
+     <div id="test" class="content" hidden="hidden">
+     <p>我是一个弹窗</p>
+     	姓名：<input type="" name="zhangtf " placeholder="请输入" ">
+     </div>
+</head>
+<body onload="openWin()">
+      
+    	<script type="text/javascript">
+    		function openWin(){
+              window.open("page.html","width:200,height:300");
+				 
+    		}
+    	</script>
+    
+</body>
+</html>

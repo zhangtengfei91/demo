@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		function A(){
+			this.x=x;
+		}
+		A.prototype.a="a";
+		document.write(A.prototype);
+		function B(x,y){
+          this.y=y;
+          A.call(this,x)
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

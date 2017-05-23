@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="jquery-3.1.1.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		$(function(){
+			try{
+				document.domain="www.baidu.com";
+			}catch(e){}
+			$("#iframe").load(function(){
+				var iframe=$("#iframe").contentDocument.$;
+				alert(iframe);
+				iframe.get("http://baike.baidu.com/接口",function(data){});
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<style type="text/css">
+
+.white_content{   
+position:absolute;
+	top:50%;
+	left:50%;
+	margin:-150px 0 0 -200px;
+	width:400px;
+	height:300px;
+	border:1px solid black;
+	background-color: #D0D0D0
+} 
+#para{
+	text-align: center;
+}  
+p{
+	display:inline
+}
+input{
+	display:inline;
+
+	margin-left: 10px;
+	height: 20px;
+}
+button{
+	margin-top: 103px;
+	margin-left: 92px;
+	
+	width: 60px;
+	height: 40px;
+	border:1px solid #1e7db9;  
+box-shadow: 0 1px 2px #8fcaee inset,0 -1px 0 #497897 inset,0 -2px 3px #8fcaee inset;  
+background: -webkit-linear-gradient(top,#42a4e0,#2e88c0);  
+background: -moz-linear-gradient(top,#42a4e0,#2e88c0);  
+background: linear-gradient(top,#42a4e0,#2e88c0);  
+font-size: 15px;
+}
+p{
+	display:inline
+	font-family: serif;font-size:20px;
+	text-align: center;
+	margin-left: 60px;
+}
+</style>
+</head>
+<script type="text/javascript">
+</script>
+    <body onload="document.getElementById('light').style.display='block';">
+    <!--  <div id="b" class="black_overlay"></div> -->
+    <input type="button" text="win" onClick="document.getElementById('light').style.display='block';">
+     
+<div id="light" class="white_content">  <!-- //弹窗内容  -->  
+	<h1 id="para">阿里巴巴欢迎您的加入!</h1>
+	<p>工号：</p><input type="text" name="" placeholder="请输入"></br>
+	<p>密码：</p><input  type="password" name="" placeholder="请输入"></br>
+	<!-- <a href="#" onClick="document.getElementById('light').style.display='none';">Close</a>  --> 
+
+	<button  class="button button-block button-rounded button-action button-large" onClick="document.getElementById('light').style.display='none';"  >登录</button>
+     <button  class="button button-block button-rounded button-action button-large" onClick="document.getElementById('light').style.display='none';" >取消</button>	   
+</div>    
+    </body>
+</html>

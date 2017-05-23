@@ -1,0 +1,6 @@
+function getWeather(){
+  alert("a");
+}
+
+   
+

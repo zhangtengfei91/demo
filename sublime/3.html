@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <title>index</title>
+  
+</head>
+<body>
+     
+    <!-- 宽高百分之百的背景遮罩 -->  
+    <div class="mask-div"></div>  
+    <!-- 提示弹出框 -->  
+    <div class="alert-dialog">  
+        <div class="alert-title clearfix">  
+            <span>提示信息</span>  
+            <img th:src="@{/images/department/closed.png}" alt=""/>  
+        </div>  
+          
+        <div class="alert-show clearfix">  
+            <div class="alert-content clearfix">  
+            </div>  
+        </div>  
+  
+        <!-- 确定按钮 -->  
+        <div class="alert-btn clearfix">  
+            <button class="btn btn-default">确定</button>  
+              
+        </div>  
+    </div>  
+    <!-- 选择弹出框  -->  
+    <div class="option-dialog">  
+        <div class="option-title clearfix">  
+            <span>提示信息</span>  
+            <img th:src="@{/images/department/closed.png}" alt=""/>  
+        </div>  
+          
+        <div class="option-show clearfix">  
+            <div class="option-content clearfix">  
+            </div>  
+        </div>  
+  
+        <!-- 确定按钮 -->  
+        <div class="option-btn clearfix">  
+            <button class="btn btn-default sure">确定</button>  
+            <button class="btn btn-default cancle">取消</button>  
+        </div>  
+    </div>  
+    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+ //点击组织架构删除
+$(".subdivision").on("click",".delete",function()
+    {
+      var _self=$(this);
+      if(_self.data("deptId") == null)
+      {
+        alertShow("该节点不允许删除");
+        return;
+      }
+      
+      confirmShow("确认删除？",_self,function()
+      {
+          $.ajax({
+            url:"/department/deldepartment",
+            type:"post",
+            data:{departmentId:_self.data("deptId")},
+            success:function(data)
+            {
+              closeConfirm();
+              if(data == "Y")
+              {
+                _self.parent().parent().remove();
+                updateTree(); //跟新收缩图标显示隐藏
+              }
+              else
+              {
+                alertShow("请确认子部门是否已经清空");
+              }
+            }
+          });
+        });
+      
+    });
+
+</script>
+    
+</body>
+</html>

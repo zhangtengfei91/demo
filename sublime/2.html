@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>JS点击弹出模态窗口下拉列表特效</title>
+<link rel="stylesheet" type="text/css" href="http://hovertree.com/texiao/js/20/css/demo.css">
+<style>
+* {
+padding: 0;
+margin: 0;
+}
+
+.content {
+margin: 50px auto 0;
+width: 300px;
+min-height: 500px;
+}
+
+.form-group {
+width: 100%;
+float: left;
+margin: 5px 0;
+}
+
+label {
+margin-bottom: 10px;
+float: left;
+}
+
+.field-input, select {
+width: calc(100% - 20px);
+float: left;
+padding: 10px;
+font-family: inherit;
+}
+</style>
+
+<!--必要样式-->
+<link rel="stylesheet" href="http://hovertree.com/texiao/js/20/css/pickout.css">
+
+</head>
+<body>
+<div class="container">
+<div class="content">
+<form action="#" method="post">
+
+
+<div class="form-group">
+<label for="state">职位:</label>
+<select name="state" id="state" class="state pickout" placeholder="选择一个职位">
+<option value="pe">项目经理</option>
+<option value="pb">工程师</option>
+<option value="ba">培训师</option>
+<option value="sp">项目策划</option>
+<option value="qd">前端开发</option>
+</select>
+</div>
+</form>
+</div>
+</div>
+<script src="http://hovertree.com/texiao/js/20/js/pickout.js"></script>
+<script>
+
+// Preparar o select
+//pickout.to('.pickout');
+pickout.to({
+el: '.city',
+theme: 'dark',
+search: true
+});
+
+pickout.to({
+el: '.state',
+theme: 'clean',
+});
+
+// automaticamente
+pickout.updated('.city');
+</script>
+</body>
+</html>

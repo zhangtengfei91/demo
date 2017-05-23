@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		var attr=["a","a","a","b","b","c","d","e"]
+		function getNum(){
+			var obj={};
+			for(var i=0;i<attr.length;i++){
+			var item=attr[i];
+			console.log(item);
+			obj[item]=(obj[item]+1)||1
+			alert(obj[item])
+			}
+			return obj;
+		};
+		console.log(getNum())
+	</script>
+</head>
+<body>
+
+</body>
+</html>

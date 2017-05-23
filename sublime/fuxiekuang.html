@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!-- <form>
+First name:<br>
+<input type="text" name="firstname">
+<br>
+Last name:<br>
+<input type="text" name="lastname">
+</form> -->
+<input type="text" name="firstname">
+<input type="text" name="lastname">>
+<button onclick="submit()"></button>
+<script type="text/javascript">
+function submit(){
+var name1=document.getElementsByName("firstname");
+var name2=document.getElementsByName("lastname");
+if(name1!=name2)return true;
+else alert("请确认输入的一致");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分页页码</title>
+<style>
+	div.page_normal{color:#ff6500; text-align:center; font-size:0px;}
+	.page_normal a,.page_normal .page_current,.page_normal .page_prev{margin-left:10px; padding:5px 7px; border:1px solid #cdcdcd; border-radius:3px; width:25px; height:20px; font-size:18px; display:inline-block;}
+	.page_normal a:hover{color:#ffffff; background-color:#ff3366;}
+	.page_normal a{color:#ff6500; text-decoration:none;}
+	.page_normal .page_current{color:#ffffff; background-color:#ff3366;}
+	.page_normal .page_prev{color:#ffe3c6;}
+</style>
+</head>
+<!--行内元素间隔bug问题
+产生原因：换行符、tab（制表符）、空格产生空隙
+解决办法：1.元素写成一行；2.设置font-size：0
+-->
+<body>
+<div class="page_normal">
+	<a href="#" class="page_prev">&lt;</a>
+	<a href="#" class="page_current">1</a>
+	<a href="#">2</a>
+	<a href="#">3</a>
+	<a href="#">4</a>
+	<a href="#">5</a>
+	<a href="#">6</a>
+	<a href="#">7</a>
+	<a href="#">8</a>
+	<a href="#">9</a>
+	<a href="#">10</a>
+	<a href="#" class="page_next">&gt;</a>
+</div>
+<script type="text/javascript">
+</script>
+</body>
+</html>
