@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script th:replace="header :: header"></script>
+
+
+
+</head>
+
+<body>
+<script th:inline="javascript">
+
+    var userbase64 = [[${userbase64}]];
+
+    var user=/*[[${username}]]*/null;
+    var userId=/*[[${userId}]]*/null;
+
+
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'certificate_myCertificateTask'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">首页</a>
+                    </li>
+
+                    <li>
+                        <a href="/">我的证书任务信息</a>
+                    </li>
+
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-16">
+                        <div hidden="hidden" id="certiWin" resizable="false" style="max-width: 346px;max-height: 300px; margin-top: 5px;margin-left: 20px">
+                            <div class="profile-user-info">
+                                <p>
+                                    <label id="receptLbl">接收人员:</label>&nbsp&nbsp&nbsp
+                                    <label id="userName"></label>
+                                    <label id="userId" hidden="hidden"></label>
+                                    <label id="type" hidden="hidden"></label>
+                                </p>
+                                <p>
+                                    <label for="Password" id="PasswordLbl"></label>
+                                    <input autocomplete="off" id="Password" onfocus="this.select()" required="true" type="password"/>
+                                </p>
+                                <p>
+                                    <label id="certificateNo">证书编号:</label>&nbsp&nbsp&nbsp
+                                    <label id="certificateNoLbl" style="text-align: center"></label>
+                                </p>
+
+                            </div>
+                            <div class="space space-10"></div>
+                            <div class="center"><input class="btn btn-sm btn-primary" id="submitBtn" onclick="configPassword()" style="left: -30px;" type="submit" value="提交" />
+                                <a class="btn btn-sm btn-danger" onclick="closeWindow()">关闭</a></div>
+                            <div class="space space-10"></div>
+                        </div>
+                        <div class="modal-body no-padding">
+                            <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center">证书编号</th>
+                                    <th style="text-align: center">送检单位</th>
+                                    <th style="text-align: center">检定结论</th>
+                                    <th style="text-align: center">任务名称</th>
+                                    <th style="text-align: center;width:330px">操作 </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="certificateInfo: ${certificateInfo}">
+                                    <td style="text-align: center;vertical-align:middle" th:text="${certificateInfo.certificateNo}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${certificateInfo.inspectionUnit}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${certificateInfo.conclusion}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${certificateInfo.taskId}"></td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                        <a th:if="${certificateInfo.taskId!='打印盖章'||certificateInfo.returnCer=='已交接'}"
+                                                th:href="@{/historyProcess/{instanceid}(instanceid=${certificateInfo.processId})}"  target="_blank"
+                                           class="btn btn-minier bigger btn-success"><i class="icon-check"></i>任务信息</a>
+
+
+                                        <a th:href="${certificateInfo.remark}" th:id="${certificateInfo.id}"
+
+                                           class="btn btn-minier bigger btn-primary"><i class="icon-check"></i>流程处理</a>
+
+
+
+                                        <a  th:if="${certificateInfo.taskId=='打印盖章'&&certificateInfo.returnCer!='已交接'}" th: href="javascript:void(0);" th:id="${certificateInfo.id}"
+                                            th:title="${certificateInfo.certificateNo}" onclick="openWindow(this)"   th:value="${certificateInfo.returnCer}"
+                                            th:name="${certificateInfo.distributionId}"
+                                            class="btn btn-minier bigger btn-purple"><i class="icon-beaker"></i>交接证书</a>
+
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer no-margin-top" style="margin-bottom: 1px">
+                            <ul class="pagination pull-right no-margin">
+                                <li  th:class="${LookPage==1}?'prev disabled':'prev'">
+                                    <a th:href="@{/MetroCen/certificate/myCertificateTask/{pagenum}(pagenum=${LookPage-1})}" th:onclick="${LookPage==1}?'return false'">
+                                        <i class="icon-double-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li th:each="num: ${#numbers.sequence(1,taskIngTotalNum)}" th:class="${num==LookPage}?'active'">
+                                    <a th:href="@{/MetroCen/certificate/myCertificateTask/{pagenum}(pagenum=${num})}" th:text="${num}"></a>
+                                </li>
+                                <li th:class="${LookPage==taskIngTotalNum}?'next disabled':'next'">
+                                    <a th:href="@{/MetroCen/certificate/myCertificateTask/{pagenum}(pagenum=${LookPage+1})}" th:onclick="${LookPage==taskIngTotalNum}?'return false'">
+                                        <i class="icon-double-angle-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+
+
+    //打开窗体 20151122 郑小罗
+    var receptPwd;//交接密码
+    var receptName;// 接收人员姓名
+    var certificateId;//证书Id
+    function openWindow(obj){
+        if(obj.attributes["value"].value=="已交接"){
+            swal("该证书已经交接");
+            return;
+        }else{
+            $("#certiWin").kendoWindow({
+                title: "证书交接",
+                position: {
+                    top: screen.height / 4,
+                    left: screen.width / 2.4
+                },
+                resizable: true,
+                draggable: true,
+                modal: true
+
+            });
+            $('#certiWin').data("kendoWindow").open();//打开窗体
+        }
+        $.ajax({
+            type:"GET",
+            url:"/api/user/getUserByUserId/"+obj.name,//根据分发者Id获取用户名
+            async:false,
+            success:function(data){
+                var object=data;
+                receptPwd=object.password;//郑小罗 201122 交接密码使用 系统登录密码
+                receptName=object.Name;
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
+        certificateId=obj.id;//证书Id 20151122 郑小罗
+        $("#PasswordLbl").text("交接密码：");
+        $("#userName").text(receptName);//收发人员
+        $("#certificateNoLbl").text(obj.title);//证书编号
+        $("#Password").focus();//密码框焦点状态
+    }
+    //验证密码
+    function configPassword(){
+        //验证用户交接密码是否正确
+        var password=$("#Password").val();//交接密码
+        if(receptPwd==password){
+            //验证通过，更新证书交接状态  20151122 郑小罗
+            $.ajax({
+                type:"GET",
+                url:"/MetroCen/api/certificate/updateReturnCer/"+certificateId,//提交后台更新交接状态
+                async:false,
+                success:function(data){
+                    if(data==true){
+                        closeWindow();//关闭窗口
+
+                    }else{
+                        alert("更新交接证书出错");
+                        return;
+                    }
+
+                },
+                error:function(data){
+                    alert("更新交接证书出错");
+                    return;
+                }
+            });
+
+        }else{
+            alert("密码验证失败");
+            $("#Password").focus();//使密码框处于焦点状态
+        }
+    }
+
+    //关闭窗体
+    function closeWindow(){
+        //$("#certiWin").data("kendoWindow").cleanData();
+        $("#certiWin").data("kendoWindow").close();
+        //清空window数据
+        $("#userId").text("");//检定员ID
+        $("#userName").text("");//检定员姓名
+        $("#Password").text("");
+    }
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

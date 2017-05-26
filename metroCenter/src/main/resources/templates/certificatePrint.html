@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+    <link rel="stylesheet" href="/css/kendo.common.min.css" />
+    <link rel="stylesheet" href="/css/kendo.default.min.css" />
+    <link rel="stylesheet" href="/css/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="/css/kendo.dataviz.default.min.css" />
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body>
+<script th:inline="javascript">
+
+
+
+</script>
+<!--<div th:replace="navbar :: navbar(${user})"></div>-->
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <!--<div th:replace="slider :: slidermenu(${'certificate_NewCertificate'})"></div>-->
+
+
+        <div class="main-content">
+            <!--<div class="breadcrumbs" id="breadcrumbs">-->
+                <!--<script type="text/javascript">-->
+        <!--try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}-->
+    <!--</script>-->
+
+                <!--<ul class="breadcrumb">-->
+                    <!--<li>-->
+                        <!--<i class="icon-home home-icon"></i>-->
+                        <!--<a href="/">主页</a>-->
+                    <!--</li>-->
+                    <!--<li class="active">-->
+                        <!--<a href="#">证书制作</a>-->
+                    <!--</li>-->
+                    <!--&lt;!&ndash;<li class="active">Blank Page</li>&ndash;&gt;-->
+                <!--</ul>&lt;!&ndash; .breadcrumb &ndash;&gt;-->
+
+                <!--<div class="nav-search" id="nav-search">-->
+        <!--<span class="input-icon">-->
+            <!--<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />-->
+            <!--<i class="icon-search nav-search-icon"></i>-->
+        <!--</span>-->
+                <!--</div>&lt;!&ndash; #nav-search &ndash;&gt;-->
+            <!--</div>-->
+            <div class="page-content">
+                <div hidden="hidden" id="sampleWin" resizable="false" style="max-width: 346px;max-height: 300px; margin-top: 5px;margin-left: 20px">
+                    <div class="profile-user-info">
+                        <p>
+                        <div id="factoryList"></div>
+                        </p>
+                    </div>
+                    <div class="space space-10"></div>
+                    <div class="center"><input class="btn btn-sm btn-primary" id="submitBtn" style="left: -30px;" type="submit" value="提交" onclick="choseFactory();" />
+                        <a class="btn btn-sm btn-danger" onclick="closeWindow()">关闭</a></div>
+                    <div class="space space-10"></div>
+                </div>
+                <div hidden="hidden" class="span6 widget-container-span ui-sortable" id="register">
+                    <div id="headDiv" class="widget-box">
+                        <div class="widget-header">
+                            <h5>证书制作</h5>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="settings">
+                                    <i class="icon-cog"></i>
+                                </a>
+
+                                <a href="#" data-action="reload">
+                                    <i class="icon-refresh"></i>
+                                </a>
+
+                                <a href="#" data-action="collapse">
+                                    <i class="icon-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div id="selectInfo" th:class="${#lists.contains(currentEditableField,'selectInfo')}?'alert alert-info':'hide'"  style="height: 250px;" >
+
+                                    <label id="certiSampleNameLbl" class="control-label bolder blue vali_lable" style="position:absolute;margin-left:10px;margin-top: 5px;">样品名称：</label>
+                                    <select id="certiSampleName" style="position:absolute;margin-left:100px;width: 250px;" onchange="bindSampleInfo(this)">
+                                    </select>
+                                    <label id="certiSampleNameVal" style="position:absolute;margin-left:100px;margin-top:5px;width: 300px;"></label>
+                                    <label id="certiModelLbl" class="control-label bolder blue vali_lable" style="position:absolute;margin-left: 430px;margin-top: 5px;">证书模板：</label>
+                                    <select id="certiModel" style="position:absolute;margin-left:528px;width: 250px;" onchange="changeModel('certiModel','certificateInfo','0')">
+                                        <select id="certiModel2" style="position:absolute;margin-left:800px;width: 180px;" onchange="changeModel('certiModel2','equipment','0')">
+                                        </select>
+                                        <!--1-->
+                                        <label id="certiVerificatRegLbl" class="control-label bolder blue vali_lable" style="margin-left:10px;margin-top: 10px;">证书审核人：</label>
+                                        <select id="certiVerificatReg" class="vali_input"  style="position:absolute;width: 250px;margin-top: 55px;" onchange="change('certiVerificatReg','DropDownList','checked')"></select>
+                                    </select>
+                                    <!--2-->
+                                    <label id="certiSign" class="control-label bolder blue vali_lable" style="position:absolute;margin-left: 328px;margin-top: 60px;">证书授权人：</label>
+                                    <select id="sign" class="vali_input"  style="position:absolute;margin-left:425px;width: 250px;margin-top: 55px;" onchange="change('sign','DropDownList','approved')"></select>
+                                    <!--3-->
+                                    <label id="certiPrintLbl" class="control-label bolder blue vali_lable" style="position:absolute;margin-left:-94px;margin-top: 120px;">打印盖章人：</label>
+                                    <select id="certiPrint" class="vali_input"  style="position:absolute;margin-left:1px;width: 250px;margin-top: 120px;" onchange="change('certiPrint','DropDownList','verified')"></select>
+                                    <!--4-->
+                                    <label id="certiSubmitLbl" class="control-label bolder blue vali_lable" style="margin-left:328px;margin-top: 120px;">发放证书人：</label>
+                                    <select id="certiSubmit" class="vali_input"  style="position:absolute;margin-left:13px;width: 250px;margin-top: 120px;"></select>
+
+                                </div>
+                                <!--流程选择-->
+                                <div id="PorcessInfo" style="height: 100px;"></div>
+                                <!--填写领导意见-->
+                                <div id="comment">
+                                    <textarea id="commentTxt" class="vali_input"  style="position:absolute;margin-left:150px;width: 320px;height: 80px;margin-top: -100px;"></textarea>
+                                </div>
+                                <!--显示领导意见-->
+                                <div id="commentDisplay" style="position:absolute;margin-left:115px;width: 780px;height: 60px;margin-top: -90px;">
+                                    <textarea id="DisplayTxt" class="vali_input" disabled  ></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.page-content -->
+            <div style="width: 1000px;height:1050px;" id="text">
+                <div id="certificateInfo">
+                    <!--证书封面信息-->
+                    <div id="JDDiv" style="position: absolute;height: 1050px;width: 1000px;">
+                        <div id="faceTitle"style="position: relative">
+                            <label style="position: absolute;font-family:SimHei;font-size: 45px;margin-left: 120px;margin-top: 0px;letter-spacing:25px;">国家海洋计量站上海分站</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:20px;margin-left: 280px;margin-top: 70px;">National Marine Metrology Service Shanghai Branch</label>
+                            <label id="certificateTypeNameCN" style="position: absolute;font-family: SimSun;font-weight:bold;font-size: 55px;letter-spacing:40px;margin-left: 330px;margin-top: 140px;">检定证书</label>
+                            <label id="certificateTypeNameEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:27px;margin-left: 380px;margin-top: 210px;">Verification Certificate</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 340px;margin-top: 280px;">证书编号：GHS字第</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 340px;margin-top: 310px;">Certificate No.</label>
+                            <input id="certificateNo" th:Disabled="${#lists.contains(currentEditableField,'certificateNo')}?false:true" onchange="change('certificateNo','input','certificateNo')" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 525px;margin-top: 280px;width: 180px;border:none;outline:medium;text-align:left"/>
+                            <label id="hao"style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 660px;margin-top: 280px;">号</label>
+                            <div id="line" style="position:absolute;width: 245px;top: 311px;left: 436px;border-bottom: dotted 2px;"></div>
+                        </div>
+                        <div id="faceContent" style="position: relative;margin-left: -20px">
+                            <label id="inspectionUnitLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:30px;font-size: 20px;margin-left: 150px;margin-top: 340px;">送检单位</label>
+                            <input id="inspectionUnit" th:Disabled="${#lists.contains(currentEditableField,'inspectionUnit')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 340px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="inspectionUnitLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 200px;margin-top: 370px;">Applicant</label>
+                            <label id="sampleNameLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:10px;font-size: 20px;margin-left: 150px;margin-top: 400px;">计量器具名称</label>
+                            <input id="sampleName" th:Disabled="${#lists.contains(currentEditableField,'sampleName')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 400px;outline:medium;text-align: center;width:550px;" />
+                            <label id="sampleNameLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 160px;margin-top: 430px;">Name of Instrument</label>
+                            <label id="sampleModelLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:20px;font-size: 20px;margin-left: 150px;margin-top: 460px;">型号/规格</label>
+                            <input id="sampleModel" th:Disabled="${#lists.contains(currentEditableField,'sampleModel')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 460px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="sampleModelLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 160px;margin-top: 490px;">Type/Specification</label>
+                            <label id="serialNumberLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:30px;font-size: 20px;margin-left: 150px;margin-top: 520px;">出厂编号</label>
+                            <input id="serialNumber" th:Disabled="${#lists.contains(currentEditableField,'sampleModel')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 520px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="serialNumberLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 200px;margin-top: 550px;">Serial No.</label>
+                            <label id="ManufactUnitLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:30px;font-size: 20px;margin-left: 150px;margin-top: 580px;">制造单位</label>
+                            <input id="ManufactUnit" th:Disabled="${#lists.contains(currentEditableField,'ManufactUnit')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 580px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="ManufactUnitLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 200px;margin-top: 610px;">Manufacturer</label>
+                            <label id="verificatRegLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:30px;font-size: 20px;margin-left: 150px;margin-top: 640px;">检定依据</label>
+                            <input id="verificatReg" th:Disabled="${#lists.contains(currentEditableField,'verificatReg')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 640px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="verificatRegLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 150px;margin-top: 670px;">Verification Regulation</label>
+                            <label id="conclusionLblCN" style="position: absolute;font-family:sans-serif;letter-spacing:30px;font-size: 20px;margin-left: 150px;margin-top: 700px;">检定结论</label>
+                            <input id="conclusion" th:Disabled="${#lists.contains(currentEditableField,'conclusion')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 350px;margin-top: 700px;outline:medium;text-align: center;width:550px;"/>
+                            <label id="conclusionLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 200px;margin-top: 730px;">Conclusion</label>
+                        </div>
+                        <div id="stampDiv" style="position: relative;margin-left: -110px;">
+                            <label id="stamp" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 330px;margin-top: 850px;">(检定专用章)</label>
+                            <label id="stampEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 370px;margin-top: 880px;">stamp</label>
+                            <label id="approvedLblCN"style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 780px;">批准人</label>
+                            <input id="approved" Disabled style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 750px;margin-top: 780px;outline:medium;text-align: right;width:240px;"/>
+                            <label id="approvedLblEN"style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 810px;">Approved by</label>
+                            <label id="checkedLblCN"style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 840px;">核验员</label>
+                            <input id="checked" Disabled style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 750px;margin-top: 840px;outline:medium;text-align: center;width:240px;"/>
+                            <label id="checkedLblEN"style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 870px;">Checked by</label>
+                            <label id="verifiedLblCN"style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 900px;">检定员</label>
+                            <input id="verified"  Disabled style="position: absolute;font-family:sans-serif;font-size: 20px;border-bottom: 2px dotted black;border-left: none;border-right: none;border-top: none;margin-left: 750px;margin-top: 900px;outline:medium;text-align: center;width:240px;"/>
+                            <label id="verifiedLblEN"style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 930px;">Verified by</label>
+                        </div>
+                        <div id="date"style="position: relative;margin-top: 10px">
+                            <div id="verifiedDate">
+                                <label id="verifiedDateLblCN" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 180px;margin-top: 970px;">检定日期</label>
+                                <label id="verifiedDateLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 160px;margin-top: 1000px;">Date of Verification</label>
+                                <input id="verifiedDateYear" th:Disabled="${#lists.contains(currentEditableField,'verifiedDateYear')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 300px;margin-top: 970px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 430px;margin-top: 970px;">年</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 420px;margin-top: 1000px;">Year</label>
+                                <input id="verifiedDateMonth" th:Disabled="${#lists.contains(currentEditableField,'verifiedDateMonth')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 480px;margin-top: 970px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 600px;margin-top: 970px;">月</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 590px;margin-top: 1000px;">Month</label>
+                                <input id="verifiedDateDay" th:Disabled="${#lists.contains(currentEditableField,'verifiedDateDay')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 630px;margin-top: 970px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 750px;margin-top: 970px;">日</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 750px;margin-top: 1000px;">Day</label>
+                                <input id="hr" Disabled style="position: absolute;border-bottom: 1px solid black;border-left: none;border-right: none;border-top: none;margin-left: 80px;margin-top: 1060px;outline:medium;text-align: center;width:800px;"/>
+                            </div>
+                            <div id="validityDate">
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 180px;margin-top: 1030px;">有效期至</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 180px;margin-top: 1060px;">Vaild until</label>
+                                <input id="validityDateYear" th:Disabled="${#lists.contains(currentEditableField,'validityDateYear')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 300px;margin-top: 1030px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 430px;margin-top: 1030px;">年</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 420px;margin-top: 1060px;">Year</label>
+                                <input id="validityDateMonth" th:Disabled="${#lists.contains(currentEditableField,'validityDateMonth')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 480px;margin-top: 1030px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 600px;margin-top: 1030px;">月</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 590px;margin-top: 1060px;">Month</label>
+                                <input id="validityDateDay" th:Disabled="${#lists.contains(currentEditableField,'validityDateDay')}?false:true" style="position: absolute;font-family:sans-serif;font-size: 20px;border: none;margin-left: 630px;margin-top: 1030px;outline:medium;text-align: center;width:100px;"/>
+                                <label style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 750px;margin-top: 1030px;">日</label>
+                                <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 750px;margin-top: 1060px;">Day</label>
+
+                            </div>
+                        </div>
+                        <div id="contract">
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 100px;margin-top: 1085px;">计量检定机构授权证书号：(国)法计(2011)00056</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 100px;margin-top: 1105px;">Authorization Certificate No.</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 600px;margin-top: 1085px;">电话：（021）20950832</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 600px;margin-top: 1105px;">Telephone</label>
+
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 100px;margin-top: 1125px;">地址：上海市临港新城海港大道1593号</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 100px;margin-top: 1145px;">Address：No.1593 Hai Gang Da Dao,Shanghai</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 600px;margin-top: 1125px;">邮编：201306</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 600px;margin-top: 1145px;">Post Code</label>
+
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 100px;margin-top: 1165px;">传真：（021）20950802</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 100px;margin-top: 1190px;">Fax</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;letter-spacing:2px;margin-left: 600px;margin-top: 1165px;">电子邮箱：jljdk@eastsea.gov.cn</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:15px;margin-left: 600px;margin-top: 1190px;">Email</label>
+                        </div>
+                        <div id="faceBoot">
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 400px;margin-top: 1225px;">第</label>
+                            <label id="firstPage" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 440px;margin-top: 1225px;">1</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 480px;margin-top: 1225px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 580px;margin-top: 1225px;">共</label>
+                            <label id="firstTotal" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 620px;margin-top: 1225px;"></label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 650px;margin-top: 1225px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 410px;margin-top: 1245px;">Page</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 610px;margin-top: 1245px;">of</label>
+
+                        </div>
+
+                    </div>
+                    <!--器具相关信息-->
+                    <div id="equipmentDiv" style="position: absolute;height: 1050px;width: 1000px;margin-top:1290px; ">
+                        <div>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 12px;margin-left: 660px;margin-top: 20px;">证书编号:</label>
+                            <input id="certificateNo2" disabled style="position: absolute;font-family: sans-serif;font-size: 12px; width:150px;margin-left: 720px;margin-top: 20px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;"/>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 660px;margin-top: 40px;">Certificate No.</label>
+                            <input Disabled style="position: absolute;border-bottom: 1px solid black;border-left: none;border-right: none;border-top: none;margin-left: 80px;margin-top: 55px;outline:medium;text-align: center;width:800px;height: 1px;"/>
+                            <label id="TechnicalLblCN" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 80px;margin-top: 70px;">本次检定所使用的计量（基）标准装置</label>
+                            <label id="TechnicalLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 100px;">Measurement Standards Devices Used in This Verification</label>
+                            <!--校准、检测的参照技术规范-->
+                            <label id="Technical" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 80px;margin-top: 150px;"></label>
+                        </div>
+                        <!--计量标准装置-->
+                        <div id="stardand">
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 140px;margin-top: 120px;">名称</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 142px;margin-top: 145px;">Name</label>
+                            <label id="equipmentName"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 170px;width: 200px;"></label>
+                            <input disabled style="position: absolute;width:1px;height:70px;margin-left: 260px;margin-top: 125px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 300px;margin-top: 120px;">测量范围</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 290px;margin-top: 145px;">Measuring Range</label>
+                            <label id="measureRange"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 265px;margin-top: 170px;width: 130px;"></label>
+                            <input disabled style="position: absolute;width:1px;height:70px;margin-left: 400px;margin-top: 125px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 465px;margin-top: 120px;">证书编号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 460px;margin-top: 145px;">Certificate No.</label>
+                            <label id="equipCertificateNo"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 400px;margin-top: 170px;width: 210px;"></label>
+                            <input disabled style="position: absolute;width:1px;height:70px;margin-left: 610px;margin-top: 125px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 640px;margin-top: 120px;">有效期至</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 650px;margin-top: 145px;">Due Date</label>
+                            <label id="dueDate"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 620px;margin-top: 170px;width: 100px;"></label>
+                            <input disabled style="position: absolute;width:1px;height:70px;margin-left: 730px;margin-top: 125px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label id="accuracyLblCN" style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 750px;margin-top: 120px;">不确定度/最大允许误差</label>
+                            <label id="accuracyLblEN"  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 760px;margin-top: 145px;">Uncertainty/M.P.E</label>
+                            <img id="AccuracyU" src="/img/uLogo/U95.jpg" style="position: absolute;font-family: SimSun;font-size: 10px;margin-left: 760px;margin-top: 165px;width: 25px;height:25px">
+                            <label id="AccuracyTest"  style="position: absolute;font-family: SimSun;font-size: 10px;margin-left: 790px;margin-top: 165px;width: 100px">2.6%</label>
+
+                            <label   hidden="hidden" id="accuracy"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 170px;width: 100px;"></label>
+                        </div>
+                        <div id="mainStanard" style="position: absolute;width:1000px;margin-top:-30px;">
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 240px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            <label id="StanardLblCN" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 260px;">本次检定所使用的主要计量标准器具:</label>
+                            <label id="StanardLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 290px;">Main Measurement Standards Used in This Verification</label>
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 140px;margin-top: 320px;">名称/型号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 142px;margin-top: 345px;">Name/Model</label>
+                            <label id="instrumentName1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 370px;width: 200px;"></label>
+                            <label id="instrumentName2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 400px;width: 200px;"></label>
+                            <label id="instrumentName3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 430px;width: 200px;"></label>
+                            <label id="instrumentName4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 460px;width: 200px;"></label>
+                            <input id="mainStanardName" disabled style="position: absolute;width:1px;height:140px;margin-left: 260px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 300px;margin-top: 320px;">仪器编号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 320px;margin-top: 345px;">S/N</label>
+                            <label id="instrumentNo1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 265px;margin-top: 370px;width: 130px;"></label>
+                            <label id="instrumentNo2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 265px;margin-top: 400px;width: 130px;"></label>
+                            <label id="instrumentNo3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 265px;margin-top: 430px;width: 130px;"></label>
+                            <label id="instrumentNo4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 265px;margin-top: 460px;width: 130px;"></label>
+                            <input id="maininstrumentNo" disabled style="position: absolute;width:1px;height:140px;margin-left: 400px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 465px;margin-top: 320px;">证书编号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 460px;margin-top: 345px;">Certificate No.</label>
+                            <label id="instrumentCertificateNo1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 400px;margin-top: 370px;width: 210px;"></label>
+                            <label id="instrumentCertificateNo2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 400px;margin-top: 400px;width: 210px;"></label>
+                            <label id="instrumentCertificateNo3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 400px;margin-top: 430px;width: 210px;"></label>
+                            <label id="instrumentCertificateNo4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 400px;margin-top: 460px;width: 210px;"></label>
+                            <input id="maininstrumentCertificate" disabled style="position: absolute;width:1px;height:140px;margin-left: 610px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 640px;margin-top: 320px;">有效期至</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 650px;margin-top: 345px;">Due Date</label>
+                            <label id="instrumentDueDate1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 620px;margin-top: 370px;width: 100px;"></label>
+                            <label id="instrumentDueDate2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 620px;margin-top: 400px;width: 100px;"></label>
+                            <label id="instrumentDueDate3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 620px;margin-top: 430px;width: 100px;"></label>
+                            <label id="instrumentDueDate4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 620px;margin-top: 460px;width: 100px;"></label>
+                            <input id="maininstrumentDueDate" disabled style="position: absolute;width:1px;height:140px;margin-left: 730px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label id="instrumentAccuracyCN"  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 750px;margin-top: 320px;">准确度等级/最大允许误差</label>
+                            <label id="instrumentAccuracyEN" style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 770px;margin-top: 345px;">Uncertainty/M.P.E</label>
+                            <img id="instrumentAccuracyU1" src="/img/uLogo/U95.jpg" style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 760px;margin-top: 370px;width: 25px;height:25px">
+                            <label id="instrumentAccuracyTest"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 750px;margin-top: 370px;width: 100px;">2.6%</label>
+                            <!--<img id="instrumentAccuracyU2" src="/img/uLogo/U95.jpg" style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 850px;margin-top: 370px;width: 25px;height:25px">
+                            <label id="instrumentAccuracyTest2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 840px;margin-top: 370px;width: 100px;">2.6%</label>-->
+                            <label hidden="hidden" id="instrumentAccuracy1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 370px;width: 100px;"></label>
+                            <label id="instrumentAccuracy2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 400px;width: 100px;"></label>
+                            <label id="instrumentAccuracy3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 430px;width: 100px;"></label>
+                            <label id="instrumentAccuracy4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 460px;width: 100px;"></label>
+                        </div>
+                        <div id="above" style="position: absolute;width: 1000px;">
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 500px;">以上计量标准器具的量值溯源至国家基准。</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 530px;">Quantity Values of Above Measurement Standards Used in This Calibration Are Traced to Those of The National Primary Standards in The P.R.China</label>
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 560px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                        </div>
+                        <div id="mainStanard2" hidden="hidden">
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 240px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            <label id="StanardLblCN2" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 260px;">本次检定所使用的主要计量标准器具:</label>
+                            <label id="StanardLblEN2" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 290px;">Main Measurement Standards Used in This Verification</label>
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 140px;margin-top: 320px;">名称/型号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 142px;margin-top: 345px;">Name/Model</label>
+                            <label id="instrumentName12"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 370px;width: 200px;"></label>
+                            <label id="instrumentName22"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 400px;width: 200px;"></label>
+                            <label id="instrumentName32"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 430px;width: 200px;"></label>
+                            <label id="instrumentName42"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 60px;margin-top: 460px;width: 200px;"></label>
+                            <input id="mainStanardName2" disabled style="position: absolute;width:1px;height:140px;margin-left: 260px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 280px;margin-top: 320px;">编号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 280px;margin-top: 345px;">S/N</label>
+                            <label id="instrumentNo12"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 270px;margin-top: 370px;width: 40px;">140221</label>
+                            <label id="instrumentNo22"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 270px;margin-top: 400px;width: 40px;"></label>
+                            <label id="instrumentNo32"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 270px;margin-top: 430px;width: 40px;"></label>
+                            <label id="instrumentNo42"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 270px;margin-top: 460px;width: 40px;"></label>
+                            <input id="maininstrumentNo2"disabled style="position: absolute;width:1px;height:140px;margin-left: 320px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 370px;margin-top: 320px;">证书编号</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 370px;margin-top: 345px;">Certificate No.</label>
+                            <label id="instrumentCertificateNo12"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 330px;margin-top: 370px;width: 160px;"></label>
+                            <label id="instrumentCertificateNo22"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 330px;margin-top: 400px;width: 160px;"></label>
+                            <label id="instrumentCertificateNo32"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 330px;margin-top: 430px;width: 160px;">1</label>
+                            <label id="instrumentCertificateNo42"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 330px;margin-top: 460px;width: 160px;">1</label>
+                            <input id="maininstrumentCertificate2"disabled style="position: absolute;width:1px;height:140px;margin-left: 510px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 520px;margin-top: 320px;">有效期至</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 520px;margin-top: 345px;">Due Date</label>
+                            <label id="instrumentDueDate12"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 515px;margin-top: 370px;width: 60px;">2014.07</label>
+                            <label id="instrumentDueDate22"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 515px;margin-top: 400px;width: 60px;"></label>
+                            <label id="instrumentDueDate32"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 515px;margin-top: 430px;width: 60px;"></label>
+                            <label id="instrumentDueDate42"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 515px;margin-top: 460px;width: 60px;"></label>
+                            <input id="maininstrumentDueDate2"disabled style="position: absolute;width:1px;height:140px;margin-left: 600px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 620px;margin-top: 320px;">标称值</label>
+                            <label  style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 620px;margin-top: 345px;">Nominal Value</label>
+                            <label id="NominalValue1"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 610px;margin-top: 370px;width: 100px;">6.86（25℃）</label>
+                            <label id="NominalValue2"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 610px;margin-top: 400px;width: 100px;"></label>
+                            <label id="NominalValue3"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 610px;margin-top: 430px;width: 100px;"></label>
+                            <label id="NominalValue4"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 610px;margin-top: 460px;width: 100px;"></label>
+                            <input id="maininstrumentNominalValue2" disabled style="position: absolute;width:1px;height:140px;margin-left: 730px;margin-top: 320px;border-bottom: none;border-left: 1px dotted black;border-right: none;border-top: none;" />
+
+                            <label id="instrumentAccuracyCN2"  style="position: absolute;font-family: SimSun;font-size: 15px;margin-left: 750px;margin-top: 320px;">不确定度</label>
+                            <label id="instrumentAccuracyEN2" style="position: absolute;font-family: Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 760px;margin-top: 345px;">Uncertainty</label>
+                            <label id="instrumentAccuracy12"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 370px;width: 100px;"></label>
+                            <label id="instrumentAccuracy22"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 400px;width: 100px;"></label>
+                            <label id="instrumentAccuracy32"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 430px;width: 100px;"></label>
+                            <label id="instrumentAccuracy42"  style="position: absolute;font-family: SimSun;font-size: 13px; text-align:center;margin-left: 730px;margin-top: 460px;width: 100px;"></label>
+                        </div>
+                        <div id="absove2" style="position: absolute;width: 1000px" hidden="hidden">
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 500px;">以上计量标准器具的量值溯源至国家基准。</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 530px;">Quantity Values of Above Measurement Standards Used in This Calibration Are Traced to Those of The National Primary Standards in The P.R.China</label>
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 560px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                        </div>
+                        <!--检定地点及环境条件-->
+                        <div id="locationDiv" style="position: absolute;width: 1000px;">
+                            <label id="locationLblCN" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 570px;">检定地点及环境条件:</label>
+                            <label id="locationLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 600px;">Location and Ambient Condition for This Calibration</label>
+
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 630px;">地点:</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 660px;">Location</label>
+                            <input id="location"  th:Disabled="${#lists.contains(currentEditableField,'location')}?false:true" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 160px;margin-top: 630px;border: none;text-align: center;width: 600px;text-align:left"/>
+
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 690px;">温度:</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 720px;">Temperature</label>
+                            <input id="temperature" th:Disabled="${#lists.contains(currentEditableField,'temperature')}?false:true" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 140px;margin-top: 690px;border: none;text-align:left;width: 200px;"/>
+
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 350px;margin-top: 690px;">相对湿度:</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 350px;margin-top: 720px;">Relative Humidity</label>
+                            <input id="relativeHum" th:Disabled="${#lists.contains(currentEditableField,'relativeHum')}?false:true" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 450px;margin-top: 690px;border: none;text-align: left;width: 200px;"/>
+
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 690px;margin-top: 690px;">其他:</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 690px;margin-top: 720px;">Others</label>
+                            <input id="other" th:Disabled="${#lists.contains(currentEditableField,'other')}?false:true" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left:740px;margin-top: 690px;border: none;text-align: center;width: 120px;"/>
+
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 760px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                        </div>
+                        <!--校准的扩展不确定度-->
+                        <div id="UncertaintyDiv" style="position: absolute;width: 1000px;">
+                            <label style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 80px;margin-top: 770px;">本次校准结果的扩展不确定度:</label>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 800px;">Expanded Uncertainty of This Calibration Results</label>
+                            <input id="Uncertainty" th:Hidden="${#lists.contains(currentEditableField,'other')}?false:true" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 100px;margin-top: 820px;border: none;text-align: left;width: 300px;"/>
+                            <label id="UncertaintyLbl" th:Hidden="${#lists.contains(currentEditableField,'other')}?true:false" style="position: absolute;font-family: SimSun;font-size: 20px;margin-left: 100px;margin-top: 820px;border: none;text-align: left;width: 300px;"></label>
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 850px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                        </div>
+                        <!--显示检定结果说明-->
+                        <div id="displayResult" style="position: absolute;margin-top: 760px;margin-left: 100px;">
+
+                        </div>
+                        <!--编辑结果说明-->
+                        <div id="resultDiv" style="position: absolute;margin-top: 760px;margin-left: 100px;">
+                            <textarea id="results" rows="10" cols="30" th:Disabled="${#lists.contains(currentEditableField,'results')}?false:true" style="width: 800px;height: 270px;border:none;outline:medium;text-align: left;"></textarea>
+                        </div>
+                        <div id="resultDefine" style="position: absolute;width: 1000px;">
+                            <label id="resultDefineCN" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 80px;margin-top: 870px;">检定结果与说明</label>
+                            <label id="resultDefineEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 900px;">Verification Results and Additional Explanation</label>
+                        </div>
+                        <div style="position: absolute;width: 1000px;">
+                            <input disabled style="position: absolute;height:1px;width:800px;margin-left: 80px;margin-top: 1115px;border-bottom: 1px solid black;border-left: none;border-right: none;border-top: none;" />
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;margin-left: 80px;margin-top: 1120px;width:800px;" id="resultDisplayCN"></label>
+                            <label id="resultDisplayEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 1160px;width:800px;"></label>
+                        </div>
+                        <div id="equipBoot"style="position: relative;margin-top: 20px">
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 400px;margin-top: 1200px;">第</label>
+                            <label id="second" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 440px;margin-top: 1200px;">2</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 480px;margin-top: 1200px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 580px;margin-top: 1200px;">共</label>
+                            <label id="secondTotal" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 620px;margin-top: 1200px;"></label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 650px;margin-top: 1200px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 410px;margin-top: 1220px;">Page</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 610px;margin-top: 1220px;">of</label>
+                        </div>
+                    </div>
+                    <!--续页结果说明-->
+                    <div id="nextPage" style="position: absolute;margin-top: 2600px;">
+                        <div>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 12px;margin-left: 660px;margin-top: 20px;width:60px;">证书编号:</label>
+                            <input id="certificateNo3" disabled style="position: absolute;font-family: sans-serif;font-size: 12px; width:150px;margin-left: 720px;margin-top: 20px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;"/>
+                            <label style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 660px;margin-top: 40px;width:100px;">Certificate No.</label>
+                            <input Disabled style="position: absolute;border-bottom: 1px solid black;border-left: none;border-right: none;border-top: none;margin-left: 80px;margin-top: 55px;outline:medium;text-align: center;width:800px;height: 1px;"/>
+                            <label id="nextPageLblCN" style="position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 80px;margin-top: 70px;width:400px;">检定结果与说明(续页)：</label>
+                            <label id="nextPageLblEN" style="position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size: 10px;margin-left: 80px;margin-top: 100px;width:400px;">Verification Results and Additional Explanation (Continued Page)</label>
+                        </div>
+                        <!--显示续页结果说明-->
+                        <div id="modelValueDiv" style="position:absolute;margin-left:80px;margin-top:120px;width: 700px;">
+                        </div>
+                        <div id="modelEditorDiv" style="position:absolute;margin-left:80px;margin-top:120px;">
+                            <textarea id="modelEditor" rows="10" cols="30" style="height:640px;width: 800px;background: white !important;border: 0 !important;">
+                            </textarea>
+                        </div>
+                        <div id="nextPageBoot"style="position: relative;margin-top: 30px">
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 400px;margin-top: 1160px;">第</label>
+                            <label id="threed" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 440px;margin-top: 1160px;">3</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 480px;margin-top: 1160px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 580px;margin-top: 1160px;">共</label>
+                            <label id="threedTotal" style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 620px;margin-top: 1160px;"></label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 650px;margin-top: 1160px;">页</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 410px;margin-top: 1180px;">Page</label>
+                            <label style="position: absolute;font-family: sans-serif;font-size: 15px;letter-spacing:2px;margin-left: 610px;margin-top: 1180px;">of</label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div hidden="hidden" class="clearfix form-actions" id="submitDiv" style="min-width : 768px;">-->
+                <!--<div class="col-md-offset-3 col-md-9" style="position: relative;margin-left: 250px;width:500px;">-->
+                    <!--<button id="submitAll" class="btn btn-info" type="button" onclick="submit();">-->
+                        <!--<i class="icon-ok bigger-110"></i>-->
+                        <!--提交-->
+                    <!--</button>-->
+
+                    <!--<button id="btnPrint"  th:class="${#lists.contains(currentEditableField,'btnPrint')}?'btn btn-info':hide" type="button" style="margin-left: 50px;">-->
+                        <!--<i class="icon-print bigger-110"></i>-->
+                        <!--&lt;!&ndash;<button id="btnPrint" type="button" style="margin-left: 50px;">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<i class="icon-print bigger-110"></i>&ndash;&gt;-->
+                        <!--打印-->
+                    <!--</button>-->
+
+                    <!--<button id="cancel" class="btn" type="reset" style="margin-left: 50px;" onclick="javascript:history.go(-1);">-->
+                        <!--<i class="icon-undo bigger-110"></i>-->
+                        <!--取消-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div><!-- /.main-content -->
+    </div>
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/js/jquery-ui.js"></script>
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+<script src="/js/html2canvas.js"></script>
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+
+<!--autocomplete-->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var currentEditableField=/*[[${currentEditableField}]]*/ 'currentEditableField';//加载字段
+    var currentUserId=/*[[${currentUserId}]]*/ 'currentUserId';//当前登录用户ID
+    var activitiNextStepInfo=/*[[${activitiNextStepInfo}]]*/ 'activitiNextStepInfo';//洗一步流程信息
+    var checkCertificate=/*[[${check}]]*/ 'check';//查看证书标注
+    var sampleDataSource;//样品数据源
+    var userDataSource;//用户数据源
+    var modelDataSource;//大类证书模板数据源
+    var modelDataSourceSec;//二级证书模板数据源
+    var certificateInfo=/*[[${certificateInfo}]]*/ 'certificateInfo';//证书相关信息
+    var approvedName=$("#sign").text();
+    var checkedName=$("#certiVerificatReg").text();
+    var verifiedName=$("#certiPrint").text();
+    var status=certificateInfo.currentStatus;//判断当前任务状态 如果为none，表示样品接收
+    var approvedName=/*[[${approved}]]*/ 'approved';//批准人
+    var certificate=/*[[${certificate}]]*/ 'certificate';//证书数据
+    var checkedName=/*[[${checked}]]*/ 'checked';//核验员
+    var verifiedName=/*[[${verified}]]*/ 'verified';//检定员
+    var checkedVal="";//流程选中的值
+    var nextPageNum="";//是否有续页，1表示没有续页，2表示有续页
+    var checkedTxt="";//出厂编号选择值
+    var retroactive=/*[[${retroactive}]]*/ 'retroactive';//是否补办证书
+    var distributionId=currentUserId;//证书分发人员
+
+    var sampleId=0;//样品名称
+    var modelParentId=0;//模板大类
+    var modelId=0;//模板小类
+    var checked=0;//证书审核人
+    var approved=0;//授权人
+    var verified=currentUserId;//打印，发放人员
+    var certificateInfoDiv={
+        width:"1276px",
+        height:"850px",
+        left:"0px",
+        top:"0px"
+    };//证书背景图片图层的位置、尺寸等相关信息
+    var equipmentDiv={
+        width:"650px",
+        height:"300px",
+        left:"550px",
+        top:"55px"
+    };
+    var nextPageDiv={
+        width:"1276px",
+        height:"850px",
+        left:"0px",
+        top:"840px"
+    };//结果说明续页
+    var submitDiv={
+        width:"768px",
+        top:"2800px"
+    }
+
+    userDataSource={
+        transport:{
+            read:{
+                dataType:"json",
+                url:"/api/user/getalluser"
+            }
+        }
+    };
+    sampleDataSource={
+        transport:{
+            read:{
+                dataType:"json",
+                url:"/config/certificate/getDistribution/"+currentUserId
+            }
+        }
+    };
+    //大类证书模板
+    modelDataSource={
+        transport:{
+            read:{
+                dataType:"json",
+                url:"/config/getCertificateModel"
+            }
+        }
+    };
+    //二类证书模板
+    modelDataSourceSec={
+        transport:{
+            read:{
+                dataType:"json",
+                url:"/config/getCertificateModel/child"
+            }
+        }
+    };
+    //提交数据按钮
+    function submit(){
+        //首先判断证书是否已经交接 如果未交接 弹出对话框提示 否则完成流程                  2015 11 19 张腾飞
+        var nextUserId="";//下一步用户
+        var processId;//流程Id
+        var ReturnCer="";//接受证书交接状态 空值
+
+        if(status=="none" ||status=="出具证书"){
+            getCertificateInfo();
+        }
+        else if(status=="发放证书"){
+            nextUserId=0;
+            checkedVal="end";
+            var commnets="pass";
+            processId=Number(certificate.processId);//流程Id
+            submitAjax("/MetroCen/api/certificate/examine/"+processId+"/"+nextUserId+"/"+commnets+"/"+checkedVal,null);
+        }
+        else if(status=="打印盖章"){
+            processId=certificate.processId+"";
+            $.ajax({
+                type:"GET",
+                async:false,
+                url:"/MetroCen/api/certificate/getReturnCer/"+processId,
+                success:function(data){
+                    ReturnCer=data;
+                }
+            });
+            if(ReturnCer=="未曾交接"&&checkedVal=="submit"){//提交时如果没交接，提示先交接
+                swal("请先交接证书!");
+                return;
+            }
+            else{//已交接或者证书有问题
+                var commnets=$("#commentTxt").val();//获取领导意见
+                if(checkedVal=="submit"){
+                    var commnets="pass";
+                }
+                nextUserId=certificate.distributionId;//打印盖章人Id
+                submitAjax("/MetroCen/api/certificate/examine/"+processId+"/"+nextUserId+"/"+commnets+"/"+checkedVal,null);
+            }
+        }
+        else
+        {
+
+            if(checkedVal==""||typeof(checkedVal)=="undefined"){
+                swal("请选择审批流程！");
+                return;
+            }else if(checkedVal=="testify"){//如果是审核不通过，则需要填写意见
+                var commnets=$("#commentTxt").val();//获取领导意见
+                nextUserId=certificate.verified;//打印盖章人Id,也就是证书制作者
+            }else{
+                //直接通过审批
+                var commnets="pass";
+                if(status=="证书审核"){
+                    nextUserId=certificate.approved;//授权人
+                }else{
+                    nextUserId=certificate.verified;
+                }
+
+            }
+            processId=certificate.processId;//流程Id
+            submitAjax("/MetroCen/api/certificate/examine/"+processId+"/"+nextUserId+"/"+commnets+"/"+checkedVal,null);
+        }
+
+    }
+    //获取证书信息
+    function getCertificateInfo(){
+        var locationEnvId=certificate==null?0:certificate.locationEnvId;//地点及环境条件Id
+        var resultId=certificate==null?0:certificate.resultId;//检定结果与说明Id
+        var certificateId=certificate==null?0:certificate.id;//证书Id
+        var processId=certificate==null?0:certificate.processId;
+        var sampleId=certificate==null?$("#certiSampleName").val()[0]:certificate.sampleId;//样品流转Id
+        var retactive=0;//是否补办证书
+        if(retroactive)
+        {
+            locationEnvId=0;
+            resultId=0;
+            certificateId=0;
+            processId=0;
+            retactive=1;//设置为补办证书
+           // $("#certificateTypeNameCN").val(obj.TypeNameCN+"补办");
+
+        }
+        var approved=$("#sign").val();//批准人
+
+
+        var checked=$("#certiVerificatReg").val();//核验员
+
+        var verified=$("#certiPrint").val();//检定员
+        var distributionId=$("#certiSubmit").val();//获取证书分发人员
+        var modelParent=$("#certiModel").val();//模板大类
+        var modelChild=$("#certiModel2").val();//模板小类
+
+        var verifiedDate=$("#verifiedDateYear").val()+"-"+$("#verifiedDateMonth").val()+"-"+$("#verifiedDateDay").val();//检定日期
+        verifiedDate=verifiedDate=="--"?"":verifiedDate;
+        var validityDate=$("#validityDateYear").val()+"-"+$("#validityDateMonth").val()+"-"+$("#validityDateDay").val();//有效期至
+        validityDate=validityDate=="--"?"":validityDate;
+//        var certificateNo;
+        if(sampleId==null || sampleId==""){
+            swal("证书样品不能为空！");
+            return;
+        };
+        if(modelParent==null || modelParent==""){
+            swal("请选择证书模板");
+            return;
+        };
+        if(modelChild==null || modelChild==""){
+            swal("请选择证书模板");
+            return;
+        };
+        if(approved==null || approved==""){
+            swal("证书批准人不能为空！");
+            return;
+        };
+        if(checked==null || checked==""){
+            swal("证书审核人不能为空！");
+            return;
+        }
+        if(verified==null || verified==""){
+            swal("证书核定人不能为空！");
+            return;
+        };
+
+        if($("#verifiedDateYear").val()==""||$("#verifiedDateMonth").val()=="" || $("#verifiedDateDay").val()==""){
+            swal("检定日期不允许为空！");
+            return;
+        };
+
+        if(modelParent=="1"){//如果证书类别为检定才需要判定
+            if($("#validityDateYear").val()==""||$("#validityDateMonth").val()=="" || $("#validityDateDay").val()==""){
+                swal("有效期至不允许为空！");
+                return;
+            };
+        }
+        //根据选择的模板Id，返回模板相关信息
+        $.ajax({
+            dataType: "json",
+            url: "/config/getCertificateModel/" + modelChild,
+            async:false,
+            success: function (data) {
+                nextPageNum = data.nextPage;
+            }
+        });
+        var results="";//结果说明
+        if(nextPageNum=="1"){//输入框中的内容
+            var result=$("#results").data("kendoEditor");
+            results=result.value();
+        }else{//续页中的结果说明
+            var editor=$("#modelEditor").data("kendoEditor");
+            results=editor.value();
+        }
+        var uncertaintyWithHtml=$("#Uncertainty").val();//获取到输入的不确定度/准确度
+        //输入不确定度/准确度的只要有U就需要加斜体，如果有U95等相关的，需要将95下标
+        if(uncertaintyWithHtml.indexOf("U=")>-1 || uncertaintyWithHtml.indexOf("u=")>-1){
+            uncertaintyWithHtml=uncertaintyWithHtml.replace(/U/g,"<em>U</em>");
+        }else if(uncertaintyWithHtml.indexOf("U")>-1 || uncertaintyWithHtml.indexOf("u")>-1){
+            // uncertaintyWithHtml=uncertaintyWithHtml.replace("u","U");//小写的U替换大写U
+            var reg=/[U|u]\d{2}/g;//匹配类似 U95 的字符串   //没有[]则会匹配U或者u\d{2}
+            var arrU=uncertaintyWithHtml.match(reg);//匹配出U95
+            uncertaintyWithHtml=uncertaintyWithHtml.replace(/U|u/g,"<em>U</em>");
+            if(arrU!=null){
+                for(var i=0;i<arrU.length;++i){
+                    var val=arrU[i].replace("U","").replace("u","");//替换掉U或u
+                    var subStr="<sub>"+val+"</sub>";
+                    uncertaintyWithHtml=uncertaintyWithHtml.replace(val,subStr);
+                }
+            }
+        }
+        var submit={
+            //封面信息
+                 sampleId:sampleId,//样品Id
+                 modelId:$("#certiModel2").val(),//模板Id
+                 certificateType:$("#certiModel2").val(),//使用二级模板ID作为类别
+                 certificateNo:$("#certificateNo").val(),//证书编号
+                 inspectionUnit:$("#inspectionUnit").val(),//送检单位
+                 sampleName:$("#sampleName").val(),//计量器具名称
+                 sampleModel:$("#sampleModel").val(),//型号规格
+                 serialNumber:$("#serialNumber").val(),//出厂编号
+                 ManufactUnit:$("#ManufactUnit").val(),//制造单位
+                 verificatReg:$("#verificatReg").val(),//检定依据
+                 conclusion:$("#conclusion").val(),//检定结论
+                 uncertainty:uncertaintyWithHtml,//扩展不确定度
+                 distributionId:distributionId,//分发者为前端选择
+                 approved:approved,//批准人
+                 authorize:approved,//授权人
+                 checked:checked,//核验员
+                 certificateCheckId:checked,//核验员
+                 verified:verified,//检定员
+                 verifiedDate:verifiedDate,//检定日期
+                 validityDate:validityDate,//有效期至
+
+            //检定地点及环境条件
+                 location:$("#location").val(),//地点
+                 temperature:$("#temperature").val(),//温度
+                 relativeHum:$("#relativeHum").val(),//相对湿度
+                 other:$("#other").val(),//其他
+            //检定结果与说明
+                 results:results,//结果说明
+            //
+                 locationEnvId:locationEnvId,//地点及环境条件Id
+                 resultId:resultId,//检定结果与说明Id
+                 processId:processId,//
+                 retroactive:retactive,
+                 returnCer:"未曾交接"
+
+        };
+        //提交数据
+        submitAjax("/MetroCen/api/certificate/insert/"+certificateId,submit);
+    }
+
+    //加载证书数据
+    function loadCertificateInfo(){
+        if(status!="none"){
+            if(certificate.retroactive>0){
+                $("#hao").text("号 (补办)");
+            }
+            fillingCertificateInfo();
+        }else{
+            //默认页面
+            changeSubmitDiv("submitDiv",submitDiv);//改变提交层的位置信息
+            //隐藏图层
+            $("#commentDisplay").hide();//隐藏领导意见
+            $("#PorcessInfo").hide();//流程选择
+            $("#displayResult").hide();//显示结果说明隐藏
+            $("#modelValueDiv").hide();//显示续页说明隐藏
+            $("#verified").attr('value',checkedName);
+        }
+        $("#comment").hide();//
+
+    }
+
+    //填充证书页面信息
+    function fillingCertificateInfo(){
+        changeModel("certiModel","certificateInfo",certificate.modelParentId);
+        changeModel("certiModel2","equipment",certificate.modelId);
+        change('sign','DropDownList','approved');//自动加载职称信息
+        $("#certificateNo").attr('value',certificate.certificateNo);
+        $("#certificateNo2").attr('value',"GHS第 "+certificate.certificateNo+" 号");
+        $("#certificateNo3").attr('value',"GHS第 "+certificate.certificateNo+" 号");
+        $("#inspectionUnit").attr('value',certificate.inspectionUnit);
+        $("#sampleName").attr('value',certificate.sampleName);
+        $("#sampleModel").attr('value',certificate.sampleModel);
+        $("#serialNumber").attr('value',certificate.serialNumber);
+        $("#ManufactUnit").attr('value',certificate.manufactUnit);
+        $("#verificatReg").attr('value',certificate.verificatReg);
+        $("#conclusion").attr('value',certificate.conclusion);
+//        $("#verified").attr('value',currentUsername);
+        //$("#approved").attr('value',approvedName);//sign
+        if(status!="打印盖章"){
+            //如果时打印，则批准人、合眼缘、检定员都不加载名称
+            //change('sign','DropDownList','approved');//自动加载职称
+            //$("#approved").attr('style', 'text-align:right;');
+            $("#checked").attr('value',checkedName);//certiVerificatReg
+            $("#verified").attr('value',verifiedName);//certiPrint
+
+        }
+        if(status=="打印盖章"){
+            $("#hao").text("号");
+
+        }
+        $("#Uncertainty").attr('value',certificate.uncertainty);//扩展不确定度
+        $("#UncertaintyLbl")[0].innerHTML=certificate.uncertainty;//扩展不确定度
+
+        //$("#certiSampleName").attr('value',certificate.sampleName);//样品名称
+        $("#certiSampleName").attr('hidden',true);//样品名称
+        $("#certiSampleNameVal").text(certificate.sampleName);//label 显示样品名称，不可修改
+        //对时间进行拆分成年、月、日
+        if(certificate.verifiedDate!=""){
+            var verifiedDate=certificate.verifiedDate.split("-");
+            $("#verifiedDateYear").attr('value',verifiedDate[0]);//年
+            $("#verifiedDateMonth").attr('value',verifiedDate[1]);//月
+            $("#verifiedDateDay").attr('value',verifiedDate[2]);//日
+        }
+
+        //对时间进行拆分成年、月、日
+        if(certificate.validityDate!=""){
+            var validityDate=certificate.validityDate.split("-");
+            $("#validityDateYear").attr('value',validityDate[0]);//年
+            $("#validityDateMonth").attr('value',validityDate[1]);//月
+            $("#validityDateDay").attr('value',validityDate[2]);//日
+        }
+
+        $("#location").attr('value',certificate.location);
+        $("#temperature").attr('value',certificate.temperature);
+        $("#relativeHum").attr('value',certificate.relativeHum);
+        $("#other").attr('value',certificate.other);
+        //加载流程选择
+        if(status!="出具证书" && activitiNextStepInfo!=null){
+            for (var i = 0; i < activitiNextStepInfo.length; i++) {
+                var $div=$("<div>").appendTo("#PorcessInfo");
+                $div.append('<input id="option' + (i+1) + '" type="radio" name="process" onchange="statusChange()" value="' + activitiNextStepInfo[i].condition + '"/>');
+                $div.append('<label style="margin-left:10px;" for="option' + (i+1)+ '">'+activitiNextStepInfo[i].name+'</label>');
+            }
+
+            $("#commentDisplay").show();//显示领导意见
+            $("#PorcessInfo").show();//流程选择
+            //审核以及授权显示意见
+            setCommentsDisplay("540px","-100px","450px","85px");
+        }else{
+            if(status=="发放证书"){//如果是发放证书，则headDiv层隐藏
+                $("#headDiv").attr('hidden','hidden');
+            }
+            //出具证书意见显示位置设置
+            setCommentsDisplay("105px","-190px","780px","60px");
+            //
+        }
+
+        //加载领导意见内容
+
+        $("#DisplayTxt").val(certificate.comments);
+    }
+    //根据样品分发Id，获取样品信息
+    function bindSampleInfo(obj){
+        var distributionId=obj.value;//分发样品Id
+        if(distributionId!=""){
+            $.ajax({
+                type:"GET",
+                url:"/MetroCen/api/sample/getSampleInfo/"+distributionId,
+                success:function(data){
+                    bindFieldInfo(data);
+                    if(data.sampleNum>1){
+                        bindFactorySource(data);
+                        openWindow(obj);//打开窗体
+                    }
+                }
+            });
+        }
+
+
+    }
+    //绑定样品的具体信息
+    function bindFieldInfo(obj){
+        if(obj!=null){
+            var sampleName=$("#certiSampleName").data("kendoMultiSelect").dataItems();
+            var name=sampleName[0].sampleName.replace("["+obj.sampleNum+"]","");
+            $("#sampleName").val(name);
+            $("#inspectionUnit").val(obj.remark);//送检单位
+            $("#sampleModel").val(obj.specificateModel);
+
+            $("#serialNumber").val(obj.sampleNum>1?"":obj.factoryCode);//出厂编号
+            $("#ManufactUnit").val(obj.factoryName);
+            $("#verificatReg").val(obj.principalTestBaseOn);
+            $("#conclusion").val("合格");//检定结论
+        }
+
+    }
+    //绑定出厂编号数据源
+    function bindFactorySource(data){
+        var factorys=data.factoryCode.split(",");//拆分
+        $("#factoryList").kendoGrid({
+            dataSource:{
+                data:factorys
+            },
+            columns:[
+                {
+                    field:"",
+                    title:"出厂编号",
+                    template:'<input type="checkbox" name="code" onclick="chooseOne(this,\'code\')" value="#:data#"/>&nbsp;&nbsp;&nbsp;#:data#'
+                }            ]
+        }).data("kendoGrid");
+    }
+    //出厂编号提交
+    function choseFactory(){
+        $("#serialNumber").val(checkedTxt);//将样品出厂编号绑定
+        closeWindow();
+    }
+    //打开窗体
+    function openWindow(obj){
+
+        $('#sampleWin').kendoWindow({
+            title: "样品选择",
+            position: {
+                top: screen.height/4,
+                left: screen.width/2.4
+
+            },
+            resizable: true,
+            draggable: true,
+            modal: true
+        });
+        $('#sampleWin').data("kendoWindow").open();
+    }
+    //关闭窗体
+    function closeWindow(){
+        //$("#sampleWin").data("kendoWindow").cleanData();
+        $("#sampleWin").data("kendoWindow").close();
+    }
+    //设置意见位置
+    function setCommentsDisplay(left,top,width,height){
+        $("#commentDisplay").css({
+            "position":"absolute",
+            "margin-left":left,
+            "width":width,
+            "height":height,
+            "margin-top":top
+        });
+    }
+    //控制是否显示意见输入框
+    function statusChange(){
+        //radio选中事件
+        $('input:radio[name=process]').click(function() {
+             checkedVal = $('input:radio[name=process]:checked').val();
+            if(checkedVal=="testify"){
+                $("#comment").show();//显示填写领导意见
+
+            }else{
+                $("#comment").hide();//隐藏填写领导意见
+            }
+        });
+    }
+
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:submitURL,
+                    data:objData,
+                    success:function(data){
+                        if(status=="none" && !retroactive){
+                            $("#certiSampleName").data("kendoMultiSelect").dataSource.read();
+                            var sapmle=$("#certiSampleName").data("kendoMultiSelect");
+                            sapmle.value(null);//设置样品名称选择项为“请选择”
+                            var certiModel2=$("#certiModel2").data("kendoDropDownList");
+                            certiModel2.value(null);
+                            data=false? swal("保存数据失败"):swal("保存数据成功");
+                        }else{
+                            data=false? swal("保存数据失败"):swal("保存数据成功");
+                            self.location="/MetroCen/certificate/myCertificateTask/1";//页面跳转
+                        }
+                    }
+                }
+        )
+    }
+
+    //提交按钮图层控制
+    function changeSubmitDiv(name,obj){
+        $("#"+name).css({
+            "min-width":obj.width,
+            "margin-top":obj.top
+        });
+    }
+    //模板改变
+    function changeModel(select,divId,selectVal){
+        var divObj=null;
+        var modelId="";
+        var model2Id="";
+//        if($("#approved").text!=null){
+//            $("#sign").empty();
+//        }
+
+        if(selectVal=="0"){
+            modelId=$("#"+select).val()
+        }else{
+            modelId=selectVal;
+        }
+        if(modelId!=""){
+            if(select=="certiModel2"){
+                //绑定计量器具及装置信息
+                bindEquipMent(modelId);
+                //加载结果说明续页的模板内容 如果证书制作或修改加载结果模板内容，否则直接加载证书结果说明内容
+                if(status=="none"&&retroactive!=true){
+                    bindNextPageResultModelContent(modelId);//加载续页中的模板
+                    var modelId=$("#certiModel").val();
+                    showUncertaintyDiv(modelId);//判断是否需要显示扩展不确定度
+                    var model2Id=$("#certiModel2").val();
+                    //获取证书编号
+                    $.ajax({
+                        url: "/config/getCertificateModelCode/" + model2Id,
+                        async:false,
+                        success: function (data) {
+                            $("#certificateNo").val(data);
+                            $("#certificateNo2").val("GHS字第 "+data+" 号");
+                            $("#certificateNo3").val("GHS字第 "+data+" 号");
+                        },
+                        error:function(data){
+                            var obj=data;
+                            alert(obj);
+                        }
+                    });
+
+                }else{
+                    showUncertaintyDiv(certificate.modelParentId);//判断是否需要显示扩展不确定度
+                    if(status=="出具证书" || status=="none"){
+                        var editor = $("#modelEditor").data("kendoEditor");
+                        var result=$("#results").data("kendoEditor");
+                        setResultAndNextPage(result,editor,certificate.results,certificate.nextPage);
+                        setDisplayDiv("editor");
+                    }else{
+                        //证书审核、授权、打印等使用div直接显示内容
+                        setDisplayDiv("display");
+                        setResultAndNextPage(null,null,certificate.results,certificate.nextPage);
+                    }
+                }
+            }else{
+                setModelInfoByModelId(modelId);
+            }
+        };
+    }
+    //设置结果说明和续页说明信息
+    function setResultAndNextPage(result,editor,resultVal,nextPage){
+        if(nextPage=="1"){
+            result==null?$("#displayResult").append(resultVal):result.value(resultVal);
+            $("#nextPage").hide();//续页隐藏
+            submitDiv.top="1600px";
+            $("#firstTotal").text("2");
+            $("#secondTotal").text("2");
+            changeSubmitDiv("submitDiv",submitDiv);//设置提交按钮的位置
+        }else{
+            $("#nextPage").show();//续页隐藏
+            editor==null?$("#modelValueDiv").append(resultVal):editor.value(resultVal);//加载结果说明内容
+            $($('#modelEditor').data().kendoEditor.body).attr('contenteditable',true);//控制续页模板可编辑
+            //在加载前先删除之前的值
+            $("p").remove(".next");
+            $("#displayResult").append('<p class="next"style="position: absolute;font-family: sans-serif;font-size: 20px;margin-top: 70px;width:400px;">见续页</p><p class="next" style="position: absolute;font-family:times new roman;font-size: 10px;width: 400px;margin-top: 100px;">See Next Page</p>');
+            $("#resultDiv").attr('hidden','hidden');//隐藏编辑
+            $("#displayResult").show();//显示结果层显示
+            //$($('#results').data().kendoEditor.body).attr('contenteditable',false);//控制续页模板不可编辑
+            submitDiv.top="2800px";
+            changeSubmitDiv("submitDiv",submitDiv);
+            $("#firstTotal").text("3");
+            $("#secondTotal").text("3");
+            $("#threedTotal").text("3");
+        }
+    }
+    //设置结果和续页的显示层
+    function setDisplayDiv(control){
+        if(control=="edit"){
+            $("#modelValueDiv").attr('hidden',true);//续页结果说明显示层隐藏
+            $("#resultDiv").attr('hidden',false);//结果编辑显示
+            $("#displayResult").attr('hidden',true);//显示结果层隐蔽
+        }else if(control=="display"){
+            $('#modelEditorDiv').attr('hidden','hidden');//隐藏编辑
+            $("#resultDiv").attr('hidden','hidden');//隐藏编辑
+            $("#displayResult").attr('hidden',false);//显示结果层隐蔽
+        }
+    }
+    //如果选择校准，则需要显示扩展不确定度
+    function showUncertaintyDiv(modelId){
+        if(modelId=="3"){
+            $("#UncertaintyDiv").show();//显示扩展不确定度
+            $("#displayResult").css({"margin-top":"920px"});//设置显示结果的位置
+            $("#resultDiv").css({"margin-top":"920px"});//设置结果编辑的位置
+            $("#resultDefineCN").css({"margin-top":"870px"});//设置结果说明文字位置
+            $("#resultDefineEN").css({"margin-top":"900px"});//设置结果说明文字位置
+        }else{
+            $("#UncertaintyDiv").hide();//显示扩展不确定度
+            $("#displayResult").css({"margin-top":"820px"});//设置显示结果的位置
+            $("#resultDiv").css({"margin-top":"820px"});//设置结果编辑的位置
+            $("#resultDefineCN").css({"margin-top":"770px"});//设置结果说明文字位置
+            $("#resultDefineEN").css({"margin-top":"800px"});//设置结果说明文字位置
+        }
+    }
+    //根据选择不同的模板，调整位置以及编辑项目
+    function setModelInfoByModelId(modelId){
+        if(modelId=="3"){//校准模板设置
+            setJZInfo(modelId);
+        }else if(modelId=="2"){//检测模板设置
+            setJZInfo(modelId);//检测与校准基本一致
+        }else if(modelId=="4"){//检定通知
+            setJDInfo(modelId);//检定通知与检定模板一样
+        }else if(modelId=="1"){//检定
+            setJDInfo(modelId);
+        }
+    }
+    //设置校准模板相关位置信息
+    function setJZInfo(modelId){
+        var paramObj={
+            "TypeNameCN":"校准证书",
+            "TypeNameEN":"Calibration  Certificate",
+            "UnitLblCN":"委托单位",
+            "UnitLblEN":"Customer",
+            "serialNumberCN":"器具编号",
+            "serialNumberEN":"Serial Number",
+            "stamp":"校准专用章",
+            "TechnicalLblCN":"本次校准所参照的技术规范(代号、名称)：",
+            "TechnicalLblEN":"Reference Documents for This Calibration (Code, Name)",
+            "StanardLblCN":"本次校准所使用的主要计量标准器具：",
+            "StanardLblEN":"Main Measurement Standards Used in This Calibration",
+            "locationLblCN":"校准地点及环境条件：",
+            "locationLblEN":"Location and Ambient Condition for This Calibration",
+            "resultDefineCN":"校准结果与说明：",
+            "resultDefineEN":"Calibration Results and Additional Explanation",
+            "nextPageLblCN":"校准结果与说明(续页)：",
+            "nextPageLblEN":"Calibration Results and Additional Explanation（Continued Page）:",
+            "verifiedDateLblCN":"校准日期",
+            "verifiedDateLblEN":"Date of Calibration",
+            "resultDisplayCN":"本证书提供的结果与数据仅对本次被校的器具有效。未经许可，不得部分复制、摘用本证书的内容。",
+            "resultDisplayEN":"The Conclusion and Date Given in The Certificate Is Valid for Instrument(s) Calibrated in This Experiment Only, Partly Using Without Permission Would",
+            "boolean":true,
+            "approvedLblCN":"批准人/职务",
+            "approvedLblEN":"Approved by/Functions",
+            "checkedLblCN":"核  验  员",
+            "checkedLblEN":"Checked by",
+            "verifiedLblCN":"校  准  员",
+            "verifiedLblEN":"Calibrated by"
+
+
+        }
+        if(modelId=="2"){//检测
+            paramObj.TypeNameCN="检测证书";
+            paramObj.TypeNameEN="Test Certificate"
+            paramObj.stamp="测试专用章";
+            paramObj.TechnicalLblCN="本次检测所参照的技术规范(代号、名称)：";
+            paramObj.TechnicalLblEN="Reference Documents for the Test (Code, Name)";
+            paramObj.verifiedDateLblCN="检测日期";
+            paramObj.verifiedDateLblEN="Date of Test";
+
+            paramObj.approvedLblCN="批准人/职务:";
+            paramObj.approvedLblEN="Approved by/Functions";
+            paramObj.checkedLblCN="核验员:";
+            paramObj.checkedLblEN="Checked by";
+            paramObj.verifiedLblCN="检测员:";
+            paramObj.verifiedLblEN="Tested by";
+            $("#certificateTypeNameEN").css({"margin-left":"400px"});
+
+            $("#approvedLblCN").attr("style","position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 780px;");
+            $("#approvedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 610px;margin-top: 810px;");
+            $("#checkedLblCN").attr("style","letter-spacing:18px;position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 840px;");
+            $("#checkedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 620px;margin-top: 870px;");
+            $("#verifiedLblCN").attr("style","letter-spacing:18px;position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 900px;");
+            $("#verifiedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 620px;margin-top: 930px;");
+
+
+        }  $("#certificateTypeNameEN").css({"margin-left":"430px"});
+        if(modelId=="3"){
+            paramObj.approvedLblCN="批准人/职务:";
+            paramObj.approvedLblEN="Approved by/Functions";
+            paramObj.checkedLblCN="核验员:";
+            paramObj.checkedLblEN="Checked by";
+            paramObj.verifiedLblCN="校准员:";
+            paramObj.verifiedLblEN="Calibrated by";
+            $("#certificateTypeNameEN").css({"margin-left":"400px"});
+
+            $("#approvedLblCN").attr("style","position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 780px;");
+            $("#approvedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 610px;margin-top: 810px;");
+            $("#checkedLblCN").attr("style","letter-spacing:18px;position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 840px;");
+            $("#checkedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 620px;margin-top: 870px;");
+            $("#verifiedLblCN").attr("style","letter-spacing:18px;position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 620px;margin-top: 900px;");
+            $("#verifiedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:13px;margin-left: 620px;margin-top: 930px;");
+
+        }
+
+
+        $("#certificateTypeNameCN").css({"letter-spacing":"40px"});
+        $("#certificateTypeNameCN").css({"margin-left":"350px"});
+        setModelFaceInfo(paramObj,modelId);//设置封面相关信息
+        $("#Technical").attr('hidden',false);//参照技术规范显示
+        $("#stardand").attr("hidden",true);
+
+
+
+    }
+    //设置证书相关信息
+    function setModelFaceInfo(obj,modelId){
+        //标题改变
+        $("#certificateTypeNameCN").html(obj.TypeNameCN);//设置校准的中文标题
+        $("#certificateTypeNameEN").html(obj.TypeNameEN);//设置校准的英文标题
+        //封面相关信息改变
+        $("#inspectionUnitLblCN").html(obj.UnitLblCN);//委托单位
+        $("#inspectionUnitLblEN").html(obj.UnitLblEN);
+        $("#serialNumberLblCN").html(obj.serialNumberCN);//器具编号
+        $("#serialNumberLblEN").html(obj.serialNumberEN);//器具编号
+        $("#stamp").html(obj.stamp);
+        $("#TechnicalLblCN").html(obj.TechnicalLblCN);
+        $("#TechnicalLblEN").html(obj.TechnicalLblEN);
+        $("#StanardLblCN").html(obj.StanardLblCN);
+        $("#StanardLblEN").html(obj.StanardLblEN);
+        $("#locationLblCN").html(obj.locationLblCN);
+        $("#locationLblEN").html(obj.locationLblEN);
+        $("#resultDefineCN").html(obj.resultDefineCN);
+        $("#resultDefineEN").html(obj.resultDefineEN);
+        $("#nextPageLblCN").html(obj.nextPageLblCN);
+        $("#nextPageLblEN").html(obj.nextPageLblEN);
+        $("#verifiedDateLblCN").html(obj.verifiedDateLblCN);
+        $("#verifiedDateLblEN").html(obj.verifiedDateLblEN);
+        //审核员等
+        $("#approvedLblCN").html(obj.approvedLblCN);
+        $("#approvedLblEN").html(obj.approvedLblEN);
+        $("#checkedLblCN").html(obj.checkedLblCN);
+        $("#checkedLblEN").html(obj.checkedLblEN);
+        $("#verifiedLblCN").html(obj.verifiedLblCN);
+        $("#verifiedLblEN").html(obj.verifiedLblEN);
+
+        //证书结束说明文字
+        $("#resultDisplayCN").html(obj.resultDisplayCN);
+        $("#resultDisplayEN").html(obj.resultDisplayEN);
+
+        //标准装置信息
+        $("#TechnicalLblCN").html()
+        //不可用
+        $("#verificatRegLblCN").attr('hidden',obj.boolean);
+        $("#verificatRegLblEN").attr('hidden',obj.boolean);
+        $("#verificatReg").attr('hidden',obj.boolean);
+        $("#conclusionLblCN").attr('hidden',obj.boolean);
+        $("#conclusionLblEN").attr('hidden',obj.boolean);
+        $("#conclusion").attr('hidden',obj.boolean);
+        $("#validityDate").attr('hidden',obj.boolean);
+
+
+    }
+    //设置检定模板相关位置信息
+    function setJDInfo(modelId){
+        var paramObj={
+            "TypeNameCN":"检定证书",
+            "TypeNameEN":"Verification Certificate",
+            "UnitLblCN":"送检单位",
+            "UnitLblEN":"Applicant",
+            "serialNumberCN":"出厂编号",
+            "serialNumberEN":"Serial No.",
+            "stamp":"检定专用章",
+            "TechnicalLblCN":"本次检定所使用的计量（基）标准装置",
+            "TechnicalLblEN":"Measurement Standards Devices Used in This Verification",
+            "StanardLblCN":"本次检定所使用的主要计量标准器具:",
+            "StanardLblEN":"Main Measurement Standards Used in This Verification",
+            "locationLblCN":"检定地点及环境条件：",
+            "locationLblEN":"Location and Ambient Condition for This Calibration",
+            "resultDefineCN":"检定结果与说明：",
+            "resultDefineEN":"Verification Results and Additional Explanation",
+            "nextPageLblCN":"检定结果与说明(续页)：",
+            "nextPageLblEN":"Verification Results and Additional Explanation（Continued Page）:",
+            "verifiedDateLblCN":"检定日期",
+            "verifiedDateLblEN":"Date of Verification",
+            "resultDisplayCN":"本证书提供的结果与数据仅对本次被检的器具有效。未经许可，不得部分复制、摘用本证书的内容。对本证书有任何疑问，请及时与我们联系。对我们的工作有任何的满意或抱怨，也请与我们联系。",
+            "resultDisplayEN":"The Conclusion and Date Given in The Certificate Is Valid for Instrument(s) Verified in This Experiment Only, Partly Using Without Permission Would Not Been Admitted. Please Contract Us If You Have Any Question With The Conclusion. Please Tell Your Opinion to Our Service.",
+            "boolean":false,
+            "approvedLblCN":"批准人",
+            "approvedLblEN":"Approved by",
+            "checkedLblCN":"核验员",
+            "checkedLblEN":"Checked by",
+            "verifiedLblCN":"检定员",
+            "verifiedLblEN":"Verified by"
+        }
+        if(modelId=="4"){
+            paramObj.TypeNameCN="检定结果通知书";
+            paramObj.TypeNameEN="Notice of Verification Results";
+
+
+            $("#approvedLblCN").attr("style","position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 780px;");
+            $("#approvedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 810px;");
+            $("#checkedLblCN").attr("style","position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 840px;");
+            $("#checkedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 870px;");
+            $("#verifiedLblCN").attr("style","position: absolute;font-family: sans-serif;font-size: 20px;margin-left: 680px;margin-top: 900px;");
+            $("#verifiedLblEN").attr("style","position: absolute;font-family:Times, 'Times New Roman', Georgia, Palatino;font-size:16px;margin-left: 660px;margin-top: 930px;");
+
+            $("#certificateTypeNameCN").css({"margin-left":"273px"});
+            $("#certificateTypeNameCN").css({"letter-spacing":"10px"});
+            $("#certificateTypeNameEN").css({"margin-left":"337px"});
+
+        }else{
+            $("#certificateTypeNameCN").css({"letter-spacing":"40px"});
+            $("#certificateTypeNameCN").css({"margin-left":"330px"});
+            $("#certificateTypeNameEN").css({"margin-left":"380px"});
+        }
+        $("#Technical").attr('hidden',true);//参照技术规范 隐藏
+        setModelFaceInfo(paramObj,modelId);//设置封面相关信息
+        $("#stardand").attr("hidden",false);
+        if(modelId=="4"){
+            $("#validityDate").attr('hidden',true);//有效期至不显示
+        }
+    }
+    //加载结果说明续页的模板内容
+    function bindNextPageResultModelContent(modelId) {
+        var content = "";
+        var editor = $("#modelEditor").data("kendoEditor");
+        var result=$("#results").data("kendoEditor");
+        setDisplayDiv("edit");
+        $.ajax({
+            dataType: "json",
+            url: "/config/getCertificateResultModel/" + modelId,
+            success: function (data) {
+                content =data==null?"": data.modelContent;//模板结果值
+                setResultAndNextPage(result,editor,content,data.nextPage);
+
+            },
+            error:function(){
+                result.value(content);
+                editor.value(content);
+            }
+        });
+    }
+    //根据modelId绑定计量器具及装置信息
+    function bindEquipMent(modelId){
+        if(modelId==41 || modelId==29||modelId==26){
+            $("#mainStanard2").attr("hidden",false);//显示
+            $("#mainStanard").attr("hidden",true);//隐藏
+        }else{
+            $("#mainStanard").attr("hidden",false);//显示
+            $("#mainStanard2").attr("hidden",true);//隐藏
+        }
+        $.ajax({
+            dataType:"json",
+            url:"/config/getEquipMentByModelId/"+modelId,
+            success:function(data){
+                var num=1;//计数
+                var type2=0;//type为2的计数
+                for(var i=0;i<data.length;++i){
+                    if(data[i].type==1){
+                        bindEquip(data[i]);
+                    }else if(data[i].type==2){
+                        bindImplement(data[i],num,modelId);
+                        type2=type2+1;
+                        num++;
+                    }
+                }
+                //根据不同的计数，调整各个板块的位置信息
+                adjust1Div(type2,modelId);
+            }
+        });
+    }
+    //绑定计量标准装置信息type=1
+    function bindEquip(data){
+
+        $("#equipmentName")[0].innerText=data.equipmentName;//名称
+        $("#measureRange")[0].innerText=data.measureRange;//测量范围
+        $("#equipCertificateNo")[0].innerText=data.equipCertificateNo;//证书编号
+        $("#dueDate")[0].innerText=data.dueDate;//有效期至
+        $("#accuracy")[0].innerHTML=data.accuracy;//不确定度
+        $("#Technical")[0].innerText=data.equipmentName;//使用名称存放技术规范
+
+        $("#accuracyLblCN")[0].innerText=data.accuracyCN;
+        $("#accuracyLblEN")[0].innerText=data.accuracyEN;
+
+        $("#instrumentAccuracyCN")[0].innerHTML=data.instrumentAccuracyCN;
+        $("#instrumentAccuracyEN")[0].innerHTML=data.instrumentAccuracyEN;
+    }
+    //绑定计量器具type=2
+    function bindImplement(data,num,modelId){
+        if(modelId==41 || modelId==29||modelId==26){
+            showImplement2(data,num);
+        }else{
+            showImplement1(data,num);
+        }
+    }
+    //显示标准器具1
+    function showImplement1(data,num){
+
+
+        $("#instrumentName"+num)[0].innerText=data.equipmentName;//名称
+        $("#instrumentNo"+num)[0].innerText=data.measureRange;//仪器编号
+
+        $("#instrumentCertificateNo"+num)[0].innerText=data.equipCertificateNo;//证书编号
+        $("#instrumentDueDate"+num)[0].innerText=data.dueDate;//有效期至
+        $("#instrumentAccuracy"+num)[0].innerHTML=data.accuracy;//准确度
+
+        if(num==2){//清除上一次的值
+            $("#instrumentName3")[0].innerText="";//名称
+            $("#instrumentNo3")[0].innerText="";//仪器编号
+            $("#instrumentCertificateNo3")[0].innerText="";//证书编号
+            $("#instrumentDueDate3")[0].innerText="";//有效期至
+            $("#instrumentAccuracy3")[0].innerHTML="";//准确度
+            $("#NominalValue3")[0].innerText="";//标称值
+        }else if(num==1){
+            $("#instrumentName2")[0].innerText="";//名称
+            $("#instrumentNo2")[0].innerText="";//仪器编号
+            $("#instrumentCertificateNo2")[0].innerText="";//证书编号
+            $("#instrumentDueDate2")[0].innerText="";//有效期至
+            $("#instrumentAccuracy2")[0].innerHTML="";//准确度
+
+
+            $("#instrumentName3")[0].innerText="";//名称
+            $("#instrumentNo3")[0].innerText="";//仪器编号
+            $("#instrumentCertificateNo3")[0].innerText="";//证书编号
+            $("#instrumentDueDate3")[0].innerText="";//有效期至
+            $("#instrumentAccuracy3")[0].innerHTML="";//准确度
+
+            $("#instrumentName4")[0].innerText="";//名称
+            $("#instrumentNo4")[0].innerText="";//仪器编号
+            $("#instrumentCertificateNo4")[0].innerText="";//证书编号
+            $("#instrumentDueDate4")[0].innerText="";//有效期至
+            $("#instrumentAccuracy4")[0].innerHTML="";//准确度
+
+        }
+    }
+    //显示标准器具2
+    function showImplement2(data,num){
+        $("#instrumentName"+num+"2")[0].innerText=data.equipmentName;//名称
+        $("#instrumentNo"+num+"2")[0].innerText=data.instrumentNo;//批号
+        $("#instrumentCertificateNo"+num+"2")[0].innerText=data.equipCertificateNo;//证书编号
+        $("#instrumentDueDate"+num+"2")[0].innerText=data.dueDate;//有效期至
+        $("#instrumentAccuracy"+num+"2")[0].innerHTML=data.accuracy;//准确度
+        $("#NominalValue"+num)[0].innerText=data.measureRange;//标称值
+        if(num==2){//清除上一次的值
+            for(var i=3;i<5;++i) {
+                $("#instrumentName" + i + "2")[0].innerText = "";//名称
+                $("#instrumentNo" + i + "2")[0].innerText = "";//仪器编号
+                $("#instrumentCertificateNo" + i + "2")[0].innerText = "";//证书编号
+                $("#instrumentDueDate" + i + "2")[0].innerText = "";//有效期至
+                $("#instrumentAccuracy" + i + "2")[0].innerHTML = "";//准确度
+                $("#NominalValue" + i)[0].innerText = "";//标称值
+            }
+        }else if(num==1){
+            for(var i=2;i<5;++i) {
+                $("#instrumentName" + i + "2")[0].innerText = "";//名称
+                $("#instrumentNo" + i + "2")[0].innerText = "";//仪器编号
+                $("#instrumentCertificateNo" + i + "2")[0].innerText = "";//证书编号
+                $("#instrumentDueDate" + i + "2")[0].innerText = "";//有效期至
+                $("#instrumentAccuracy" + i + "2")[0].innerHTML = "";//准确度
+                $("#NominalValue" + i)[0].innerText = "";//标称值
+            }
+        }
+    }
+    //根据不同的计数，调整各个板块的位置信息
+    function adjust1Div(type2,modelId){
+        var VmainStanardName="80";//标准器具的竖线
+        var above="-100px";//以上计量标准器具
+        var locationDiv="-100px";//检测环境
+        var resultDefine="-100px";//检定结果说明文字
+        var parentId=$("#certiModel")[0].value;//获取证书模板的大类Id
+        var UncertaintyDiv="";//扩展不确定度
+        if(parentId==2||parentId==3) {
+            $("#Technical").css("margin-top","130px");//本次检测所参照的技术规范
+            $("#mainStanard").css("margin-top","-60px");
+            $("#mainStanard2").css("margin-top","-60px");
+            if(type2==1){
+                UncertaintyDiv="-100px";
+            }else if (type2 == 2) {
+                VmainStanardName = "100px";
+                above = "-120px";
+                UncertaintyDiv="-120px";
+                locationDiv = "-120px";
+                resultDefine = "-120px";
+            } else if (type2 == 3) {
+                VmainStanardName = "140px";
+                above = "-100px";
+                locationDiv = "-40px";
+                UncertaintyDiv="-40px";
+                resultDefine = "-50px";
+            } else if (type2 == 4) {
+                VmainStanardName = "160px";
+                above = "-80px";
+                locationDiv = "-30px";
+                UncertaintyDiv="-30px";
+                resultDefine = "-40px";
+            }
+            $("#mainStanardName2").css("height",VmainStanardName);
+            $("#maininstrumentNo2").css("height",VmainStanardName);
+            $("#maininstrumentCertificate2").css("height",VmainStanardName);
+            $("#maininstrumentDueDate2").css("height",VmainStanardName);
+            $("#maininstrumentNominalValue2").css("height",VmainStanardName);
+        }else{
+            $("#mainStanard").css("margin-top","-30px");
+            if (type2 == 2) {
+                VmainStanardName = "100px";
+                above = "-90px";
+                locationDiv = "-90px";
+                resultDefine = "-90px";
+            } else if (type2 == 3) {
+                VmainStanardName = "140px";
+                above = "-60px";
+                locationDiv = "-60px";
+                resultDefine = "-50px";
+            }else if (type2 == 4) {
+                VmainStanardName = "155px";
+                above = "-50px";
+                locationDiv = "-40px";
+                UncertaintyDiv="-40px";
+                resultDefine = "-40px";
+            }
+        }
+        $("#mainStanardName").css("height",VmainStanardName);
+        $("#maininstrumentNo").css("height",VmainStanardName);
+        $("#maininstrumentCertificate").css("height",VmainStanardName);
+        $("#maininstrumentDueDate").css("height",VmainStanardName);
+        $("#above").css("margin-top",above);
+        $("#locationDiv").css("margin-top",locationDiv);
+        $("#resultDefine").css("margin-top",resultDefine);
+        $("#UncertaintyDiv").css("margin-top",UncertaintyDiv);
+    }
+
+    <!--控制checkbox单选-->
+    function chooseOne(cb,controls){
+        //先取得同name的chekcBox的集合物件
+        var obj = document.getElementsByName(controls);
+        for (var i=0; i<obj.length; i++){
+            //判斷obj集合中的i元素是否為cb，若否則表示未被點選
+            if (obj[i]!=cb) {
+                obj[i].checked = false;
+                //若是 但原先未被勾選 則變成勾選；反之 則變為未勾選
+                //else  obj[i].checked = cb.checked;
+            }
+            //若要至少勾選一個的話，則把上面那行else拿掉，換用下面那行
+            else {
+                obj[i].checked = true;
+                checkedTxt=obj[i].value;//获取选中的值，也就是需要出具证书样品的出厂编号
+            }
+        }
+
+    }
+    //根据地址模糊查询自动填充
+    function bindLocation(){
+        $("#location").autocomplete({
+            source: function (request, response) {
+                $.getJSON("/MetroCen/api/certificate/getLocationEnvironment/"+request.term, function (data) {
+                    response($.map(data, function (value, key) {
+                        return {
+                            label: value.location,
+                            value: value.location,
+                            locationEnvironment:value
+                        };
+                    }));
+                });
+            },
+            select: function(e, ui) {
+                //选中处理函数
+                if(ui.item.locationEnvironment!=null){
+//                  $("#location").val(ui.item.locationEnvironment.location);
+                    $("#temperature").val(ui.item.locationEnvironment.temperature);
+
+                    $("#location")[0].innerHTML=ui.item.locationEnvironment.location;
+                    $("#relativeHum")[0].innerHTML=ui.item.locationEnvironment.relativeHum;
+                    $("#other")[0].innerHTML=ui.item.locationEnvironment.other;
+
+                }
+
+            }
+        });
+        $("#Uncertainty").autocomplete({
+            source: function (request, response) {
+                $.getJSON("/MetroCen/api/certificate/getUncertainty/"+request.term, function (data) {
+                    response($.map(data, function (value, key) {
+                        var str=value.uncertainty;//正则表达式处理html已解决
+                        var reg=/<[^>]+>/g;
+                        //$("#accuracy").val(str.replace(reg,""));
+                        return {
+                            label: str.replace(reg,""),
+                            value: str.replace(reg,""),
+                            certificate:value
+                        };
+                    }));
+                });
+            },
+            select: function(e, ui) {
+                //选中处理函数
+                if(ui.item.certificate!=null){
+                    $("#Uncertainty")[0].innerHTML=ui.item.certificate.uncertainty;
+                }
+
+            }
+        });
+
+    }
+
+    <!--输入内容，列表中的label内容更新-->
+    function change(controls,type,controlLbl){
+        var modelId=$("#certiModel").find("option:selected").val();
+        var controlVal="";
+        var controlId=0;
+        var controlPos="";
+        var lblValue=$("#approvedLblCN").text();
+        if(type=="DropDownList"){
+            controlVal=$("#"+controls).find("option:selected").text();
+            controlVal=controlVal==""?approvedName:controlVal;
+            controlId=$("#"+controls).find("option:selected").val();
+            controlId=controlId==undefined?approved:controlId;//如果是空使用默认值
+            controlVal=controlVal=="请选择..."?"":controlVal;
+            if(controlId!=0){
+                $.ajax({
+                    url: "/api/user/getUserById/"+controlId,
+                    async: false,
+                    success: function (data) {
+                        controlPos=data;
+                    },
+                    error:function(data){
+                        console.log(data);
+                    }
+
+                });
+                if(controls=="sign"&&(lblValue=="批准人/职务:")){//校准
+                    controlVal+="          /"+controlPos;
+                    if(status=="打印盖章"){//名称不显示
+                        controlVal="/"+controlPos;
+                    }
+                    $("#approved").css("text-align","right");
+                }
+                if(controls=="sign"&&(lblValue!="批准人/职务:")){//其他证书
+                    if(status=="打印盖章"){
+                        controlVal="";
+                    }
+                    else{
+                        $("#"+controlLbl).css("text-align","center");
+                    }
+                }
+            }
+            $("#"+controlLbl).attr('value',controlVal);
+
+
+        }
+        else{
+            controlVal=$("#"+controls)[0].value;
+            if(controlLbl=="certificateNo"){
+                $("#"+controlLbl+"2").val('GHS字第 '+controlVal+' 号');
+                $("#"+controlLbl+"3").val('GHS字第 '+controlVal+' 号');
+            }
+            $("#"+controlLbl).text(controlVal);
+        }
+
+
+    }
+    //加载样品名称
+    function loadSampleNameInfo(){
+        if(retroactive){
+            modelParentId=certificate.modelParentId;
+            modelId=certificate.modelId;
+            $("#DisplayTxt").attr("hidden",true);
+            $("#certiSampleName").attr('hidden',true);//样品名称
+
+        }
+        else{
+            $("#certiSampleName").kendoMultiSelect({
+                placeholder: "请选择...",
+                dataTextField:"sampleName",
+                dataValueField: "id",
+                maxSelectedItems:1,
+                value:sampleId,
+                dataSource:sampleDataSource
+            });
+        }
+    }
+    //加载出具证书的日期，有效期默认为当年的12月31日
+    function loadCertificateDate(){
+        var today=new Date();//当前日期
+        var year = today.getFullYear(); //当前年
+        var month=today.getMonth()+1;//当前月
+        var day=today.getDate();//当前日
+
+        var lDate=new Date();
+        lDate.setDate(today.getDate()+365);
+        var lastY=lDate.getFullYear();
+        var lastM=lDate.getMonth()+1;
+        var lastD=lDate.getDate();
+        if(month<10){month="0"+month;}
+        if(day<10){day="0"+day;}
+        if(lastM<10){lastM="0"+lastM;}
+        if(lastD<10){lastD="0"+lastD;}
+
+        $("#verifiedDateYear").val(year);
+        $("#verifiedDateMonth").val(month);
+        $("#verifiedDateDay").val(day);
+
+        $("#validityDateYear").val(lastY);
+        $("#validityDateMonth").val(lastM);
+        $("#validityDateDay").val(lastD);
+    }
+    $(function(){
+        //打印按钮
+        $("#btnPrint").click(function () {
+             $("#text").printArea();
+        });
+        bindLocation();
+        if(status!="none"){
+            //加载流程相关信息
+            sampleId=certificate.sampleId;
+            modelParentId=certificate.modelParentId;
+            modelId=certificate.modelId;
+            checked=certificate.checked;
+            approved=certificate.approved;
+            verified=certificate.verified;
+            distributionId=certificate.distributionId;//分发人员1123
+        }
+        if(status=="none"){
+            //样品名称
+            loadSampleNameInfo();
+            //加载出具证书的日期，有效期默认为当年的12月31日
+            loadCertificateDate();
+        }
+        //证书审核人
+        $("#certiVerificatReg").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            value:checked,
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByPostId/3"
+                    }
+                }
+            }
+        });
+        //证书授权人
+        $("#sign").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            value:approved,
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByPostId/3"
+                    }
+                }
+            }
+        });
+        //证书打印人
+        $("#certiPrint").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            value:verified,
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByPostId/6"
+                    }
+                }
+            }
+
+        });
+        //证书发放人
+        $("#certiSubmit").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            value:distributionId,
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByPostId/7"
+                    }
+                }
+            }
+
+        });
+
+        //证书模板
+        $("#certiModel").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource: modelDataSource
+        });
+        //二级证书模板
+         $("#certiModel2").kendoDropDownList({
+            optionLabel: "请选择...",
+            cascadeFrom: "certiModel",
+            cascadeFromField: "parentId",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelId,
+            dataSource: modelDataSourceSec
+        });
+        //证书结果说明续页
+        $("#modelEditor").kendoEditor({
+            tools:[]
+        });
+        //结果说明
+        $("#results").kendoEditor({
+            tools:[]
+        });
+        loadCertificateInfo();//加载证书内容
+        //判断是否能够处理证书内容
+        if(checkCertificate){//查看证书
+            $("#headDiv").attr('hidden','hidden');//流程选择隐藏
+            //只显示打印按钮
+            $("#submitAll").attr("class","hide");//隐藏提交按钮
+            $("#btnPrint").attr("class","btn btn-info");//显示打印按钮
+        }else if(retroactive){//补办证书
+            $("#verified").attr('value',checkedName);
+            fillingCertificateInfo();
+        }
+
+        statusChange();//监听radio
+
+    });
+    <!--局部打印js-->
+    (function ($) {
+        var printAreaCount = 0;
+        $.fn.printArea = function () {
+            var ele = $(this);
+            var idPrefix = "printArea_";
+            removePrintArea(idPrefix + printAreaCount);
+            printAreaCount++;
+            var iframeId = idPrefix + printAreaCount;
+            var iframeStyle = 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;';
+            iframe = document.createElement('IFRAME');
+            $(iframe).attr({
+                style: iframeStyle,
+                id: iframeId
+            });
+            document.body.appendChild(iframe);
+            var doc = iframe.contentWindow.document;
+            $(document).find("link").filter(function () {
+                return $(this).attr("rel") == "stylesheet";
+            }).each(
+                    function () {
+                        doc.write('<link type="text/css" rel="stylesheet" href="'
+                                + $(this).attr("href") + '" >');
+                    });
+            doc.write('<div class="' + $(ele).attr("class") + '">' + $(ele).html()
+                    + '</div>');
+            doc.close();
+            var frameWindow = iframe.contentWindow;
+            frameWindow.close();
+            frameWindow.focus();
+            frameWindow.print();
+        }
+        var removePrintArea = function (id) {
+            $("iframe#" + id).remove();
+        };
+    })(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'NewProcess'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">系统配置</a>
+                    </li>
+                    <!--<li class="active">Blank Page</li>-->
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+                </div><!-- #nav-search -->
+            </div>
+            <div class="page-content">
+                <div id="tabstrip"  >
+                    <ul>
+                        <li class="k-state-active">流程类型</li>    <!--默认展开tabstrip-->
+                        <li>任务名称</li>
+                        <li>字段属性</li>
+                        <li>特色服务</li>
+                        <li>实验室名称</li>
+
+                        <li>取样方式</li>
+                        <li>服务类型</li>
+                        <li>服务方式</li>
+                        <li>样品状态</li>
+                        <li>检测项目</li>
+
+                    </ul>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="processTypeGrid" ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="taskNameGrid"  ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div  id="missiveFieldGrid"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="characterServiceGrid" ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="labNameGrid" ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="sampleMethodGrid" ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="serviceTypeGrid"  ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div  id="serviceWayGrid"></div>
+                    </div>
+
+                    <!--芳芳-->
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="statusGrid"  ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div id="surveillanceProGrid" ></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-10">
+                        <div  id="certificateModelGrid"></div>
+                    </div>
+
+
+                </div><!-- /.page-content -->
+
+            </div><!-- /.main-content -->
+        </div>
+
+    </div><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+var crudServiceBaseUrl = "/MetroCen/api/config";  //根地址
+
+var processTypeGridDataSource;        //声明流程类型 数据源变量
+var taskNameGridDataSource;        //声明任务 数据源变量
+var processTypeDropDownDataSource;  //声明  下拉列表 流程类型 数据源变量
+var missiveFieldGridDataSource;        //声明设置数据源变量
+
+var metroCenProcessType=[];
+
+var tabStrip = $("#tabstrip").kendoTabStrip().data("kendoTabStrip");
+
+//流程类型 数据源函数
+function setProcessTypeGridDataSource(){
+    processTypeGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/processType",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createProcessType",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateProcessType",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteProcessType",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+
+                    var typeName=options.models[0].typeName;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {typeName:typeName};
+                    }
+                    return {id:id,typeName:typeName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    typeName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+//任务 数据源函数
+function setTaskNameGridDataSource(){
+    taskNameGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/taskName",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createTaskName",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateTaskName",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteTaskName",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var processTypeId=options.models[0].processTypeId;
+                    var taskName=options.models[0].taskName;
+                    while(operation=="create"){
+                        return {processTypeId:processTypeId,taskName:taskName};
+                    }
+                    return {id:id,processTypeId:processTypeId,taskName:taskName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        group: { field: "processTypeId"},
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    processTypeId:{ type:"number" },               //下拉列表默认显示内容
+                    taskName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+
+//字段属性 数据源函数
+function setMissiveFieldGridDataSource(){
+    missiveFieldGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/missiveField",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createMissiveField",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateMissiveField",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteMissiveField",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var processTypeId=options.models[0].processTypeId;
+                    var fieldName=options.models[0].fieldName;
+                    while(operation=="create"){
+                        return {processTypeId:processTypeId,fieldName:fieldName};
+                    }
+                    return {id:id,processTypeId:processTypeId,fieldName:fieldName};
+
+                }
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        group: { field: "processTypeId"},
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    processTypeId:{ type:"number" },               //下拉列表默认显示内容
+                    fieldName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+
+//流程类型 数据表函数
+function setProcessTypeGrid(){
+    $("#processTypeGrid").kendoGrid({
+        dataSource:processTypeGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加流程类型"}],
+        columns:[
+            {field:"typeName",title:"流程类型"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#processTypeGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.typeName)) {
+                        var dataSource = $("#processTypeGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+//任务 数据表函数
+function setTaskNameGrid(){
+    $("#taskNameGrid").kendoGrid({
+        dataSource:taskNameGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加任务"}],
+        columns:[
+           { field: "processTypeId", title: "流程类型",  groupHeaderTemplate: "证书模板:#=getTypeName(data.value)#",editor: processTypeDropDownEditor,hidden:true },
+            {field:"taskName",title:"任务名称"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#taskNameGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.taskName)) {
+                        var dataSource = $("#taskNameGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"popup",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+//设置 字段属性 数据表函数
+function setMissiveFieldGrid(){
+    $("#missiveFieldGrid").kendoGrid({
+        dataSource:missiveFieldGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加字段属性"}],
+        columns:[
+            { field: "processTypeId", title: "流程类型",  groupHeaderTemplate: "证书模板:#=getTypeName(data.value)#" ,editor: processTypeDropDownEditor,hidden:true},
+
+            {field:"fieldName",title:"字段名称"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#missiveFieldGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.value)) {
+                        var dataSource = $("#missiveFieldGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"popup",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+function getTypeName(processTypeId){
+    console.log('processTypeId;',processTypeId);
+    var returnVal="";
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/processType",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            for(var i=0;i<data.length;++i){
+                if(processTypeId==data[i].id){
+                    returnVal= data[i].typeName;
+                }
+            }
+
+        }
+    });
+    return returnVal;
+}
+
+
+
+// 流程类型下拉列表 编辑框
+function processTypeDropDownEditor(container, options) {
+    $('<input required data-text-field="typeName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: processTypeGridDataSource
+            });
+}
+
+
+var certificateGridDataSource;        //声明证书 数据源变量
+var modelGridDataSource;        //声明证书模板 数据源变量
+var certificateDropDownDataSource;  //声明  下拉列表 证书 数据源变量
+var backGroundGridDataSource;        //声明设置数据源变量
+var metroCenModel=[];
+
+//周雪楠师姐的配置
+var sampleMethodGridDataSource;        //声明取样方式 数据源变量
+var sampleMethodDropDownDataSource;  //声明  下拉列表 取样方式 数据源变量
+var serviceTypeGridDataSource;        //声明服务类型 数据源变量
+var serviceTypeDropDownDataSource;  //声明  下拉列表 服务类型 数据源变量
+
+//芳芳
+var statusGridDataSource;        //声明样品状态 数据源变量
+var surveillanceProGridDataSource;        //声明监测项目数据源变量
+
+var certificateModelGridDataSource;   //声明模板数据源变量
+
+var metroCenCertificateModel =[];
+
+
+//陈珂师姐
+var characterServiceGridDataSource;        //声明特色服务 数据源变量
+var labNameGridDataSource;        //声明实验室名称 数据源变量
+
+
+
+var modelDataSource;//大类证书模板数据源
+var modelDataSourceSec;//二级证书模板数据源
+
+var modelParentId=0;//模板大类
+var modelId=0;//模板小类
+var nextPageVal=0;//是否续页
+var recordId=0;//显示记录Id
+
+
+var tabStrip = $("#tabStrip").kendoTabStrip().data("kendoTabStrip");
+
+
+
+// 流程类型下拉列表 编辑框
+function parentIdDropDownEditor(container, options) {
+    $('<input required data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "/model",
+                            dataType: "json"
+                        }
+                    }
+
+                },
+                optionLabel: "选择证书模板"
+            });
+}
+
+
+
+/*周雪楠师姐*/
+//取样方式 数据源函数
+function setSampleMethodGridDataSource(){
+    sampleMethodGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/sampleMethod",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createSampleMethod",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateSampleMethod",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteSampleMethod",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+
+                    var sampleMethod=options.models[0].sampleMethod;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {sampleMethod:sampleMethod};
+                    }
+                    return {id:id,sampleMethod:sampleMethod};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    sampleMethod: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+//取样方式 数据表函数
+function setSampleMethodGrid(){
+    $("#sampleMethodGrid").kendoGrid({
+        dataSource:sampleMethodGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加取样方式"}],
+        columns:[
+            {field:"sampleMethod",title:"取样方式"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#sampleMethodGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.typeName)) {
+                        var dataSource = $("#sampleMethodGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+//服务类型 数据源函数
+function setServiceTypeGridDataSource(){
+    serviceTypeGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/serviceType",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createServiceType",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateServiceType",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteServiceType",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var serviceName=options.models[0].serviceName;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {serviceName:serviceName};
+                    }
+                    return {id:id,serviceName:serviceName};
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    serviceName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+//服务类型 数据表函数
+function setServiceTypeGrid(){
+    $("#serviceTypeGrid").kendoGrid({
+        dataSource:serviceTypeGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加服务类型"}],
+        columns:[
+            {field:"serviceName",title:"服务类型"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#serviceTypeGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.typeName)) {
+                        var dataSource = $("#serviceTypeGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+//服务方式 数据源函数
+function setServiceWayGridDataSource(){
+    serviceWayGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/serviceWay",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createServiceWay",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateServiceWay",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteServiceWay",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+
+                    var serviceWay=options.models[0].serviceWay;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {serviceWay:serviceWay};
+                    }
+                    return {id:id,serviceWay:serviceWay};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    serviceWay: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+//服务方式 数据表函数
+function setServiceWayGrid(){
+    $("#serviceWayGrid").kendoGrid({
+        dataSource:serviceWayGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加服务方式"}],
+        columns:[
+
+            {field:"serviceWay",title:"服务方式"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#serviceWayGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.typeName)) {
+                        var dataSource = $("#serviceWayGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+
+
+//芳芳
+//样品状态 数据源函数
+function setStatusGridDataSource(){
+    statusGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/status",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createStatus",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateStatus",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteStatus",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+
+                    var statusName=options.models[0].statusName;
+                    while(operation=="create"){
+                        return {statusName:statusName};
+                    }
+                    return {id:id,statusName:statusName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    statusName: { validation: { required: true } }
+                }
+            }
+        }
+    });
+}
+//样品状态 数据表函数
+function setStatusGrid(){
+    $("#statusGrid").kendoGrid({
+        dataSource:statusGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加检验状态"}],
+        columns:[
+            {field:"statusName",title:"检验状态"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#statusGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.status)) {
+                        var dataSource = $("#statusGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+//监测项目 数据源函数
+function setSurveillanceProGridDataSource(){
+    surveillanceProGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/surveillancePro",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createSurveillancePro",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateSurveillancePro",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteSurveillancePro",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+
+                    var surveillanceName=options.models[0].surveillanceName;
+                    while(operation=="create"){
+                        return {surveillanceName:surveillanceName};
+                    }
+                    return {id:id,surveillanceName:surveillanceName};
+
+                }
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+
+                    surveillanceName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+//监测项目 数据表函数
+function setSurveillanceProGrid(){
+    $("#surveillanceProGrid").kendoGrid({
+        dataSource:surveillanceProGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加检测项目名称"}],
+        columns:[
+
+            {field:"surveillanceName",title:"检测名称"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#surveillanceProGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.value)) {
+                        var dataSource = $("#surveillanceProGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+
+function getModelNameById(modelId){
+    var returnVal="";
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/modelLevelTwo",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            for(var i=0;i<data.length;++i){
+                if(modelId==data[i].id){
+
+                    var parentId=data[i].parentId;
+
+
+                    returnVal= data[i].modelName;
+                }
+            }
+
+        }
+    });
+    return returnVal;
+}
+
+
+// 标准器具下拉列表 编辑框
+function modelNameDropDownEditor(container, options) {
+    $('<input required data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "/modelLevelTwo",
+                            dataType: "json"
+                        }
+                    }
+
+                },
+                optionLabel: "选择证书"
+            });
+}
+
+
+
+
+
+
+//模板名称 下拉列表默认显示值
+function getModelName(modelId){
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/modelLevelTwo",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            metroCenCertificateModel=data;
+        }
+    });
+    for(var i= 0;i<metroCenCertificateModel.length;i++){
+        if(metroCenCertificateModel[i].id==modelId){
+            return metroCenCertificateModel[i].modelName;
+        }
+    }
+}
+
+//根据parentId获取一类模板名称
+function getParentName(parentId){
+    console.log('parentId;',parentId);
+    var returnVal="";
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/model",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            for(var i=0;i<data.length;++i){
+                if(parentId==data[i].id){
+                    returnVal= data[i].modelName;
+                }
+            }
+
+        }
+    });
+    return returnVal;
+}
+
+//陈珂师姐
+//大类证书模板
+modelDataSource={
+    transport:{
+        read:{
+            dataType:"json",
+            url:crudServiceBaseUrl + "/model"
+        }
+    }
+};
+//二类证书模板
+modelDataSourceSec={
+    transport:{
+        read:{
+            dataType:"json",
+            url:crudServiceBaseUrl + "/modelLevelTwo"
+        }
+    }
+};
+
+//特色服务 数据源函数
+function setCharacterServiceGridDataSource(){
+    characterServiceGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/characterService",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createCharacterService",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateCharacterService",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteCharacterService",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var serviceName=options.models[0].serviceName;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {serviceName:serviceName};
+                    }
+                    return {id:id,serviceName:serviceName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    serviceName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+//特色服务 数据表函数
+function setCharacterServiceGrid(){
+    $("#characterServiceGrid").kendoGrid({
+        dataSource:characterServiceGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加特色服务"}],
+        columns:[
+            {field:"serviceName",title:"特色服务"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#characterServiceGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.serviceName)) {
+                        var dataSource = $("#characterServiceGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+
+//陈珂师姐
+//特色服务 数据源函数
+function setCharacterServiceGridDataSource(){
+    characterServiceGridDataSource = new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/characterService",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createCharacterService",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateCharacterService",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteCharacterService",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var serviceName=options.models[0].serviceName;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {serviceName:serviceName};
+                    }
+                    return {id:id,serviceName:serviceName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    serviceName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+
+//特色服务 数据表函数
+function setCharacterServiceGrid(){
+    $("#characterServiceGrid").kendoGrid({
+        dataSource:characterServiceGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加特色服务"}],
+        columns:[
+            {field:"serviceName",title:"特色服务"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#characterServiceGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.serviceName)) {
+                        var dataSource = $("#characterServiceGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+//实验室名称 数据源函数
+function setLabNameGridDataSource(){
+    labNameGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/labName",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createLabName",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateLabName",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteLabName",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var labName=options.models[0].labName;
+                    while(operation=="create"){
+                        id=options.models[0].id==null?1:options.models[0].id;
+                        return {labName:labName};
+                    }
+                    return {id:id,labName:labName};
+
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    labName: { validation: { required: true } }
+
+                }
+            }
+        }
+    });
+}
+//实验室名称 数据表函数
+function setLabNameGrid(){
+    $("#labNameGrid").kendoGrid({
+        dataSource:labNameGridDataSource,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索",
+                clear: "取消"
+            }
+
+        },
+        toolbar:[{name:"create",text:"添加实验室"}],
+        columns:[
+            {field:"labName",title:"实验室"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#labNameGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.labName)) {
+                        var dataSource = $("#labNameGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+
+
+function modelNameDropDownEditor(container, options) {
+    $('<input required data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "/modelLevelTwo",
+                            dataType: "json"
+                        }
+                    }
+
+                }
+            });
+}
+//模板名称 下拉列表默认显示值
+function getModelName(modelId){
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/modelLevelTwo",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            metroCenCertificateModel=data;
+        }
+    });
+    for(var i= 0;i<metroCenCertificateModel.length;i++){
+        if(metroCenCertificateModel[i].id==modelId){
+            return metroCenCertificateModel[i].modelName;
+        }
+    }
+}
+
+
+
+function parentIdDropDownEditor(container, options) {
+    $('<input required data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "/model",
+                            dataType: "json"
+                        }
+                    }
+
+                }
+            });
+}
+//根据parentId获取一类模板名称
+function getParentName(parentId){
+    console.log('parentId;',parentId);
+    var returnVal="";
+    $.ajax({
+        dataType:"json",
+        url:crudServiceBaseUrl + "/model",
+        async:false,                       //是否异步：不异步，页面加载同时加载数据
+        success:function(data){
+            for(var i=0;i<data.length;++i){
+                if(parentId==data[i].id){
+                    returnVal= data[i].modelName;
+                }
+            }
+
+        }
+    });
+    return returnVal;
+}
+
+
+
+
+
+//程序入口
+$(function(){
+
+    setProcessTypeGridDataSource();  //调用设置流程类型 数据源函数
+    setProcessTypeGrid();            //调用设置流程类型 数据表函数
+    setTaskNameGridDataSource();   //调用设置任务 数据源函数
+
+    setTaskNameGrid();              //调用设置任务 数据表函数
+    setMissiveFieldGridDataSource();        //调用设置字段属性 数据源函数
+    setMissiveFieldGrid();              //调用设置 数据表函数
+
+
+
+
+
+    /*周雪楠*/
+    setSampleMethodGridDataSource();  //调用设置取样方式
+    setSampleMethodGrid();            //调用设置取样方式
+    setServiceTypeGridDataSource();  //调用设置服务类型
+    setServiceTypeGrid();            //调用设置服务类型
+    setServiceWayGridDataSource();  //调用设置服务方式 数据源函数
+    setServiceWayGrid();            //调用设置服务方式 数据表函数
+
+    /*芳芳*/
+    setStatusGridDataSource();
+    setStatusGrid();
+    setSurveillanceProGridDataSource();  //调用项目监测  数据源函数
+    setSurveillanceProGrid();   //调用监测项目 数据表函数
+
+    /*陈珂师姐*/
+    setCharacterServiceGridDataSource();  //调用设置特色服务 数据源函数
+    setCharacterServiceGrid();            //调用设置特色服务 数据表函数
+    setLabNameGridDataSource();   //调用设置任务 数据源函数
+    setLabNameGrid();              //调用设置任务 数据表函数
+
+
+    $("#modelContent").kendoEditor(
+            {resizable: true },
+            { name: "Bold", tooltip: "Bold the selected text" });
+
+    //证书模板
+    $("#modelParent").kendoDropDownList({
+        optionLabel: "请选择...",
+        dataTextField: "modelName",
+        dataValueField: "id",
+        value:modelParentId,
+        dataSource: modelDataSource
+    });
+    //二级证书模板
+    $("#modelChild").kendoDropDownList({
+        optionLabel: "请选择...",
+        cascadeFrom: "modelParent",
+        cascadeFromField: "parentId",
+        dataTextField: "modelName",
+        dataValueField: "id",
+        value:modelId,
+        dataSource: modelDataSourceSec
+    });
+
+
+});
+</script>
+
+
+</body>
+</html>

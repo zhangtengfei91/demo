@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+        <div th:replace="slider :: slidermenu(${'xtsz_khgl'})"></div>
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">客户管理</a>
+                    </li>
+                </ul><!-- .breadcrumb -->
+                <div class="nav-search" id="nav-search">
+                    <span class="input-icon">
+                        <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                        <i class="icon-search nav-search-icon"></i>
+                    </span>
+                </div><!-- #nav-search -->
+            </div>
+        </div><!-- /.main-content -->
+        <div class="page-content">
+            <div id="tabStrip"  >
+                <ul>
+                    <li class="k-state-active">客户管理配置</li>    <!--默认展开tabStrip-->
+                    <li>上级主管单位配置</li>
+                </ul>
+
+                <div class="col-xs-12 col-sm-8">
+                    <div id="clientGrid"  ></div>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                    <div  id="upUnitGrid"></div>
+                </div>
+
+            </div>
+            <!--弹窗内容-->
+            <div id="details">
+                <div id="details-container">
+                    <div style="margin:10px 0">
+                        <label >证书单位全称:</label>
+                        <input  style="margin-left: 10px;height:30px;width:571px"  id="certiName" /><label style="color: red;margin-left: 5px">*</label>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label  >委托单位全称:</label>
+                        <input  style="margin-left: 10px;height:30px;width:571px"  id="unitName" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label  >委托单位地址:</label>
+                        <input  style="margin-left: 10px;height:30px;width:571px"  id="unitAddress" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+
+                        <label  >委托方合同号:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px" id="contractNo"/>
+                        <label style="margin-left:32px;" >证书单位机构代码:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="certiCode" />
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >邮政编码:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="postCode" />
+
+                        <label style="margin-left:60px;" >委托方联系人:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="contacts" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >联系电话:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="telephone" />
+
+                        <label style="margin-left:116px;" >手机:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="phone" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >电子邮箱:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="email" />
+
+                        <label style="margin-left:94px;" >联系人2:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px" id="contactSecond" />
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >企业性质:</label>
+                        <input  style="margin-left: 10px;height:30px;width:206px"  id="enterpriseNature" /><label style="color: red;margin-left: 5px">*</label>
+
+                        <label style="margin-left:50px;" >上级主管单位:</label>
+                        <input  style="margin-left: 10px;height:30px;width:206px" id="upUnit" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >年结:</label>
+                        <input  style="margin-left: 40px;height:30px;width:206px"  id="account" /><label style="color: red;margin-left: 5px">*</label>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                    <div style="margin-left:220px;margin-top:20px;">
+                        <button id="update"  class="k-button" style="marginleft: 180px;"onclick="submit()">
+                            <i class="icon-ok"></i>
+                            保存
+                        </button>
+                        <button id="close"  class="k-button" style="margin-left: 100px;" >
+                            <i class="icon-remove"></i>
+                            关闭
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.page-content -->
+    </div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+
+var crudServiceBaseUrl ="/MetroCen/api/clientConfig";  //根地址
+var clientGridDataSource;   //声明客户 数据源变量
+var upUnitGridDataSource;  //上级主管单位 数据源
+var wnd;//弹出的窗体
+var certiNameVal;  //证书单位获取值
+var certiCodeVal;//证书单位机构代码
+var contractNoVal;//委托合同编号
+var unitNameVal;//委托单位全称
+var unitAddressVal;//委托方单位地址
+var contactsVal;//委托方联系人
+var phoneVal;//手机
+var telephoneVal;//联系电话
+var emailVal;//电子邮件
+var contactSecondVal;//第二个联系人
+var enterpriseNatureVal;//企业性质
+var accountVal;//年结
+var upUnitVal;//上级主管单位
+var postCodeVal;//邮编
+
+var recordId=0;
+
+
+//标准器具 数据源函数
+function setClientGridDataSource(){
+    clientGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/client",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createClient",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateClient",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteClient",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var contractNo=options.models[0].contractNo;
+                    var certiCode=options.models[0].certiCode;
+                    var unitName=options.models[0].unitName;
+                    var unitAddress=options.models[0].unitAddress;
+                    var email=options.models[0].email;
+                    var certiName=options.models[0].certiName;
+                    var telephone=options.models[0].telephone;
+                    var contacts=options.models[0].contacts;
+                    var contactSecond=options.models[0].contactSecond;
+                    var enterpriseNature=options.models[0].enterpriseNature;
+                    var account=options.models[0].account;//年结
+                    var upUnit=options.models[0].upUnit;
+                    var postCode=options.models[0].postCode;
+                    var phone=options.models[0].phone;
+
+                    while(operation=="create"){
+                        return {contractNo:contractNo,certiCode:certiCode,unitName:unitName,
+                            unitAddress:unitAddress,email:email,certiName:certiName,
+                            contacts:contacts,phone:phone,telephone:telephone,contactSecond:contactSecond,
+                            enterpriseNature:enterpriseNature,account:account,upUnit:upUnit,postCode:postCode};
+                    }
+                    return {id:id,contractNo:contractNo,certiCode:certiCode,unitName:unitName,
+                        unitAddress:unitAddress,email:email,certiName:certiName,contacts:contacts,
+                        phone:phone,telephone:telephone,contactSecond:contactSecond,
+                        enterpriseNature:enterpriseNature,account:account,upUnit:upUnit,postCode:postCode};
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 10,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    certiCode: {type:"string"},
+                    unitName: {type:"string"},
+                    unitAddress:{type:"string"},
+                    email: {type:"string"},
+                    certiName: {type:"string"},
+                    telephone: {type:"string"},
+                    contractNo:{type:"string"},
+                    contacts: {type:"string"},
+                    phone: {type:"string"},
+                    contactSecond:{type:"string"},
+                    enterpriseNature: {type:"string"},
+                    account:{type:"string"},
+                    postCode: {type:"string"},
+                    upUnit: {type:"string"}
+
+
+                }
+            }
+        }
+    });
+}
+//客户  数据表
+function setClientGrid(){
+    $("#clientGrid").kendoGrid({
+        dataSource:clientGridDataSource,
+        toolbar:[{template: kendo.template($("#grid_toolbar").html())}],
+        columns:[
+            {field:"certiName",title:"证书单位全称"},
+            {hidden:true,field:"contractNo",title:"委托合同编号"},
+            {hidden:true,field:"upUnit",title:"上级主管",editor:upUnitDropDownEditor},
+            {hidden:true,field:"certiCode",title:"组织机构代码"},
+            {hidden:true,field:"unitName",title:"委托单位全称"},
+            {hidden:true,field:"unitAddress",title:"委托方单位地址"},
+            {hidden:true,field:"postCode",title:"邮编"},
+            {hidden:true,field:"enterpriseNature",title:"企业性质",template: "#=getEnterPriseNature(enterpriseNature)#",editor:enterPriseNatureDropDown},
+            {hidden:true,field:"account",title:"年结",template: "#=getAccount(account)#",editor:accountDropDown},
+            {field:"contacts",title:"委托方联系人"},
+            {hidden:true,field:"contactSecond",title:"联系人"},
+            {hidden:true,field:"email",title:"电子邮件"},
+            {field:"phone",title:"手机"},
+            {hidden:true,field:"telephone",title:"电话"},
+            { command: [
+                {text: "编辑", click: showDetails },   //编辑窗体内容
+                { text: "删除",click:delRecord }    //删除记录
+            ] }
+        ],
+        pageable: {
+            pageSize: 10,        //设置grid每页数据量，几条数据
+            buttonCount:10,        //下拉显示哪几页
+            input: true,
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                empty:"没有数据",
+                morePages:"更多页",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row"
+    });
+
+    wnd = $("#details").kendoWindow({
+        title: "客户信息",
+        modal: true,
+        visible: false,
+        resizable: false,
+        width: 720,
+        height:480
+    }).data("kendoWindow");
+}
+
+function getEnterPriseNature(enterpriseNature){
+    var str1="企业单位";
+    var str2="事业单位";
+
+    if(enterpriseNature=='1') {return str1}
+    else{
+        return str2;
+    }
+
+}
+//客户管理 中  企业性质 下拉列表 编辑框
+function enterPriseNatureDropDown(container, options) {
+    $('<input data-text-field="enterpriseNature" data-value-primitive=true  data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource:[
+                    { enterpriseNature: "企业单位", id: 1 },
+                    { enterpriseNature: "事业单位", id: 2 }
+                ],
+                optionLabel: "请选择..."
+            });
+}
+
+function getAccount(account){
+    var str1="签约";
+    var str2="非签约";
+
+    if(account=='1') {return str1}
+    else{
+        return str2;
+    }
+
+}
+//客户管理 中  企业性质 下拉列表 编辑框
+function accountDropDown(container, options) {
+    $('<input data-text-field="account" data-value-primitive=true  data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container).kendoDropDownList({
+                autoBind: false,
+                dataSource:[
+                    { account: "签约", id: 1 },
+                    { account: "非签约", id: 2 }
+                ],
+                optionLabel: "请选择..."
+            });
+}
+
+//客户管理中，上级主管单位下拉列表
+function upUnitDropDownEditor (container, options) {
+    var upUnitSelectVal=options.model.upUnit;
+    $('<input id="upUnitSelect" data-text-field="upUnit" data-value-primitive=true data-value-field="id" data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                optionLabel: "请选择",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: crudServiceBaseUrl + "/upUnit",
+                            dataType: "json"
+                        }
+                    }
+
+                }
+            });
+    var upUnitSelect=$("#upUnitSelect").data("kendoDropDownList");
+    upUnitSelect.value(upUnitSelectVal);
+}
+
+//上级主管安慰 数据源函数
+function setUpUnitGridDataSource(){
+    upUnitGridDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: crudServiceBaseUrl + "/upUnit",
+                dataType: "json"
+            },
+            create:{
+                url:crudServiceBaseUrl+"/createUpUnit",
+                dataType:"json"
+            },
+            update:{
+                url:crudServiceBaseUrl+"/updateUpUnit",
+                dataType:"json"
+            },
+            destroy:{
+                url:crudServiceBaseUrl+"/deleteUpUnit",
+                dataType:"json"
+
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var id=options.models[0].id;
+                    var upUnit=options.models[0].upUnit;
+
+                    while(operation=="create"){
+                        return {upUnit:upUnit};
+                    }
+                    return {id:id,upUnit:upUnit};
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 10,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, nullable: true },
+                    upUnit: {type:"string",validation:{required: { message: "必填项" } }}
+                }
+            }
+        }
+    });
+}
+//上级主管单位  数据表函数
+function setUpUnitGrid(){
+    $("#upUnitGrid").kendoGrid({
+        dataSource:upUnitGridDataSource,
+        toolbar:[{name:"create",text:"添加上级主管单位"}],
+        columns:[
+            {field:"upUnit",title:"单位名称"},
+            { command: [
+                { name: "edit",text: { edit: "编辑", cancel: "取消", update: "保存" } },
+                { name: "destroy", text: "删除", click: function(e){
+                    var entityGrid = $("#upUnitGrid").data("kendoGrid");
+                    var row=entityGrid.select();
+                    var data=entityGrid.dataItem(row);
+
+                    if (confirm('你确定要删除：'+data.contractNo)) {
+                        var dataSource = $("#upUnitGrid").data("kendoGrid").dataSource;
+                        dataSource.remove(data);
+                        dataSource.sync();
+                    }
+                } }
+
+            ],
+                title: "&nbsp;" }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        selectable: "row",
+        editable: {
+            mode:"inline",
+            update:'true',
+            confirmation: "确认删除这条记录?"
+        }
+    });
+}
+//程序入口
+$(function(){
+
+    setClientGridDataSource(); //调用客户 数据源函数
+    setClientGrid();// 调用客户 数据表函数
+    setUpUnitGridDataSource(); //调用客户 数据源函数
+    setUpUnitGrid();// 调用客户 数据表函数
+
+
+//上级主管单位下拉
+    $("#upUnit").kendoDropDownList({
+        optionLabel: "请选择...",
+        dataTextField: "upUnit",
+        dataValueField: "id",
+        dataSource: {
+            transport:{
+                read:{
+                    url: crudServiceBaseUrl + "/upUnit",
+                    dataType: "json"
+                }
+            }
+        }
+    });
+
+//企业性质下拉
+    $("#enterpriseNature").kendoDropDownList({
+        optionLabel: "请选择...",
+        dataTextField: "enterpriseNature",
+        dataValueField: "id",
+        dataSource:[
+            { enterpriseNature: "企业单位", id: 1 },
+            { enterpriseNature: "事业单位", id: 2 }
+        ]
+    });
+//年结下拉
+    $("#account").kendoDropDownList({
+        optionLabel: "请选择...",
+        dataTextField: "account",
+        dataValueField: "id",
+        dataSource:[
+            { account: "签约", id: 1 },
+            { account: "非签约", id: 2 }
+        ]
+    });
+});
+
+var tabStrip = $("#tabStrip").kendoTabStrip().data("kendoTabStrip");
+
+
+//查看弹窗
+function showDetails(e) {
+    e.preventDefault();
+    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+    recordId=dataItem.id;//记录ID
+
+    var grid= $("#clientGrid").data("kendoGrid");
+    var selectedRows=$(".k-state-selected","#clientGrid");
+    var currentDataItem=grid.dataItem(selectedRows[0]);
+
+    certiNameVal=dataItem.certiName;
+    $("#certiName").val(certiNameVal);
+    certiCodeVal=dataItem.certiCode;//证书单位机构代码
+    $("#certiCode").val(certiCodeVal);
+    contractNoVal=dataItem.contractNo;
+    $("#contractNo").val(contractNoVal);
+    unitNameVal=dataItem.unitName;//
+    $("#unitName").val(unitNameVal);
+    unitAddressVal=dataItem.unitAddress;
+    $("#unitAddress").val(unitAddressVal);
+    contactsVal=dataItem.contacts;//
+    $("#contacts").val(contactsVal);
+    phoneVal=dataItem.phone;
+    $("#phone").val(phoneVal);
+    telephoneVal=dataItem.telephone;//
+    $("#telephone").val(telephoneVal);
+    emailVal=dataItem.email;
+    $("#email").val(emailVal);
+    contactSecondVal=dataItem.contactSecond;//
+    $("#contactSecond").val(contactSecondVal);
+    postCodeVal=dataItem.postCode;//
+    $("#postCode").val(postCodeVal);
+
+    var enterpriseNature= $("#enterpriseNature").data("kendoDropDownList");
+    enterpriseNature.value(dataItem.enterpriseNature);
+
+    var account= $("#account").data("kendoDropDownList");
+    account.value(dataItem.account);
+
+
+
+    var upUnit= $("#upUnit").data("kendoDropDownList");
+    upUnit.value(dataItem.upUnit);
+
+    wnd.center().open();
+}
+//删除数据
+function delRecord(e){
+
+    e.preventDefault();
+    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+    recordId=dataItem.id;
+//    如果数据有其他关联不许删除
+    $.ajax(
+            {
+                url:crudServiceBaseUrl+"/relationClient/"+recordId,
+                dataType: "json",   //返回格式为json
+                async: false,//同步，这也是ajax重要特性
+                type: "GET",   //请求方式
+                success:function(data){
+                    if (data==true){
+                        swal({
+                            title:"删除的数据有关联，不能删除！",
+                            type:"warning",
+                            showCancelButton:false,
+                            closeOnConfirm:true,
+                            closeOnCancel:true
+                        });
+
+                    }else
+                    {
+                        swal({
+                            title: "确认要删除该数据吗？",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "删除",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: true
+                        },function(){
+                                    var submitData={ id:recordId };
+
+                                    //提交数据
+                                    submitAjax(crudServiceBaseUrl +"/deleteClient/"+recordId,submitData);
+
+                                }
+                        );
+
+                    }
+
+                }
+            }
+    )
+
+
+
+
+}
+//添加数据
+function addModel(){
+    $("#certiName").val("");
+    $("#certiCode").val("");
+    $("#contractNo").val("");
+    $("#unitName").val("");
+    $("#unitAddress").val("");
+    $("#contacts").val("");
+    $("#phone").val("");
+    $("#telephone").val("");
+    $("#email").val("");
+    $("#contactSecond").val("");
+    $("#postCode").val("");
+    var enterpriseNature= $("#enterpriseNature").data("kendoDropDownList");
+    enterpriseNature.value("");
+
+    var upUnit= $("#upUnit").data("kendoDropDownList");
+    upUnit.value("");
+    recordId=0;//添加客户记录，客户ID为0.
+    wnd.center().open();
+}
+// 保存
+function submit(){
+    var certiNameValue=$("#certiName").val();
+    var unitNameValue=$("#unitName").val();
+    var unitAddressValue=$("#unitAddress").val();
+    var phoneValue=$("#phone").val();
+    var enterpriseNatureValue=$("#enterpriseNature").val();
+
+    var accountValue=$("#account").val();
+    var upUnitValue=$("#upUnit").val();
+
+    if(certiNameValue==""||unitNameValue==""||unitAddressValue==""||phoneValue==""||enterpriseNatureValue==""||upUnitValue==""){
+        alert("带有红色标记的为必填项");
+        return;
+    }else{
+        var submitData={
+            //封面信息
+            id:recordId,
+            certiName:certiNameValue,
+            certiCode:$("#certiCode").val(),
+            contractNo:$("#contractNo").val(),
+            unitName:unitNameValue,
+            unitAddress:unitAddressValue,
+            contacts:$("#contacts").val(),
+            phone:phoneValue,
+            telephone:$("#telephone").val(),
+            email:$("#email").val(),
+            contactSecond:$("#contactSecond").val(),
+            enterpriseNature:enterpriseNatureValue,
+            account:accountValue,
+            postCode:$("#postCode").val(),
+            upUnit:upUnitValue
+        };
+        submitAjax(crudServiceBaseUrl + "/createClient",submitData);
+    }
+
+
+}
+<!--ajax提交数据方法-->//提交数据至后台
+function submitAjax(submitURL,objData){
+    $.ajax(
+            {
+                type:"POST",
+                url:submitURL,
+                data:objData,
+                success:function(data){
+                    $("#details").data("kendoWindow").close();
+                    //重新加载数据源
+                    setClientGridDataSource();
+                    setClientGrid();
+                }
+            }
+    )
+}
+
+$("#close").click( function (e) {
+    $("#details").data("kendoWindow").close();
+});
+
+</script>
+
+<script id="grid_toolbar" type="text/x-kendo-template">
+    <button class="k-button k-button-icontext k-grid-add" id="grid_toolbar_queryBtn" onclick="addModel();"><span class="k-icon k-add"></span>添加客户</button>   <!--添加证书-->
+
+</script>
+
+
+
+</body>
+</html>

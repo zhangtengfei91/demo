@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Maven:smslib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/esicmissive-0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

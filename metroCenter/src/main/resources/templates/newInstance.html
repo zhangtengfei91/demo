@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+   <script th:replace="header :: header"></script>
+
+
+
+</head>
+
+<body>
+<script th:inline="javascript">
+
+    var userbase64 = [[${userbase64}]];
+
+
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+<div class="main-container-inner">
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+
+
+<div th:replace="slider :: slidermenu(${'dbzx'})"></div>
+
+
+<div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="/">首页</a>
+            </li>
+
+            <li>
+                <a href="/">新建流程</a>
+            </li>
+
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <a href="#"  class="btn btn-app btn-success btn-sm" onclick="createPublishMissive()">
+                    <i  class="icon-share-alt bigger-130"></i>
+                    发文流程
+                </a>&nbsp&nbsp&nbsp
+                <a href="#"  class="btn btn-app btn-primary btn-sm" onclick="createReceiveMissive()">
+                    <i  class="icon-folder-open-alt bigger-130"></i>
+                    收文流程
+                </a>&nbsp&nbsp&nbsp
+                <a href="#"  class="btn btn-app btn-warning btn-sm" onclick="createSign();">
+                    <i  class="icon-edit bigger1230"></i>
+                    签报流程
+                </a>&nbsp&nbsp&nbsp
+                <a href="#" class="btn btn-app btn-danger btn-sm" onclick="createFax()" >
+                    <i  class="icon-print bigger-130"></i>
+                    传真电报
+                </a>
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+
+<script th:inline="javascript">
+    //流程定义名称  包括Fax(传真)、PublishMissive（发文）、Receipt（收文）、SignId（签报）
+    var serverActi="http://localhost:8080/";
+    var serverApp="http;//localhost:8888/";
+
+    var user=/*[[${username}]]*/ 'user';
+    var reMisId="";
+    var instanceId="";
+    var taskId="";
+    var taskName="";
+
+    var userCode="Basic dGlzc290OnRpc3NvdA==";//用户编码
+    var processDeId="";//流程定义id；
+    function StartInstance(typeName){
+        $.ajax({
+            type:'post',
+            url:'api/startProInstance',
+            async:false,
+            data:{type:typeName,userName:user},
+            beforeSend:function(req){
+                req.setRequestHeader('Authorization', $.cookie('userbase64'));
+            },
+            success:function(result){
+                processDeId=result[0];
+                instanceId=result[1];
+                taskId=result[2];
+            },
+            error:function(){}
+        });
+    }
+    //新建发文流程
+    function createPublishMissive(){
+        StartInstance("发文");
+        //页面跳转收文流程
+        window.location.href="/missive/missivePublish/"+instanceId+"/"+taskId;
+    }
+    //新建收文流程
+    function createReceiveMissive(){
+        StartInstance("收文");
+        //页面跳转收文流程
+        window.location.href="/"+processDeId+"/"+instanceId+"/"+taskId;
+    }
+    //新建签报流程
+    function createSign(){
+        StartInstance("签报");
+        window.location.href="/missiveSign/SignMissive/"+instanceId+"/"+taskId;
+    }
+    //新建传真电报流程
+    function createFax(){
+        StartInstance("传真电报");
+        window.location.href="/FaxCable/"+taskId+"/"+instanceId;
+    }
+
+</script>
+
+<!-- inline scripts related to this page -->
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)https://0.s3.envato.com/files/351979/index.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Context Menu</title>
+
+
+
+<link rel="stylesheet" type="text/css" href="/styles/ContentMenu/main.css">
+<link rel="stylesheet" type="text/css" href="/styles/ContentMenu/ContextMenu.css">
+
+<script type="text/javascript" src="/js/ContextMenu.js"></script>
+<script type="text/javascript">
+
+var demo1;
+
+function $(id){ return document.getElementById(id); }
+
+function itemAlert(e) {
+	alert(
+		"Item Clicked: \"" + e.item.label.replace(/<[^>]+>/g, "")  + "\"\n" +
+		"Target: \""       + e.target.id   + "\""
+	);
+}
+
+
+
+function init() {
+	
+	demo1 = new ContextMenu();
+	demo1.addItem("insert",   "插入签名",   itemAlert, "img/disk.png");
+	demo1.addItem("save",   "插入短语",   itemAlert, "img/folder.png");
+    demo1.addtitle="eee";
+	demo1.addSeparator();
+	demo1.register("demo1");
+
+	
+
+
+	
+}
+
+CM_addEvent(window, 'load', init);
+
+</script>
+</head>
+
+<body style="background: #EEEEEE; margin-bottom: 0;">
+<div align="center">
+
+    <div id="demo1" class="demo blue">右键我</div>
+
+    <div class="contextMenu" style="display: none; left: 315px; top: 332px; opacity: 1;">
+            <div class="drop-shadow bottom"></div>
+            <div class="drop-shadow right"></div>
+            <div class="drop-shadow corner"></div>
+            <table class="item active" cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                    <td class="icon"></td>
+                    <td class="label">插入签名</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="item active" cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                    <td class="icon"></td>
+                    <td class="label">插入短语</td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+</body>
+</html>

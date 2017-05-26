@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="/css/jquery.tokenize.css"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'search'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">高级搜索</a>
+                    </li>
+                    <!--<li class="active">Blank Page</li>-->
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索 ..."  class="nav-search-input" id="nav-search-input" autocomplete="off" />
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+                </div><!-- #nav-search -->
+            </div>
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        搜索
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            高级搜索
+                        </small>
+                    </h1>
+                </div>
+                <div class="span6 widget-container-span ui-sortable" id="register">
+                    <div class="widget-box">
+                        <div class="widget-header header-color-blue" >
+
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <!--搜索界面-->
+                                <div style="margin-left:10px ">
+                                    <label id="processTypeLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">流程类型：</label>
+                                    <input id="processType" class="vali_input" style="width: 150px;" onchange="change(this.value)"/>
+                                    <label id="keyWordsLbl" class="control-label bolder blue vali_lable" style="margin-left:32px;">关键词：</label>
+                                    <input id="keyWords" class="vali_input" style="width: 150px;"value="请选择..."/>
+                                    <input id="searchWord" class="vali_input" style="width: 300px;margin-left: 22px;margin-top: 20px" onkeydown="FSubmit(event.keyCode||event.which);"placeholder="请输入搜索词..."/>
+                                    <button id="Password" class="btn btn-minier bigger btn-warning" href="javascript:void(0);" onclick="search()" style="margin-left: 10px;width: 90px;height: 25px"><i class="icon-search"></i>搜索</button>
+                                </div>
+                                <!--样品表单-->
+                                <div id="sampleInfo" style="margin-left:10px;margin-top: 10px">
+                                </div>
+                                <div id="certificateInfo" style="margin-left:10px;margin-top: 10px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!--/span-->
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+</div>
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+<script src="/js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="/js/jquery-barcode.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/js/jquery-ui.js"></script>
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript"  th:inline="javascript">
+    var sampleAttr =[
+        {text:"样品名称",value:"a.sample_name"},
+        {text:"出厂编号",value:"a.factory_code"},
+        {text:"委托单位",value:"unit_name"},
+        {text:"唯一性标识",value:"a.sample_code"},
+        {text:"联系电话",value:"phone"},
+        {text:"检定人员",value:"name"}
+    ];//样品属性
+    var certificateAttr =[
+        {text:"证书编号",value:"certificate_no"},
+        {text:"送检单位",value:"inspection_unit"},
+        {text:"样品名称",value:"sample_name"},
+        {text:"检定人员",value:"verified"},
+        {text:"审核人员",value:"checked"},
+        {text:"批准人员",value:"approved"}
+    ];//证书属性
+    var processTypeData = [
+        { text: "样品", value: "1" },
+        { text: "证书", value: "2" },
+    ];//流程类型
+    $("#processType").kendoDropDownList({
+        optionLabel: "请选择...",
+        dataTextField: "text",
+        dataValueField: "value",
+        dataSource: processTypeData
+    });//流程类型dropDownList
+    //根据流程下拉列表获取关键字列表内容
+    function change(value){
+        var dataSources=null;
+        if(value=="1"){
+            dataSources=sampleAttr;
+        }else{
+            dataSources=certificateAttr;
+        }
+        $("#keyWords").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource:dataSources
+        });
+    }
+    //张腾飞 20151129
+    function search() {
+        var processType = $("#processType").val();//获取流程类型
+        //获取关键字段
+        var keyWords = $("#keyWords").val();//获取关键字value
+        var searchWord = $("#searchWord").val();//获取搜索词
+        if (processType == "") {
+            swal("请选择流程类型!");
+            return;
+        }
+        if (processType == "1") {
+            $("#sampleInfo").attr("hidden",false)
+            $("#certificateInfo").attr("hidden",true);
+            //检索样品信息
+            if (keyWords!=""&&searchWord!=""){
+            $("#sampleInfo").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            url: "/api/search/sample/" + keyWords + "/" + searchWord
+                        }
+                    },
+                    pageSize: 10
+                },
+                height: 500,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5,
+                    messages: {
+                        itemsPerPage: "每页显示数据条数",
+                        display: "显示 {0}-{1}   总共 {2} 条数据"
+                    }
+                },
+                selectable: true,
+                columns: [{
+                    field: "sampleName",
+                    title: "样品名称",
+                    width: 200
+                }, {
+                    field: "sampleCode",
+                    title: "唯一性标识"
+                }, {
+                    field: "measureRange",
+                    title: "检定人员"
+                }, {
+                    field: "unitName",
+                    title: "委托单位"
+                }, {
+                    field: "factoryCode",
+                    title: "出厂编号"
+                },
+                    {
+                        command: [
+                            {
+                                name: "view", text: "查看样品",
+                                click: function (e) {
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                                    var url = "/MetroCen/sample/print/1/" + dataItem.processId;
+                                    window.open(url);
+                                }
+                            },
+                        ], width: 120
+                    }]
+            });
+            }
+            else{
+              $("#sampleInfo").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            url: "/api/search/sample/"
+                        }
+                    },
+                    pageSize: 10
+                },
+                height: 500,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5,
+                    messages: {
+                        itemsPerPage: "每页显示数据条数",
+                        display: "显示 {0}-{1}   总共 {2} 条数据"
+                    }
+                },
+                selectable: true,
+                columns: [{
+                    field: "sampleName",
+                    title: "样品名称",
+                    width: 200
+                }, {
+                    field: "sampleCode",
+                    title: "唯一性标识"
+                }, {
+                    field: "measureRange",
+                    title: "检定人员"
+                }, {
+                    field: "unitName",
+                    title: "委托单位"
+                }, {
+                    field: "factoryCode",
+                    title: "出厂编号"
+                },
+                    {
+                        command: [
+                            {
+                                name: "view", text: "查看样品",
+                                click: function (e) {
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                                    var url = "/MetroCen/sample/print/1/" + dataItem.processId;
+                                    window.open(url);
+                                }
+                            },
+                        ], width: 120
+                    }]
+            });
+            }
+        }
+        else {
+            $("#sampleInfo").attr("hidden",true)
+            $("#certificateInfo").attr("hidden",false);
+            //检索证书信息
+             if (keyWords!=""&&searchWord!=""){
+            $("#certificateInfo").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            url: "/api/search/certificate/" + keyWords + "/" + searchWord
+                        }
+                    },
+                    pageSize: 10
+                },
+                height: 500,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5,
+                    messages: {
+                        itemsPerPage: "每页显示数据条数",
+                        display: "显示 {0}-{1}   总共 {2} 条数据"
+                    }
+                },
+                columns: [{
+                    field: "certificateNo",
+                    title: "证书编号",
+                    width: 200
+                },
+                    {
+                        field: "inspectionUnit",
+                        title: "送检单位"
+                    },
+                    {
+                        field: "sampleName",
+                        title: "样品名称"
+                    },
+                    {
+                        field: "manufactUnit",
+                        title: "检定人员"
+                    },
+                    {
+                        field: "conclusion",
+                        title: "审核人员"
+                    },
+                    {
+                        field: "remark",
+                        title: "批准人员"
+                    },
+                    {
+                        command: [
+                            {
+                                name: "view", text: "查看证书",
+                                click: function (e) {
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                                    var url = "/MetroCen/certificate/2/" + dataItem.processId;
+                                    window.open(url);
+                                }
+                            }
+                        ], width: 120
+                    }
+                ]
+            })}
+            else{
+               $("#certificateInfo").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            url: "/api/search/certificate/"
+                        }
+                    },
+                    pageSize: 10
+                },
+                height: 500,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5,
+                    messages: {
+                        itemsPerPage: "每页显示数据条数",
+                        display: "显示 {0}-{1}   总共 {2} 条数据"
+                    }
+                },
+                columns: [{
+                    field: "certificateNo",
+                    title: "证书编号",
+                    width: 200
+                },
+                    {
+                        field: "inspectionUnit",
+                        title: "送检单位"
+                    },
+                    {
+                        field: "sampleName",
+                        title: "样品名称"
+                    },
+                    {
+                        field: "manufactUnit",
+                        title: "检定人员"
+                    },
+                    {
+                        field: "conclusion",
+                        title: "审核人员"
+                    },
+                    {
+                        field: "remark",
+                        title: "批准人员"
+                    },
+                    {
+                        command: [
+                            {
+                                name: "view", text: "查看证书",
+                                click: function (e) {
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                                    var url = "/MetroCen/certificate/2/" + dataItem.processId;
+                                    window.open(url);
+                                }
+                            }
+                        ], width: 120
+                    }
+                ]
+            })
+
+            }
+        }
+    }
+    function FSubmit(e) {
+        if(e ==13|| e ==32)
+        {
+            search();
+        }
+    }
+    function loadIdentifier(identifier){
+        var processID=0;
+        $.ajax(
+                {
+                    type:"GET",
+                    url:"/api/search/"+identifier,
+                    async:false,
+                    success:function(data){
+                        processID=data;
+                    },
+                    error:function(data){
+                        console.log(data);
+                    }
+
+                }
+        )
+        var url ="/MetroCen/sample/searchIdentifier/1/"+processID;
+        window.open(url);
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8" />
+    <title>国家海洋局东海分局办公系统</title>
+    <link rel="icon" href="img/owl1.ico" type="image/x-icon">
+
+    <link rel="Bookmark" href="img/owl1.ico" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+
+    <!-- basic styles -->
+    <script th:replace="header :: header"></script>
+    <!--kendo styles-->
+    <link href="/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+
+    <script src="/js/jquery-2.1.1.min.js"></script>
+
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/kendo.all.min.js"></script>
+</head>
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+<script type="text/javascript">
+    try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+</script>
+
+<div class="main-container" id="main-container">
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+<div class="main-container-inner">
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+<div th:include="slider :: slidermenu(${'dbzx'})"></div>
+<div class="main-content">
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home home-icon"></i>
+            <a href="#">首页</a>
+        </li>
+        <li class="active">待办中心</li>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+        </form>
+    </div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+    <div id="tabstrip"  >
+        <ul>
+            <li id="tabMissive">公文</li>
+            <li>配置</li>
+        </ul>
+        <div class="col-xs-12 col-sm-6">
+            <p></p>
+            <p></p> <p></p>
+            <p></p>
+            <div id="missiveTypeGrid" ></div>
+            <p></p>
+            <p></p> <p></p>
+            <p></p>
+            <div id="secretLevelGrid"  ></div>
+            <p></p>  <p></p> <p></p>
+            <p></p>
+            <div id="urgentLevelGrid"></div>
+
+        </div>
+
+
+        <div class="col-xs-12 col-sm-6">
+            <p></p>  <p></p> <p></p>
+            <p></p>
+            <div  id="deployGrid"></div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+
+
+
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+
+
+
+
+
+<script>
+
+    var crudServiceBaseUrl = "/api/config";  //根地址
+    var missiveTypeGridDataSource;        //声明公文类型 数据源变量
+    var secretLevelGridDataSource;        //声明密级 数据源变量
+    var urgentLevelGridDataSource;        //声明紧急程度数据源变量
+    var deployGridDataSource;        //声明设置数据源变量
+
+    //程序入口
+    $(function($){
+        setMissiveTypeGridDataSource();   //调用设置公文类型 数据源函数
+        setMissiveTypeGrid();            //调用设置公文类型 数据表函数
+        setSecretLevelGridDataSource();   //调用设置密级 数据源函数
+        setSecretLevelGrid();              //调用设置密级 数据表函数
+        setUrgentLevelGridDataSource();   //调用设置紧急程度 数据源函数
+        setUrgentLevelGrid();              //调用设置紧急程度 数据表函数
+        setDeployGridDataSource();        //调用设置配置 数据源函数
+        setDeployGrid();              //调用设置 数据表函数
+
+    })
+
+    //公文类型 数据源函数
+    function setMissiveTypeGridDataSource(){
+        missiveTypeGridDataSource = new kendo.data.DataSource({
+                    transport: {
+                        read:  {
+                            url: crudServiceBaseUrl + "/missiveType",
+                            dataType: "json"
+                        },
+                        create:{
+                            url:crudServiceBaseUrl+"/createMissiveType",
+                            dataType:"json"
+                        },
+                        update:{
+                            url:crudServiceBaseUrl+"/updateMissiveType",
+                            dataType:"json"
+                        },
+                        destroy:{
+                            url:crudServiceBaseUrl+"/deleteMissiveType",
+                            dataType:"json"
+
+                        },
+                        parameterMap: function(options, operation) {
+                            if (operation !== "read" && options.models) {
+                                return {id:options.models[0].id,typeName:options.models[0].typeName};
+
+                            }
+                        }
+                    },
+                    batch: true,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: { editable: false, nullable: true },
+                                typeName: { validation: { required: true } }
+
+                            }
+                        }
+                    }
+                });
+    }
+    //密级 数据源函数
+    function setSecretLevelGridDataSource(){
+        secretLevelGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/secretLevel",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createSecretLevel",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateSecretLevel",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteSecretLevel",
+                    dataType:"json"
+
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {id:options.models[0].id,secretLevelName:options.models[0].secretLevelName};
+
+                    }
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        secretLevelName: { validation: { required: true } }
+
+                    }
+                }
+            }
+        });
+    }
+    //紧急程度 数据源函数
+    function setUrgentLevelGridDataSource(){
+        urgentLevelGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/urgentLevel",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createUrgentLevel",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateUrgentLevel",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteUrgentLevel",
+                    dataType:"json"
+
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {id:options.models[0].id,value:options.models[0].value};
+
+                    }
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        value: { validation: { required: true } }
+
+                    }
+                }
+            }
+        });
+    }
+    //设置 数据源函数
+    function setDeployGridDataSource(){
+        deployGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/deploy",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createDeploy",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateDeploy",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteDeploy",
+                    dataType:"json"
+
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {id:options.models[0].id,name:options.models[0].name,value:options.models[0].value};
+
+                    }
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        value: { validation: { required: true } }
+
+                    }
+                }
+            }
+        });
+    }
+
+
+    //公文类型 数据表函数
+    function setMissiveTypeGrid(){
+        $("#missiveTypeGrid").kendoGrid({
+            dataSource:missiveTypeGridDataSource,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "选择条件",
+                        eq: "等于",
+                        neq: "不等于"
+
+                    }
+                },
+                messages: {
+                    info: "筛选",
+                    and: "且",
+                    or: "或",
+                    filter: "搜索",
+                    clear: "取消"
+                }
+
+            },
+            toolbar:[{name:"create",text:"添加公文类型"}],
+            columns:[
+                {field:"id",title:"编号"},
+                {field:"typeName",title:"公文类型"},
+                { command: [
+                    { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                    { name: "destroy", text: "删除", click: function(e){
+                        var entityGrid = $("#missiveTypeGrid").data("kendoGrid");
+                        var row=entityGrid.select();
+                        var data=entityGrid.dataItem(row);
+
+                        if (confirm('你确定要删除：'+data.typeName)) {
+                            var dataSource = $("#missiveTypeGrid").data("kendoGrid").dataSource;
+                            dataSource.remove(data);
+                            dataSource.sync();
+                        }
+                    } }
+
+                ],
+                    title: "&nbsp;" }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row",
+            editable: {
+                mode:"inline",
+                update:'true',
+                confirmation: "确认删除这条记录?"
+            }
+        });
+    }
+    //密级 数据表函数
+    function setSecretLevelGrid(){
+        $("#secretLevelGrid").kendoGrid({
+            dataSource:secretLevelGridDataSource,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "选择条件",
+                        eq: "等于",
+                        neq: "不等于"
+
+                    }
+                },
+                messages: {
+                    info: "筛选",
+                    and: "且",
+                    or: "或",
+                    filter: "搜索",
+                    clear: "取消"
+                }
+
+            },
+            toolbar:[{name:"create",text:"添加密级"}],
+            columns:[
+                {field:"id",title:"编号"},
+                {field:"secretLevelName",title:"密级"},
+                { command: [
+                    { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                    { name: "destroy", text: "删除", click: function(e){
+                        var entityGrid = $("#secretLevelGrid").data("kendoGrid");
+                        var row=entityGrid.select();
+                        var data=entityGrid.dataItem(row);
+
+                        if (confirm('你确定要删除：'+data.secretLevelName)) {
+                            var dataSource = $("#secretLevelGrid").data("kendoGrid").dataSource;
+                            dataSource.remove(data);
+                            dataSource.sync();
+                        }
+                    } }
+
+                ],
+                    title: "&nbsp;" }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row",
+            editable: {
+                mode:"inline",
+                update:'true',
+                confirmation: "确认删除这条记录?"
+            }
+        });
+    }
+    //紧急程度 数据表函数
+    function setUrgentLevelGrid(){
+        $("#urgentLevelGrid").kendoGrid({
+            dataSource:urgentLevelGridDataSource,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "选择条件",
+                        eq: "等于",
+                        neq: "不等于"
+
+                    }
+                },
+                messages: {
+                    info: "筛选",
+                    and: "且",
+                    or: "或",
+                    filter: "搜索",
+                    clear: "取消"
+                }
+
+            },
+            toolbar:[{name:"create",text:"添加紧急程度"}],
+            columns:[
+                {field:"id",title:"编号"},
+                {field:"value",title:"紧急程度"},
+                { command: [
+                    { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                    { name: "destroy", text: "删除", click: function(e){
+                        var entityGrid = $("#urgentLevelGrid").data("kendoGrid");
+                        var row=entityGrid.select();
+                        var data=entityGrid.dataItem(row);
+
+                        if (confirm('你确定要删除：'+data.value)) {
+                            var dataSource = $("#urgentLevelGrid").data("kendoGrid").dataSource;
+                            dataSource.remove(data);
+                            dataSource.sync();
+                        }
+                    } }
+
+                ],
+                    title: "&nbsp;" }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row",
+            editable: {
+                mode:"inline",
+                update:'true',
+                confirmation: "确认删除这条记录?"
+            }
+        });
+    }
+    //设置 数据表函数
+    function setDeployGrid(){
+        $("#deployGrid").kendoGrid({
+            dataSource:deployGridDataSource,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "选择条件",
+                        eq: "等于",
+                        neq: "不等于"
+
+                    }
+                },
+                messages: {
+                    info: "筛选",
+                    and: "且",
+                    or: "或",
+                    filter: "搜索",
+                    clear: "取消"
+                }
+
+            },
+            toolbar:[{name:"create",text:"添加配置"}],
+            columns:[
+                {field:"id",title:"编号"},
+                {field:"name",title:"配置变量"},
+                {field:"value",title:"配置值"},
+                { command: [
+                    { name: "edit",text: { edit: "编辑", cancel: "取消", update: "更新" } },
+                    { name: "destroy", text: "删除", click: function(e){
+                        var entityGrid = $("#deployGrid").data("kendoGrid");
+                        var row=entityGrid.select();
+                        var data=entityGrid.dataItem(row);
+
+                        if (confirm('你确定要删除：'+data.value)) {
+                            var dataSource = $("#deployGrid").data("kendoGrid").dataSource;
+                            dataSource.remove(data);
+                            dataSource.sync();
+                        }
+                    } }
+
+                ],
+                    title: "&nbsp;" }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row",
+            editable: {
+                mode:"inline",
+                update:'true',
+                confirmation: "确认删除这条记录?"
+            }
+        });
+    }
+
+
+
+
+
+
+
+    //tab选项函数
+    var tabToActivate=$("#tabMissive");
+    $("#tabstrip").kendoTabStrip().data("kendoTabStrip").activateTab(tabToActivate);
+</script>
+
+
+
+</body>
+</html>

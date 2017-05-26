@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="/css/jquery.tokenize.css"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'NewProcess'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">样品接收登记</a>
+                    </li>
+                    <!--<li class="active">Blank Page</li>-->
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+                </div><!-- #nav-search -->
+            </div>
+            <div class="page-content">
+                <!--样品接收登记-->
+                <div id="sample" class="span6 widget-container-span ui-sortable">
+                    <div class="widget-box" style="border-bottom: none;">
+                        <div id="printContent" style="width: 930px;height: 800px;">
+                            <div style="position: absolute;margin-left:90px;margin-top: 1px;">
+                                <label style="font-family:SimSun;font-size: 17px;">SZ/QP23-2011-1</label>
+                                <img src="/img/logo.png" style="position:absolute;margin-left:50px;margin-top:10px;height: 100px;width: 100px;">
+                            </div>
+                            <div style="position: absolute;margin-left:280px;margin-top: 50px;">
+                                <label style="font-family:SimSun;font-size: 30px;letter-spacing: 10px;">国家海洋计量站上海分站</label>
+                            </div>
+                            <div style="position: absolute;margin-left:350px;margin-top: 100px;">
+                                <label style="font-family:SimSun;font-size: 30px;letter-spacing: 10px;">样品接收登记单</label>
+                                <div id="bcTarget" style="margin-left: 400px;margin-top: -140px;">
+                                </div>
+
+                            </div>
+                            <div id="title" style="position: absolute;margin-left:90px;margin-top: 160px;">
+                                <label style="font-family: SimSun;font-size: 17px;">编号:</label>
+                                <label id="fileNo" style="font-family: SimSun;font-size: 17px;"></label>
+                                <!--<label style="font-family:SimSun;font-size: 17px;margin-left: 500px;">SZ/QP23-2011-1</label>-->
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 200px; margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">委托单位全称:</label>
+                                <label id="unitNameVal" style="width: 380px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">委托方联系人:</label>
+                                <label id="contactsVal" style="width:150px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 240px; margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">证书单位全称:</label>
+                                <label id="certiNameVal" style="width:380px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 8px;font-family: SimSun;font-size: 17px;" >联系电话:</label>
+                                <label id="phoneVal" style="width:50px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 280px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">委托单位地址:</label>
+                                <label id="unitAddressVal" style="width:580px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 320px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+
+                            <div style="position: absolute;margin-top: 335px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">样品名称:</label>
+                                <label id="sampleNameVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">规格/型号:</label>
+                                <label id="specificateModelVal" style="width:150px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 370px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">制造厂商:</label>
+                                <label id="factoryNameVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 5px;font-family: SimSun;font-size: 17px;">批量数量:</label>
+                                <label id="num" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 420px;margin-left:90px;" hidden="hidden">
+                                <label style="letter-spacing: 15px;font-family: SimSun;font-size: 17px;">测量范围:</label>
+                                <label id="measureRangeVal" style="width: 350px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">准确度等级:</label>
+                                <label id="accuracyLevelVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position:absolute;margin-top: 400px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">唯一性标识:</label>
+                                <label id="sampleCodeVal" style="width:250px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position:absolute;margin-top: 435px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">出厂编号:</label>
+                                <textarea   id="factoryCodeVal" style="line-height :25px;margin-left: 1px;margin-top: -5px;height:150px;width: 720px;font-family:SimSun;font-size: 17px;border:0px ;color:
+#000000" ></textarea>
+                                  <!--  <textarea  if num<=15;id="factoryCodeVal" style="line-height :100px;margin-left: 85px;margin-top: -40px;height:150px;width: 720px;font-family:SimSun;font-size: 17px;border:0px ;color:
+                                        #000000" ></textarea>-->
+                              <!--<label id="factoryCodeVal" style="width: 700px;font-family: SimSun;font-size: 17px;"></label>-->
+                            </div>
+                            <div style="position: absolute;margin-top: 530px;margin-left:90px;">
+                                <label style="letter-spacing: 20px;font-family: SimSun;font-size: 17px;">附件:</label>
+                                <label id="attachmentVal" style="width: 500px;font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+
+                            <div style="position: absolute;margin-top: 570px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 580px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">服务方式:</label>
+                                <label id="serviceTypeVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">服务类型:</label>
+                                <label id="serviceWayVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 610px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">特色服务:</label>
+                                <label id="characterServiceVal" style="width: 400px;font-family: SimSun;font-size: 17px;">/</label>
+                                <label style="font-family: SimSun;font-size: 17px;">取样方式:</label>
+                                <label id="sampleMethodVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 640px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">委托需求:</label>
+                                <label id="principalRequreVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">检测要求:</label>
+                                <label id="principalTestRequreVal" style="font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 670px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">检测依据:</label>
+                                <label id="principalTestBaseOnVal" style="width: 400px;font-family: SimSun;font-size: 17px;">/</label>
+                                <label style="font-family: SimSun;font-size: 17px;">其他:</label>
+                                <label id="principalOtherVal" style="font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 700px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">检测项目:</label>
+                                <label id="surveillanceProIdVal" style="width: 580px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 730px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">样品初查:</label>
+                                <label>外包装检查：</label>
+                                <label id="sampleTestVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+                                <label>样品外观检查：</label>
+                                <label id="sampleSurfaceVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+                                <label>通电检查：</label>
+                                <label id="sampleElectricVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+                                <label>特殊需求：</label>
+                                <label id="sampleSpecialVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+
+                            </div>
+                            <div style="position: absolute;margin-top: 760px;margin-left:90px;">
+                                <label style="width: 800px;font-family: SimSun;font-size: 14px;">电源电压110V及特殊事项需特别标注并告知受理人员。为检查部分和无外包装样品的任何失效、损坏由委托方自行承担。</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 760px;margin-left:90px;" hidden="hidden">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">备注信息:</label>
+                                <label id="remarkVal" style="width: 500px;font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 790px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 800px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">受理人员:</label>
+                                <label id="receptIdVal" style="width: 200px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="width: 210px;font-family: SimSun;font-size: 17px;">委托人签名:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">领取人签字:</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 830px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">受理日期:</label>
+                                <label id="dealDateVal" style="width: 200px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="width: 210px;letter-spacing: 4px;font-family: SimSun;font-size: 17px;">委托日期:</label>
+                                <label style="letter-spacing: 4px;font-family: SimSun;font-size: 17px;">领取日期:</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 860px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 870px;margin-left:90px;">
+                                <label style="width: 280px;font-family: SimSun;font-size: 17px;">国家海洋计量站上海分站</label>
+                                <label style="font-family: SimSun;font-size: 17px;">地址:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">上海市临港新城海港大道1593号</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 900px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">电话:</label>
+                                <label style="width: 235px;font-family: SimSun;font-size: 17px;">021-20950832</label>
+                                <label style="font-family: SimSun;font-size: 17px;">传真:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">021-20950802</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 930px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 940px;margin-left:90px;">
+                                <p>1、本表一式二份，第二份作为客户取样凭证。</p>
+                                <p>2、"样品外观检查"只限于确认样品外观有无明显损伤；"通电检查"只限于查看样品在通电后是否有电源显示。对样品工作状态的最终判断有专业实验实时人员进行鉴定。</p>
+                                <p>3、请向受理人员说明样品外观和性能是否为110V(或其他非200V)。</p>
+                                <p>4、取件时请仔细核对样品外观和性能是否正常。</p>
+                                <p>5、送检样品的保管期限为6个月，超期未领将作为无主处理。</p>
+                                <p>6、建议送检样品使用原厂包装，如因无适合的外包装而造成玻璃器皿或其他易损易碎送检样品的损坏，由委托方自己负责。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/span-->
+            <div class="clearfix form-actions" id="submitDiv" style="min-width : 768px;margin-top:350px;">
+                <div class="col-md-offset-3 col-md-9" style="position: relative;margin-left: 250px;width:500px;">
+                    <button id="btnPrint" class="btn btn-info"  type="button" style="margin-left: 50px;">
+                        <i class="icon-print bigger-110"></i>
+                        打印
+                    </button>
+                    <button id="cancel" class="btn" type="reset" style="margin-left: 50px;" onclick="javascript:history.go(-1);">
+                        <i class="icon-undo bigger-110"></i>
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+</div>
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+<script src="/js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="/js/jquery-barcode.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/js/jquery-ui.js"></script>
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var sample=/*[[${sample}]]*/ 'sample';//样品及客户信息
+    var serialNumber;//编号对象
+    var currentUserName=/*[[${currentUserName}]]*/ 'currentUserName';
+    var surveillancePro;
+
+
+    //加载样品接收信息
+    function loadReceiveSample(){
+
+        //请求后台生成文件编号
+        $.ajax(
+                {
+                    type:"GET",
+                    url:"/MetroCen/api/sample/Identifier/"+sample.id,
+                    async:false,
+                    success:function(data){
+                        serialNumber=data;
+                        $("#fileNo")[0].innerHTML=serialNumber;
+                    }
+                }
+        )
+        ;
+        //加载条形码
+        $("#bcTarget").empty().barcode(serialNumber, "code128",{barWidth:1, barHeight:30,showHRI:true});
+        $("#unitNameVal").text(sample.unitName);
+        $("#contactsVal").text(sample.contacts);
+        $("#certiNameVal").text(sample.certiName);
+        $("#phoneVal").text(sample.phone);
+        $("#unitAddressVal").text(sample.unitAddress);
+        $("#sampleNameVal").text(sample.sampleName);
+        $("#specificateModelVal").text(sample.specificateModel);
+        $("#factoryNameVal").text(sample.factoryName);
+        var str=sample.factoryCode.split(",");
+        $("#num").text(str.length);
+        $("#measureRangeVal").text(sample.measureRange);
+        $("#accuracyLevelVal").text(sample.accuracyLevel);
+        $("#sampleCodeVal").text(sample.sampleCode);
+        $("#factoryCodeVal").text(sample.factoryCode);
+//        $("#attachmentVal").text(sample.attachments);//附件
+
+
+        //获取服务类型
+        submitAjax("/config/getTypeName/"+sample.serviceType,null,false,"serviceTypeVal")
+        //获取服务方式
+        submitAjax("/config/getServiceWay/"+sample.serviceWay,null,false,"serviceWayVal")
+
+        //获取特殊服务
+        if (sample.characterService==0){
+            $("#characterServiceVal").text("/");
+        }
+        else submitAjax("/config/getcharacterService/"+sample.characterService,null,false,"characterServiceVal")
+        //取样方式
+        submitAjax("/config/getSampleMethod/"+sample.sampleMethod,null,false,"sampleMethodVal")
+
+        if(sample.principalRequre=="1"){
+            $("#principalRequreVal").text("同意受所选定服务类型和检测方法；");
+        }
+        else if(sample.principalRequre=="2"){
+            $("#principalRequreVal").text("委托方选定检测方法。");
+        }
+        $("#principalTestRequreVal").text(sample.principalTestRequre);
+        $("#principalTestBaseOnVal").text(sample.principalTestBaseOn);
+        $("#principalOtherVal").text(sample.principalOther);
+        var sampleLong=sample.sampleDetected+","+sample.surveillancePro;
+        submitAjax("/config/print/getSurveillancePro/"+sampleLong,null,false, "surveillanceProIdVal");
+
+        $("#surveillanceProIdVal").text(surveillancePro);//检测项目
+
+
+        $("#receptIdVal").text(currentUserName);
+        $("#dealDateVal").text(sample.createDate);
+        //外包装检查
+        if(sample.sampleTest=="1"){
+            $("#sampleTestVal").text("好；");
+        }
+        else if(sample.sampleTest=="2"){
+            $("#sampleTestVal").text("差。");
+        }
+        //样品外观检查
+        if(sample.sampleSurface=="1"){
+            $("#sampleSurfaceVal").text("好；");
+        }
+        else if(sample.sampleSurface=="2"){
+            $("#sampleSurfaceVal").text("坏。");
+        }
+        //通电检查
+        if(sample.sampleElectric=="1"){
+            $("#sampleElectricVal").text("需；");
+        }
+        else if(sample.sampleElectric=="2"){
+            $("#sampleElectricVal").text("不需。");
+        }
+        //特殊需求
+        if(sample.sampleSpecial=="1"){
+            $("#sampleSpecialVal").text("有；");
+        }
+        else if(sample.sampleSpecial=="2"){
+            $("#sampleSpecialVal").text("无。");
+        }
+
+
+
+        $("#remarkVal").text(sample.remark);
+        $("#dealDateVal").text(sample.dealDate);
+
+
+
+    }
+
+    $(function() {
+
+//        $("#dealDateVal")[0].innerHTML=getCurrentDate();
+        //打印按钮
+        $("#btnPrint").click(function () {
+       //if (num.val>=15){
+            $("#factoryCodeVal").css({"margin-top":"-35px","margin-left":"90px"});
+       //    } else{
+        //     $("#factoryCodeVal").css({"margin-top":"-60px","margin-left":"90px"});
+         //    }
+            $("#printContent").printArea();
+        });
+
+        //加载页面
+        loadReceiveSample();//加载样品接收信息
+    });
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData,async,bindField){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"GET",
+                    url:submitURL,
+                    data:objData,
+                    async:async,
+                    success:function(data){
+                        $("#"+bindField).text(data);
+                    }
+                }
+        )
+    }
+
+
+    <!--局部打印js-->
+    (function ($) {
+        var printAreaCount = 0;
+        $.fn.printArea = function () {
+            var ele = $(this);
+            var idPrefix = "printArea_";
+            removePrintArea(idPrefix + printAreaCount);
+            printAreaCount++;
+            var iframeId = idPrefix + printAreaCount;
+            var iframeStyle = 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;';
+            iframe = document.createElement('IFRAME');
+            $(iframe).attr({
+                style: iframeStyle,
+                id: iframeId
+            });
+            document.body.appendChild(iframe);
+            var doc = iframe.contentWindow.document;
+            $(document).find("link").filter(function () {
+                return $(this).attr("rel") == "stylesheet";
+            }).each(
+                    function () {
+                        doc.write('<link type="text/css" rel="stylesheet" href="'
+                        + $(this).attr("href") + '" >');
+                    });
+            doc.write('<div class="' + $(ele).attr("class") + '">' + $(ele).html()
+            + '</div>');
+            doc.close();
+            var frameWindow = iframe.contentWindow;
+            frameWindow.close();
+            frameWindow.focus();
+            frameWindow.print();
+        }
+        var removePrintArea = function (id) {
+            $("iframe#" + id).remove();
+        };
+    })(jQuery);
+</script>
+<style>
+
+</style>
+</body>
+</html>

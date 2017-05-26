@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body>
+<script th:inline="javascript">
+
+    // var userbase64 = /*"[[${userbase64}]]"*/ 'userbase64';
+    /*<![CDATA[*/
+    var instanceID = /*[[${instanceID}]]*/ 0;
+    var currentEditableField=/*[[${currentEditableField}]]*/ [];
+    var taskID = /*[[${taskID}]]*/ 0;
+    var taskName= /*[[${currentTaskName}]]*/ null;
+    var missiveSignForm=/*[[${missiveSignForm}]]*/ null;
+    var currentUser=/*[[${currentUser}]]*/ null;
+    var currentUsername=/*[[${currentUser.userName}]]*/ null;
+    var activitiNextStepInfo=/*[[${activitiNextStepInfo}]]*/ null;
+    /*]]>*/
+
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+<div class="main-container-inner">
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+
+
+<div th:replace="slider :: slidermenu(${'xjlc'})"></div>
+
+
+<div class="main-content">
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home home-icon"></i>
+            <a href="#">Home</a>
+        </li>
+
+        <li>
+            <a href="#">Other Pages</a>
+        </li>
+        <li class="active">Blank Page</li>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+        </form>
+    </div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+<div class="widget-box" style="min-width: 1000px">
+    <div class="widget-header widget-header-blue widget-header-flat">
+        <h4 id="taskName_lable" class="lighter"></h4>
+    </div>
+
+    <div class="widget-body" style=" ">
+        <div class="widget-main">
+            <form id="validatorForm" action="">
+                <div class="row" style="width: 100%; display: inline-block">
+                    <div id="validatorDIV" class="col-xs-12">
+                        <div class="col-xs-6">
+                            <div th:class="${#lists.contains(currentEditableField,'MissiveID')}?'':'hide'">
+                                <label for="MissiveID" class="control-label bolder blue">编号: &nbsp;&nbsp;</label>
+                                <input id="MissiveID" name="MissiveID" onchange="missiveNumChanged()" style="width: 70px;" data-required-msg="请填写编号"/>
+                                <span class="k-invalid-msg" data-for="MissiveID"></span>
+                            </div>
+
+                            <div th:class="${#lists.contains(currentEditableField,'SignType')}?'':'hide'">
+                                <label for="SignType" class="control-label bolder blue">签报类型: &nbsp;&nbsp;</label>
+                                <input id="SignType" name="SignType" style="width: 130px;" data-required-msg="请指定签报类型"/>
+                                <span class="k-invalid-msg" data-for="SignType"></span>
+                            </div>
+
+                            <div th:class="${#lists.contains(currentEditableField,'urgentLevel')}?'':'hide'">
+                                <label for="urgentLevel" class="control-label bolder blue">紧急程度: &nbsp;&nbsp;</label>
+                                <input id="urgentLevel" name="urgentLevel" style="width: 100px;" data-required-msg="请指定紧急程度">
+                                <span class="k-invalid-msg" data-for="urgentLevel"></span>
+                            </div>
+
+
+                            <div th:class="${#lists.contains(currentEditableField,'dep_LeaderCheck')}?'':'hide'">
+                                <label id="dep_LeaderCheck_Name" for="dep_LeaderCheck" class="control-label bolder blue">处室领导: &nbsp;&nbsp;</label>
+                                <select id="dep_LeaderCheck" name="dep_LeaderCheck" style="width: 330px;" data-required-msg="请选择处室领导"></select>
+                                <span class="k-invalid-msg" data-for="dep_LeaderCheck"></span>
+                            </div>
+
+                            <div th:class="${#lists.contains(currentEditableField,'officeCheck')}?'':'hide'">
+                                <label id="officeCheck_Name" for="officeCheck" class="control-label bolder blue">办公室复核: &nbsp;&nbsp;</label>
+                                <select id="officeCheck" name="officeCheck" style="width: 315px;" data-required-msg="请选择办公室审核用户"></select>
+                                <span class="k-invalid-msg" data-for="officeCheck"></span>
+                            </div>
+
+
+                            <div>
+                                <label id="counterSign_Person_Name" for="counterSign_Person" class="control-label bolder blue">会签用户: &nbsp;&nbsp;</label>
+                                <select th:Disabled="${#lists.contains(currentEditableField,'counterSign_Person')}?false:true"
+                                        id="counterSign_Person" name="counterSign_Person" style="width: 330px;display: inline-flex;" data-required-msg="请选会签发用户"></select>
+                                <span class="k-invalid-msg" data-for="counterSign_Person"></span>
+                            </div>
+
+                            <div >
+                                <label id="signIssue_Person_Name" for="signIssue_Person" class="control-label bolder blue">签发领导: &nbsp;&nbsp;</label>
+                                <select th:Disabled="${#lists.contains(currentEditableField,'signIssue_Person')}?false:true"
+                                        id="signIssue_Person" name="signIssue_Person" style="width: 330px;display:inline-flex;" data-required-msg="请选择签发领导"></select>
+                                <span class="k-invalid-msg" data-for="signIssue_Person"></span>
+                            </div>
+
+                        </div>
+                        <div th:class="${#lists.contains(currentEditableField,'missiveTittle')}?'':'hide'" class="col-xs-6">
+                            <div>
+                                <label class="control-label bolder blue" for="missiveTittle">标题: &nbsp;&nbsp;</label><br/>
+                                <textarea
+                                          id="missiveTittle" name="missiveTittle" onchange="missiveTittletextChange()" style="height: 135px;width: 500px;"
+                                          data-required-msg="标题不能为空">
+                                </textarea>
+                                <span class="k-invalid-msg" data-for="missiveTittle"></span>
+                            </div>
+                        </div>
+                        <!--<div id="activitiOptionDiv" th:class="${!#lists.contains(currentEditableField,'missiveTittle')}?'col-xs-12':'hide'">-->
+                        <div id="activitiOptionDiv" class="hide">
+                            <div class="hr hr-double hr-dotted hr18"></div>
+                            <div id="activitiOption" class="control-group">
+                                <label id="activitiOption_lable" class="control-label bolder blue"></label><div></div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+<div class="col-xs-12">
+
+<!-- PAGE CONTENT BEGINS -->
+<div id="missiveForm" style="width:891px;height:1260px;background-image: url('/img/MissiveSign.png');background-size:contain;background-repeat:no-repeat">
+    <!--<div id="missiveBackGFromPAD" style="width:891px;height:1260px;-->
+                                        <!--background-size:contain;background-repeat:no-repeat;position: absolute">-->
+    <!--</div>-->
+    <img th:src=@{/api/bgPng/missiveSign/{instanceID}(instanceID=${instanceID})}
+         th:if="${hasBgPng}"
+         style="float:left;position:absolute;top:0px;left:0px"/>
+    <div id="signatureDiv" class="" style="top: -20px;left: -50px;height:1px;width:1px;position: absolute;"></div>
+    <div style="height: 40px;width: 152px;top: 28px;position: absolute;left: 737px;text-align: center;">
+        <label id="MissiveID_lable" style="width: 100%;"></label>
+    </div>
+
+    <!-- 161px 327px -->
+    <div id="SignType_img" style="width: 40px; height: 40px; top: 120px;left: 161px;position: absolute; margin-left: 0px;
+                    background-size: contain; background-repeat: no-repeat;">
+    </div>
+    <!-- 490px 661px 803px-->
+    <div id="urgentLevel_img" style="width: 40px; height: 40px; top: 120px;left: 803px;position: absolute; margin-left: 0px;
+                   background-size: contain; background-repeat: no-repeat;">
+    </div>
+
+    <div style="height: 35px;width: 240px;top: 170px;left: 215px;position: absolute;">
+        <label id="sponsorUnit_lable" style="width: 100%;"></label>
+    </div>
+    <div style="height: 35px;width: 219px;top: 170px;left: 640px;position: absolute;">
+        <label id="drafterUser_lable" style="width: 100%;/* border: solid */"></label>
+    </div>
+    <div style="height: 35px;width: 240px;top: 216px;left: 215px;position: absolute;">
+        <label id="drafterDate_lable" style="width: 100%;"></label>
+    </div>
+    <div style="height: 35px;width: 219px;top: 216px;left: 640px;position: absolute;">
+        <label id="phoneNum_lable" style="width: 100%;"></label>
+    </div>
+    <!--处室领导意见            -->
+    <div th:if="${#lists.contains(currentEditableField, 'dep_LeaderCheck_btn')}" style="height: 20px;width: 20px;top: 254px;left: 158px;position: absolute;">
+        <button class="btn btn-xs btn-primary" id="dep_LeaderCheck_btn" onclick="signaturePlace('signatureDiv',804,270,'dep_LeaderCheck_img',402,135,'dep_LeaderCheck_Base30img',signIssue_Base30,'dep_LeaderCheck_Content')">
+            <i class="icon-edit bigger-110"></i>
+            手写
+        </button>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 55px;background:none;position: absolute;">
+        <img id="dep_LeaderCheck_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 55px;background:none;position: absolute;">
+        <label id="dep_LeaderCheck_Base30img" hidden="hidden"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 55px;background:none;position: absolute;">
+        <textarea th:Disabled="${#lists.contains(currentEditableField,'dep_LeaderCheck_Content')}?false:true"
+                  id="dep_LeaderCheck_Content" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none">
+         </textarea>
+    </div>
+    <!--办公室意见-->
+    <div th:if="${#lists.contains(currentEditableField, 'officeCheck_btn')}" style="height: 20px;width: 20px;top: 254px;left: 576px;position: absolute;">
+        <button class="btn btn-xs btn-primary" id="officeCheck_btn" onclick="signaturePlace('signatureDiv',804,270,'officeCheck_img',402,135,'officeCheck_Base30img',signIssue_Base30,'officeCheck_Content')">
+            <i class="icon-edit bigger-110"></i>
+            手写
+        </button>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 459px;background:none;position: absolute;">
+        <img id="officeCheck_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 459px;background:none;position: absolute;">
+        <label id="officeCheck_Base30img" hidden="hidden"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 459px;background:none;position: absolute;">
+        <textarea th:Disabled="${#lists.contains(currentEditableField,'officeCheck_Content')}?false:true"
+                  id="officeCheck_Content" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none">
+        </textarea>
+    </div>
+
+    <!--会签place-->
+    <div th:if="${#lists.contains(currentEditableField, 'counterSign_SignBtn')}" style="height: 20px;width: 20px;top: 419px;left: 199px;position: absolute;">
+        <button class="btn btn-xs btn-primary" id="counterSign_SignBtn" onclick="signaturePlace('signatureDiv',1156,340,'counterSign_img',771,227,'counterSignBase30img',counterSign_Base30,'counterSign_Content')">
+            <i class="icon-edit bigger-110"></i>
+            手写
+        </button>
+    </div>
+    <div  style="height: 227px;width: 771px;top: 446px;left: 72px;position: absolute;">
+        <label id="counterSignBase30img" hidden/>
+    </div>
+    <div  style="height: 227px;width: 771px;top: 446px;left: 72px;position: absolute;">
+        <img id="counterSign_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 227px;width: 771px;top: 446px;left: 72px;position: absolute;background:none;">
+        <textarea th:Disabled="${#lists.contains(currentEditableField,'counterSign_Content')}?false:true"
+                id="counterSign_Content" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></textarea>
+    </div>
+
+
+    <!--签发place-->
+    <div th:if="${#lists.contains(currentEditableField, 'signIssue_SignBtn')}" style="height: 20px;width: 20px;top: 676px;left: 159px;position: absolute;">
+        <button class="btn btn-xs btn-primary" id="signIssue_SignBtn" onclick="signaturePlace('signatureDiv',1156,376,'signIssue_img',771,251,'signIssueBase30img',signIssue_Base30,'signIssue_Content')">
+            <i class="icon-edit bigger-110"></i>
+            手写
+        </button>
+    </div>
+    <div style="height: 251px;width: 771px;top: 703px;left: 72px;position: absolute;">
+        <label id="signIssueBase30img" hidden="hidden"/>
+    </div>
+    <div style="height: 251px;width: 771px;top: 703px;left: 72px;position: absolute;">
+        <img id="signIssue_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 251px;width: 771px;top: 703px;left: 72px;position: absolute;background:none;">
+        <textarea th:Disabled="${#lists.contains(currentEditableField,'signIssue_Content')}?false:true"
+                id="signIssue_Content" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></textarea>
+
+    </div>
+
+    <!--标题-->
+    <div style="height: 222px;width: 750px;top: 981px;left: 84px;position: absolute;">
+        <pre style="background: none;border: none">
+            <label id="missiveTittle_lable" style="word-wrap: break-word;width: 100%;text-align: left"></label>
+        </pre>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+<!--发文稿纸-->
+
+<table width="891px">
+    <!--Un-->
+    <tr class="trClass borderNone">
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+    </tr>
+    <tr th:class="${#lists.contains(currentEditableField,'attachments')}?'trClass borderNone':'hide'">
+        <td class="borderNone" colspan="6">
+            <div class="hr hr-double hr-dotted hr18"></div>
+            <h3 class="header smaller lighter header-color-red">
+                <i class="icon-cloud-upload"></i>
+                上传附件
+            </h3>
+        </td>
+
+    </tr>
+    <tr th:class="${#lists.contains(currentEditableField,'attachments')}?'trClass borderNone':'hide'">
+        <td class="borderNone" colspan="6">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="demo-section k-header" id="filesDIV">
+                        <input type="file" name="files" id="attachments" />
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+        </td>
+    </tr>
+    <tr class="trClass borderNone">
+        <td class="borderNone" colspan="6">
+
+            <div class="widget-box transparent">
+                <div class="widget-header widget-header-small">
+                    <h4 class="blue smaller">
+                        <i class="icon-list orange"></i>
+                        附件
+                    </h4>
+
+                    <div class="widget-toolbar action-buttons">
+                        <a href="#" data-action="collapse">
+                            <i class="icon-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main padding-8" id="fileList"></div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr class="trClass borderNone">
+        <td class="tdClass borderNone" colspan="6">
+            <div class="clearfix form-actions" style="min-width : 768px">
+                <div class="col-xs-1 col-xs-offset-2 col-sm-offset-2 col-sm-1 col-md-offset-2 col-md-1 ">
+                    <button id="submitAll" class="btn btn-info" type="submit" form="submitForm" onclick="submitAllClick()">
+                        <i class="icon-ok bigger-110"></i>
+                        提交
+                    </button>
+                </div>
+
+                <div class="col-xs-1 col-xs-offset-5 col-sm-offset-5 col-sm-1 col-md-offset-5 col-md-1 ">
+                    <button class="btn btn-danger" data-action="close" onclick="window.location.href='/dbzx';window.event.returnValue = false;">
+                        <i class="icon-remove bigger-110"></i>
+                        取消
+                    </button>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr class="trClass borderNone" hidden>
+        <td class="tdClass borderNone" colspan="6">
+            <div class="clearfix form-actions" style="min-width : 768px" hidden>
+                <form id="submitForm" action="/missiveSign/setMissiveSign" method="POST">
+                    <!--<input id="UserNameF" name="UserName"/>-->
+                    <input id="instanceIDF" name="instanceID"/>
+                    <input id="taskIDF" name="taskID"/>
+                    <input id="missiveNumF" name="missiveNum"/>
+
+                    <input id="urgentLevelF" name="urgentLevel"/>
+                    <input id="signTypeF" name="signType"/>
+
+                    <input id="docFilePathF" name="docFilePath"/>
+                    <input id="pdfFilePathF" name="pdfFilePath"/>
+                    <input id="missiveTittleF" name="missiveTittle"/>
+                    <input id="nameF" name="name"/>
+
+                    <input id="drafterF" name="drafter"/>
+
+
+                    <input id="dep_LeaderCheckF" name="dep_LeaderCheck"/>
+                    <input id="dep_LeaderCheck_imgF" name="dep_LeaderCheck_img"/>
+                    <input id="dep_LeaderCheck_Base30F" name="dep_LeaderCheck_Base30"/>
+                    <input id="dep_LeaderCheck_ContentF" name="dep_LeaderCheck_Content"/>
+
+                    <input id="officeCheckF" name="officeCheck"/>
+                    <input id="officeCheck_imgF" name="officeCheck_img"/>
+                    <input id="officeCheck_Base30F" name="officeCheck_Base30"/>
+                    <input id="officeCheck_ContentF" name="officeCheck_Content"/>
+
+
+                    <input id="signIssueUserNameF" name="signIssueUserName"/>
+                    <input id="signIssueBase30urlF" name="signIssueBase30url"/>
+                    <input id="signIssueImageurlF" name="signIssueImageurl"/>
+                    <input id="signIssue_ContentF" name="signIssue_Content"/>
+
+                    <input id="counterSignUsersNameF" name="counterSignUsersName"/>
+                    <input id="counterSignBase30urlF" name="counterSignBase30url"/>
+                    <input id="counterSignImageurlF" name="counterSignImageurl"/>
+                    <input id="counterSign_ContentF" name="counterSign_Content"/>
+
+
+                    <input id="appendNameF" name="appendName"/>
+
+                    <input id="activitiVariablesF" name="activitiVariables"/>
+
+                </form>
+            </div>
+        </td>
+    </tr>
+
+</table>
+<!-- PAGE CONTENT ENDS -->
+</div><!-- /.col -->
+</div><!-- /.row -->
+</div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+<!-- /#ace-settings-container -->
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+<!--<script src="js/jSingnature/libs/jSignature.min.noconflict.js"></script>-->
+<!--<script src="js/jSingnature/libs/modernizr.js"></script>-->
+<script src="/js/jSingnature/src/jSignature.js"/>
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jSingnature/jSignature.wlsh.js" type="text/javascript" defer></script>
+<script src="/js/jSingnature/src/plugins/jSignature.CompressorBase30.js" type="text/javascript"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script src="/js/fileList.wls.js" type="text/javascript" defer/>
+<script id="fileTemplate" type="text/x-kendo-template">
+    <span class='k-progress'></span>
+    <div class='file-wrapper'>
+        <span class='file-icon #=addExtensionClass(files[0].extension)#'></span>
+        <h4 class='file-heading file-name-heading'>Name: #=name#</h4>
+        <h4 class='file-heading file-size-heading'>Size: #=size# bytes</h4>
+        <button type='button' class='k-upload-action'></button>
+    </div>
+</script>
+<script type="text/javascript">
+function signaturePlace(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Previous,textareaID){
+    /*
+     divName:需要弹出并用来签名的div名称
+     width：需要进行签名div的width
+     height：需要进行签名div的height
+     imgDivName：导出生成图片的div名称
+     imgID:生成图片的ID
+     imgWidth：导出生成图片的div的width
+     imgHeight：导出生成图片的div的height
+     imgUrlForSave:用来保存signature的base30格式的lable的ID
+     signBase30Url_Previous:前一个签字的base30编码
+     signBase30Url_Editer:本次签字的base30编码
+     textareaID */
+    var signBase30Url_Editer;
+
+    try{
+        signBase30Url_Editer=$("#"+imgUrlForSave)[0].value;
+    }
+    catch(error){
+        console.log(error);
+    }
+    openSignatureWindow(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Editer,signBase30Url_Previous,textareaID);
+}
+function missiveNumChanged(){
+    $("#MissiveID_lable")[0].innerText= $("#MissiveID")[0].value;//
+}
+function missiveTittletextChange(){
+    console.log($("#missiveTittle")[0].value)
+    $("#missiveTittle_lable")[0].innerText=  $("#missiveTittle")[0].value;
+}
+
+var resultFiles=[];//存放结果文件集合
+var initFiles = [];
+var version=0;
+if(missiveSignForm.missiveInfo!=null){
+    if(missiveSignForm.missiveInfo.versions[0]!=null){
+        if(missiveSignForm.missiveInfo.versions[0].versionNumber!=0)
+            version=missiveSignForm.missiveInfo.versions[0].versionNumber;
+    }
+}
+var filePath_version=1;
+if(version==0)
+    filePath_version=version+1;
+else
+    filePath_version=version;
+$(function($) {
+    <!--上传文件相关js代码-->
+//        var attachmentkendoUpload = $("#attachments").data("kendoUpload").options.files;
+
+    if(missiveSignForm.missiveInfo!=null){
+        if(missiveSignForm.missiveInfo.versions[0]!=null){
+            if(missiveSignForm.missiveInfo.versions[0].attachments.length!=0){
+                for(var i=0;i<missiveSignForm.missiveInfo.versions[0].attachments.length;i++){
+                    var temp={};
+                    temp.extension="."+missiveSignForm.missiveInfo.versions[0].attachments[i].attachmentTittle.split('.')[missiveSignForm.missiveInfo.versions[0].attachments[i].attachmentTittle.split('.').length-1];//后缀
+                    temp.name=missiveSignForm.missiveInfo.versions[0].attachments[i].attachmentTittle;
+                    temp.size=1;
+                    initFiles.push(temp);
+
+                    //-------add list of attachments--->>>>>
+                    fileListCreate("fileList",temp,"attachments","filesDIV",currentEditableField)
+                }
+            }
+        }
+    }
+    resultFiles=initFiles;//将初始化的文件数字赋值给结果数据，然后将上传文件加入文件数组
+    $("#attachments").kendoUpload({
+        multiple: true,
+        async: {
+            saveUrl: '/missiveSign/upload/'+instanceID,
+            autoUpload: false
+        },
+        localization: {
+            select: "选择文件....",
+            uploadSelectedFiles:"上传"
+
+        },
+        select: onSelect,
+        success: onSuccess,
+        files: initFiles
+    });
+    //set init_files visible be false;
+    for(var initfiles_i=0;initfiles_i<initFiles.length;initfiles_i++){
+        var hide_init_file=$("span[class='k-filename'][title='"+initFiles[initfiles_i].name+"']");
+        for(var hide_init_file_i=0;hide_init_file_i<hide_init_file.length;hide_init_file_i++){
+            $(hide_init_file[hide_init_file_i]).parent()[0].setAttribute("class","hide");
+        }
+    }
+
+
+
+});
+//选择文件时触发事件
+function onSelect(e) {
+}
+
+//上传文件成功时触发事件
+function onSuccess(e) {
+    // Array with information about the uploaded files
+    var files = e.files;
+    //将上传的文件写入到resultFiles数组中
+
+    if(e.operation=="upload"){
+        if (e.response == true) {
+            addObjFromObj(e);//添加文件信息到文件数组
+        }
+    }else{
+        if (e.response == true) {
+            //初始文件对象中删除指定对象
+            delObjFromObj(e);
+        }
+    }
+
+    filePath_version=version+1;
+    $("#fileList").empty();
+    for(var i=0;i<resultFiles.length;i++){
+        var temp=resultFiles[i];
+        //-------add list of attachments--->>>>>
+        fileListCreate("fileList",temp,"attachments","filesDIV",currentEditableField);
+    }
+}
+
+
+
+//初始文件对象中增加上传文件对象
+function addObjFromObj(e){
+    var files= e.files[0];
+
+    var fileName = e.files[0].name;
+    resultFiles=resultFiles.filter(function(el){
+        return el.name!==fileName;
+    });
+    var temp={};
+    temp.name= files.name;//文件名
+    temp.extension=files.extension;//后缀名
+    resultFiles.push(temp);
+    var hide_span_file=$("span[class='k-filename'][title='"+e.files[0].name+"']");
+    for(var span_file_i=0;span_file_i<hide_span_file.length;span_file_i++){
+        $(hide_span_file[span_file_i]).parent()[0].setAttribute("class","hide");
+    }
+}
+function fileListCreate(fileListDiv_id,file,attachment_id,attachmentparent_id,editableElementList){
+    //fileListDiv_id--文件列表的id
+    //file：文件{name;extension;size}
+    //attachment_id:附件控件的id   //其必须有父级元素
+    //attachmentparent_id:父级元素
+    //editableElementList：当前可编辑控件集合的数组
+    //pdfViewerURL:pdf浏览器URL
+    //fileURL：文件下载的URL
+    //fileUploadUrl  文件上传的URL//'/missivePublish/upload/'+instanceID,
+    //fileRemoveURL;文件删除的URL// "/missivePublish/remove/"+instanceID;
+    var pdfViewerURL="/pdfViewer/web/viewer.html?file=";
+    var fileURL="/pdf/missiveSign/"+instanceID+"/"+filePath_version+"/"+file.name;
+    var fileRemoveURL = "/missiveSign/remove/"+instanceID;
+    var fileUploadUrl="/missiveSign/upload/"+instanceID;
+    createFileListElement(fileListDiv_id,file,attachment_id,attachmentparent_id,editableElementList,pdfViewerURL,fileURL,fileUploadUrl,fileRemoveURL);
+}
+
+
+
+</script>
+
+
+<script type="text/javascript">
+//-------------------------变量定义-----------------------------------\
+var blankBase30url="data:image/jsignature;base30,";
+var blankImageurl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxEAAAFjCAYAAABCEoaFAAAWB0lEQVR4Xu3XoREAAAgDMbr/0szwPuiqHOZ3jgABAgQIECBAgAABAkFgYWtKgAABAgQIECBAgACBExGegAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSTwRdcBZA2nfHIAAAAASUVORK5CYII=";//上一个流程的会签签字状态
+
+var MissiveID=null;//收文号
+
+var signType=0;//签报类型
+var signType_lable=null;
+
+var urgentLevel=0;//紧急程度
+var urgentLevel_lable=null;
+
+var sponsorUnit=null;//主办单位
+var drafter=null;//拟稿人
+var drafterDate=null;
+var drafterUserName=null;
+var phoneNum=null;//电话
+
+var dep_LeaderCheck=null;//处室领导核稿
+var dep_LeaderCheck_img=blankImageurl;//签发内容图片
+var dep_LeaderCheck_Content=null;//签发内容textArea
+var dep_LeaderCheck_Base30=blankBase30url;//签发内容图片
+
+
+var officeCheck=null;//办公室复核
+var officeCheck_img=blankImageurl;//签发内容图片
+var officeCheck_Content=null;//签发内容textArea
+var officeCheck_Base30=blankBase30url;//签发内容图片
+
+
+
+var signIssue_Person=null;//签发人员
+var signIssue_img=blankImageurl;//签发内容图片
+var signIssue_Content=null;//签发内容textArea
+var signIssue_Base30=blankBase30url;//签发内容图片
+var counterSign_Person=[];//会签人员
+var counterSign_img=blankImageurl;//会签内容图片
+var counterSign_Base30=blankBase30url;//会签内容图片
+var counterSign_Content=null;//会签内容textArea
+
+
+
+
+
+
+
+var missiveTittle=null;//标题
+
+//var BackImageURLFromPAD=null;//BackImageFromPAD
+
+//var PostServerURL="http://localhost:8080/activiti-rest/service/runtime/tasks/"+taskID;
+var userbase64="Basic c3FoZTE4OjE5ODMxMDI4";
+var variables=[];
+
+
+$(function($) {// //----------------------页面初始化--------------------------------------
+
+    if(currentEditableField.length>0){
+        // the list of elements need validate
+        for(var validator_i=0;validator_i<currentEditableField.length;validator_i++){
+            try{
+                $("#"+currentEditableField[validator_i])[0].setAttribute("required",true);
+            }
+            catch (e){}
+
+        }
+        // the list of elements need not validate
+        var unrequired=["#counterSign_Person"];
+        for(var unrequired_i=0;unrequired_i<unrequired.length;unrequired_i++){
+            try{
+                $(unrequired[unrequired_i])[0].removeAttribute("required");
+            }
+            catch (e){}
+        }
+    }
+    var userdataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                herders:{
+                    "Authorization": $.cookie("userbase64")
+                },
+                url: "/api/user/getalluser",
+                dataType: "json"
+            }
+        }
+    });
+    var groupDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                herders:{
+                    "Authorization": $.cookie("userbase64")
+                },
+                url: "/api/group/getallgroup",
+                dataType: "json"
+            }
+        }
+    });
+    var urgentLevelDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                herders:{
+                    "Authorization": $.cookie("userbase64")
+                },
+                url: "/api/missive/urgentLevel/geturgentlevel",
+                dataType: "json"
+            }
+        }
+    });
+    var signTypeDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                herders:{
+                    "Authorization": $.cookie("userbase64")
+                },
+                url: "/api/missive/signType/getsigntype",
+                dataType: "json"
+            }
+        }
+    });
+
+    $("#SignType").kendoDropDownList({
+//            valuePrimitive: true,
+        dataTextField: "typeName",
+        dataValueField: "id",
+//            value:3,
+        dataSource: signTypeDataSource,
+        change: function(e) {
+
+        },
+        select: function(e) {
+            var item = e.item;
+            var text = item.text();
+            $("#SignType_img")[0].style.backgroundImage="url('/img/OK.png')";
+            if(text=="请示件")
+                $("#SignType_img")[0].style.left="161px";
+            else $("#SignType_img")[0].style.left="327px";
+        }
+
+    });
+
+    $("#urgentLevel").kendoDropDownList({
+
+        dataTextField: "value",
+        dataValueField: "id",
+        dataSource: urgentLevelDataSource,
+//        change: function(e) {
+//            $("#urgentLevel_img")[0].style.backgroundImage="url('/img/OK.png')";
+//            if(this.text()=="加急")
+//                $("#urgentLevel_img")[0].style.left="490px";
+//            else if(this.text()=="急") $("#urgentLevel_img")[0].style.left="661px";
+//            else $("#urgentLevel_img")[0].style.left="803px";
+//        },
+        select: function(e) {
+            var item = e.item;
+            var text = item.text();
+            $("#urgentLevel_img")[0].style.backgroundImage="url('/img/OK.png')";
+            if(text=="加急")
+                $("#urgentLevel_img")[0].style.left="490px";
+            else if(text=="急") $("#urgentLevel_img")[0].style.left="661px";
+            else $("#urgentLevel_img")[0].style.left="803px";
+            // Use the selected item or its text
+        }
+
+    });
+
+
+    $("#dep_LeaderCheck").kendoMultiSelect({
+        theme: "[bootstrap]",
+        placeholder: "请选择处室领导...",
+        dataTextField: "name",
+        dataValueField: "userName",
+//            autoBind: false,
+        maxSelectedItems:1,
+        dataSource: userdataSource,
+        tagTemplate:'#: name #'
+
+
+    });
+    $("#officeCheck").kendoMultiSelect({
+        theme: "[bootstrap]",
+        placeholder: "请选择办公室人员...",
+        dataTextField: "name",
+        dataValueField: "userName",
+        maxSelectedItems:1,
+        dataSource: userdataSource,
+        tagTemplate:'#: name #'
+    });
+
+
+
+
+
+    $("#signIssue_Person").kendoMultiSelect({
+        theme: "[bootstrap]",
+        placeholder: "未选择签发领导...",
+        dataTextField: "name",
+        dataValueField: "userName",
+//            autoBind: false,
+        maxSelectedItems:1,
+        dataSource: userdataSource,
+        tagTemplate:'#: name #',
+
+        value: [
+//                { ProductName: "Chang", ProductID: 2 },
+//                { ProductName: "Uncle Bob's Organic Dried Pears", ProductID: 7 }
+        ]
+    });
+
+    $("#counterSign_Person").kendoMultiSelect({
+        theme: "[bootstrap]",
+        placeholder: "未选择会签用户...",
+        dataTextField: "name",
+        dataValueField: "userName",
+//            autoBind: false,
+        dataSource: userdataSource,
+        tagTemplate:'#: name #'
+    });
+
+
+
+
+
+
+
+    $("#taskName_lable")[0].innerText=taskName;
+    $("#activitiOption_lable")[0].innerText=taskName+"处理(必选)";
+    textAreaUsable("signIssue_Content",currentEditableField);
+    textAreaUsable("counterSign_Content",currentEditableField);
+    textAreaUsable("dep_LeaderCheck_Content",currentEditableField);
+    textAreaUsable("officeCheck_Content",currentEditableField);
+    function textAreaUsable(elementname,ListContainer){
+        try{
+
+            if($.inArray(elementname, ListContainer) > -1){
+
+                $("#"+elementname)[0] .style.border="solid";
+                $("#"+elementname)[0] .style.borderWidth="1px";
+                $("#"+elementname)[0] .style.borderColor="#428bca";
+//                    $("#"+elementname)[0].placeholder="请输入内容..."
+            }
+            else {
+                $("#"+elementname)[0] .style.border="none";
+                $("#"+elementname)[0] .placeholder=""  ;
+            }
+        }
+        catch (e){console.log(e)}
+    }
+    //设置upload可用性
+    var uploadattachments = $("#attachments").data("kendoUpload");
+    if($.inArray("attachments", currentEditableField) > -1){
+//            uploadattachments.disable();
+    }
+    else{
+        uploadattachments.disable();
+    }
+    // enables the upload
+
+    try{
+        var spanLength=$("span[class='hide']").parent().length;
+        for(var spani=0;spani<spanLength;spani++){
+            try{
+                $("span[class='hide']").parent()[0].setAttribute("class","hide");
+            }
+            catch (e){}
+        }
+    }
+    catch (e){}
+
+//=========================================================================
+    if(missiveSignForm.missiveInfo!=null){
+
+        if(missiveSignForm.signType!=null){
+            signType=missiveSignForm.signType.id;
+            signType_lable= missiveSignForm.signType.typeName;
+        }
+
+        if(missiveSignForm.missiveInfo.missiveNum!=0){
+            MissiveID=missiveSignForm.missiveInfo.missiveNum;
+        }
+        if(missiveSignForm.missiveInfo.urgentLevel!=null){
+            urgentLevel=missiveSignForm.missiveInfo.urgentLevel.id;
+            urgentLevel_lable=missiveSignForm.missiveInfo.urgentLevel.value;
+        }
+
+
+    }
+    //根据当前登录用户获取电话，单位，拟稿人的信息 start
+    if(missiveSignForm.drafterUser==null){
+        if(currentUser.group!=null&&currentUser.group.groupName!=null)
+            sponsorUnit=currentUser.group.groupName;//主办单位
+        drafter=currentUser.name;//拟稿人
+        drafterUserName=currentUser.userName
+        phoneNum=currentUser.tel;//电话
+    }
+    else{
+        if(missiveSignForm.drafterUser!=null){
+            if(missiveSignForm.drafterUser.group!=null)
+                sponsorUnit=missiveSignForm.drafterUser.group.groupName;
+            drafter=missiveSignForm.drafterUser.name;
+            drafterUserName=missiveSignForm.drafterUser.userName;
+            phoneNum=missiveSignForm.drafterUser.tel;
+        }
+    }
+    if(missiveSignForm.createdDate!=null){
+        drafterDate=missiveSignForm.createdDate;
+    }
+    else{
+        var myDate = new Date();
+        drafterDate=myDate.toLocaleDateString();
+    }
+
+    //
+    if(missiveSignForm.dep_LeaderCheckUser!=null){
+        dep_LeaderCheck=missiveSignForm.dep_LeaderCheckUser.userName;//部门领导
+
+    }
+    if(missiveSignForm.dep_LeaderCheckContent!=null){//
+        dep_LeaderCheck_img=missiveSignForm.dep_LeaderCheckContent.imageurl;//签发内容图片
+        dep_LeaderCheck_Base30=missiveSignForm.dep_LeaderCheckContent.base30url;
+        dep_LeaderCheck_Content=missiveSignForm.dep_LeaderCheckContent.contentText.replace(/<br>/g,"\n");//签发内容textArea
+    }
+
+
+
+
+    if(missiveSignForm.officeCheckUser!=null){
+        officeCheck=missiveSignForm.officeCheckUser.userName;//办公室复核
+
+    }
+    if(missiveSignForm.officeCheckContent!=null){//
+        officeCheck_img=missiveSignForm.officeCheckContent.imageurl;//签发内容图片
+        officeCheck_Base30=missiveSignForm.officeCheckContent.base30url;
+        officeCheck_Content=missiveSignForm.officeCheckContent.contentText.replace(/<br>/g,"\n");//签发内容textArea
+    }
+
+
+    if(missiveSignForm.signIssueUser!=null){//签发人员
+        signIssue_Person=missiveSignForm.signIssueUser.userName;
+    }
+    if(missiveSignForm.signIssueContent!=null){//
+        signIssue_img=missiveSignForm.signIssueContent.imageurl;//签发内容图片
+        signIssue_Base30=missiveSignForm.signIssueContent.base30url;
+        signIssue_Content=missiveSignForm.signIssueContent.contentText.replace(/<br>/g,"\n");//签发内容textArea
+    }
+    if(missiveSignForm.counterSignUsers!=null){//会签人员
+        try{
+            for(var i=0;i<missiveSignForm.counterSignUsers.length;i++){
+                counterSign_Person.push(missiveSignForm.counterSignUsers[i].userName);
+            }
+        }
+        catch (e){
+            try{
+                counterSign_Person.push(missiveSignForm.counterSignUsers.userName);
+            }
+            catch (e){
+                console.log(e)
+            }
+        }
+
+    }//会签内容end
+    if(missiveSignForm.counterSignContent!=null){//
+        counterSign_img=missiveSignForm.counterSignContent.imageurl;//会签内容图片
+        counterSign_Base30=missiveSignForm.counterSignContent.base30url;
+        counterSign_Content=missiveSignForm.counterSignContent.contentText.replace(/<br>/g,"\n");//会签内容textArea
+    }
+//
+//
+
+
+
+    if(missiveSignForm.missiveTittle!=null){
+        missiveTittle=missiveSignForm.missiveTittle.replace(/<br>/g,"\n");//公开属性
+    }
+
+//    if(missiveSignForm.backgroudImage!=null){
+//        BackImageURLFromPAD=missiveSignForm.backgroudImage;//BackImageFromPAD
+//    }
+    //missiveBackGFromPAD
+    //-----------------------------数据绑定------------------------------>
+    $("#MissiveID")[0].value=MissiveID;//
+
+    $("#MissiveID_lable")[0].innerHTML=MissiveID;//
+
+    var dropdownlisturgentLevel = $("#urgentLevel").data("kendoDropDownList");
+    if(urgentLevel!=0)
+    dropdownlisturgentLevel.value(urgentLevel);
+
+    if(urgentLevel_lable!=null){
+        $("#urgentLevel_img")[0].style.backgroundImage="url('/img/OK.png')";
+        if(urgentLevel_lable=="加急")
+            $("#urgentLevel_img")[0].style.left="490px";
+        else if(urgentLevel_lable=="急") $("#urgentLevel_img")[0].style.left="661px";
+        else $("#urgentLevel_img")[0].style.left="803px";
+    }
+//
+//
+    var dropdownlistSignType = $("#SignType").data("kendoDropDownList");
+    if(signType!=0)
+        dropdownlistSignType.value(signType);
+    if(signType_lable!=null){
+        $("#SignType_img")[0].style.backgroundImage="url('/img/OK.png')";
+        if(signType_lable=="请示件"){
+            $("#SignType_img")[0].style.left="161px";
+        }
+        else if(signType_lable=="报告件") {
+            $("#SignType_img")[0].style.left="327px";
+        }
+    }
+
+//    else
+
+
+    var multiselectdep_LeaderCheck = $("#dep_LeaderCheck").data("kendoMultiSelect");//部门领导
+    multiselectdep_LeaderCheck.value([dep_LeaderCheck]);
+    $("#dep_LeaderCheck_img")[0].src=dep_LeaderCheck_img;//签发图片
+    $("#dep_LeaderCheck_Base30img")[0].value=dep_LeaderCheck_Base30;//签发base30图片
+    $("#dep_LeaderCheck_Content")[0].value=dep_LeaderCheck_Content;//签发content
+
+//
+//
+    var multiselectofficeCheck = $("#officeCheck").data("kendoMultiSelect");//办公室复核
+    multiselectofficeCheck.value([officeCheck]);
+    $("#officeCheck_img")[0].src=officeCheck_img;//签发图片
+    $("#officeCheck_Base30img")[0].value=officeCheck_Base30;//签发base30图片
+    $("#officeCheck_Content")[0].value=officeCheck_Content;//签发content
+
+
+
+//
+    var multiselectsignIssue_Person = $("#signIssue_Person").data("kendoMultiSelect");
+    multiselectsignIssue_Person.value([signIssue_Person]);
+    $("#signIssue_img")[0].src=signIssue_img;//签发图片
+    $("#signIssueBase30img")[0].value=signIssue_Base30;//签发base30图片
+    $("#signIssue_Content")[0].value=signIssue_Content;//签发content
+//
+//
+    var multiselectcounterSign_Person = $("#counterSign_Person").data("kendoMultiSelect");
+    multiselectcounterSign_Person.value(counterSign_Person);
+    $("#counterSign_img")[0].src=counterSign_img;//会签图片
+    $("#counterSignBase30img")[0].value=counterSign_Base30;//
+    $("#counterSign_Content")[0].value=counterSign_Content;//
+//
+//
+//
+//    //获取电话，单位，拟稿人的信息 start
+//
+    $("#sponsorUnit_lable")[0].innerText=sponsorUnit;
+    $("#drafterUser_lable")[0].innerText=drafter;
+    $("#drafterDate_lable")[0].innerText=drafterDate;
+    $("#phoneNum_lable")[0].innerText=phoneNum;
+//
+//
+//
+//
+
+
+//
+//
+    $("#missiveTittle")[0].value=missiveTittle;//标题
+    $("#missiveTittle_lable")[0].innerText = missiveTittle;
+//
+//    if(BackImageURLFromPAD!=null)
+//        $("#missiveBackGFromPAD")[0].style.backgroundImage="url("+BackImageURLFromPAD+")";
+//    //=========================================================
+
+});
+
+if(activitiNextStepInfo!=null){
+    for(var i=0;i<activitiNextStepInfo.length;i++){
+        if(activitiNextStepInfo[i].condition!=""){
+            $("#activitiOptionDiv")[0].className="col-xs-12";
+            var div1=document.createElement("div");
+            $(div1)[0].style.marginLeft="20px";
+            $(div1)[0].style.marginTop="10px";
+            var lable1=document.createElement("lable");
+            var input1=document.createElement("input");
+            input1.className+="ace";
+            $(input1)[0].setAttribute("name","radiogroup2");
+            $(input1)[0].setAttribute("type","radio");
+            $(input1)[0].setAttribute("required",true);
+            $(input1)[0].data = i;
+            input1.onclick = function (e) {
+                // if the condition is "IsBack", Remove all elements' validator which has been seted
+                if(activitiNextStepInfo[e.target.data].condition=="Back"){
+                    if(currentEditableField.length>0){
+                        for(var validator_i=0;validator_i<currentEditableField.length;validator_i++){
+                            try{
+                                $("#"+currentEditableField[validator_i])[0].removeAttribute("required");
+                            }
+                            catch (e){}
+                        }
+                    }
+                }
+                else{
+                    if(currentEditableField.length>0){
+                        for(var validator_i=0;validator_i<currentEditableField.length;validator_i++){
+                            try{
+                                $("#"+currentEditableField[validator_i])[0].setAttribute("required",true);
+                            }
+                            catch (e){}
+                        }
+                        // the list of elements need not validate
+                        var unrequired=["#counterSign_Person"]
+                        for(var unrequired_i=0;unrequired_i<unrequired.length;unrequired_i++){
+                            try{
+                                $(unrequired[unrequired_i])[0].removeAttribute("required");
+                            }
+                            catch (e){}
+                        }
+                    }
+                }
+
+
+                variables.splice(0,variables.length);
+                var variable_json={};
+                $(variable_json).attr("name", "IsPass");
+                $(variable_json).attr("value", activitiNextStepInfo[e.target.data].condition);
+                $(variable_json).attr("type", "string");
+                $(variable_json).attr("multi", "false");
+                variables.push(variable_json);
+
+                if(activitiNextStepInfo[e.target.data].multi==true){
+                    var AssigneeUsers="";
+                    try{
+                        var KendoUsers=$("#"+activitiNextStepInfo[e.target.data].multiAssignee).data("kendoMultiSelect").value();
+                        if(KendoUsers.length!=0){
+                            for(var v=0;v<KendoUsers.length;v++){
+                                if(v==0){
+                                    AssigneeUsers=KendoUsers[v];
+                                }
+                                else{
+                                    AssigneeUsers=AssigneeUsers+";"+KendoUsers[v];
+                                }
+
+                            }
+                        }
+                        else{
+                            alert("请指定"+$("#"+activitiNextStepInfo[e.target.data].multiAssignee+"_Name")[0].innerText);
+                            e.target.checked=false;
+                        }
+                    }
+                    catch (e){
+//                            alert("未选择相关用户！")
+                    }
+                    var variable_json1={};
+                    $(variable_json1).attr("name", activitiNextStepInfo[e.target.data].multiAssignee);
+                    $(variable_json1).attr("value", AssigneeUsers);
+                    $(variable_json1).attr("type", "string");
+                    $(variable_json1).attr("multi", activitiNextStepInfo[e.target.data].multi);
+                    variables.push(variable_json1);
+                }
+                else{
+                    var AssigneeUsers="";
+                    if(activitiNextStepInfo[e.target.data].assignee=="drafterUser"){
+                        AssigneeUsers=missiveSignForm.drafterUser.userName;
+                    }
+                    else{
+                        try{
+                            var KendoUsers=$("#"+activitiNextStepInfo[e.target.data].assignee).data("kendoMultiSelect").value();
+//                                AssigneeUsers=KendoUsers[0];
+                            if(KendoUsers.length!=0){
+                                AssigneeUsers=KendoUsers[0];
+                            }
+                            else{
+                                alert("请指定"+$("#"+activitiNextStepInfo[e.target.data].assignee+"_Name")[0].innerText);
+//                                    console.log(e);
+                                e.target.checked=false;
+                            }
+                        }
+                        catch (ex){
+                            alert("未选择相关用户！")
+                        }
+                    }
+                    var variable_json1={};
+                    $(variable_json1).attr("name", activitiNextStepInfo[e.target.data].assignee);
+                    $(variable_json1).attr("value",AssigneeUsers);
+                    $(variable_json1).attr("type", "string");
+                    $(variable_json1).attr("multi", activitiNextStepInfo[e.target.data].multi);
+                    variables.push(variable_json1);
+                }
+            }
+            $(input1).appendTo($(lable1));
+            var span1=document.createElement("span");
+            span1.className+="lbl";
+            $(span1)[0].style.fontSize="14px";
+            $(span1)[0].style.fontWeight="bold";
+            $(span1)[0].innerText="  "+activitiNextStepInfo[i].name;
+            $(span1).appendTo($(lable1));
+            $(lable1).appendTo($(div1));
+            $(div1).appendTo($("#activitiOption"));
+        }
+    }
+}
+
+
+
+$("#submitForm").submit(function(e) {
+    var validator = $("#validatorDIV").kendoValidator().data("kendoValidator");
+    var validatorForm=$("#validatorForm")[0];
+    if (validator.validate()&&validatorForm.checkValidity()) {
+        if(activitiNextStepInfo!=null){
+            for(var i=0;i<activitiNextStepInfo.length;i++){
+                if(activitiNextStepInfo[i].condition=="") {
+                    variables.splice(0,variables.length);
+                    if(activitiNextStepInfo[0].multi==true){
+                        var AssigneeUsers="";
+                        try{
+                            var KendoUsers=$("#"+activitiNextStepInfo[0].multiAssignee).data("kendoMultiSelect").value();
+                            if(KendoUsers.length!=0){
+                                for(var v=0;v<KendoUsers.length;v++){
+                                    if(v==0){
+                                        AssigneeUsers=KendoUsers[v];
+                                    }
+                                    else{
+                                        AssigneeUsers=AssigneeUsers+";"+KendoUsers[v];
+                                    }
+                                }
+                            }
+                            else{
+                                alert("未指定"+$("#"+activitiNextStepInfo[0].multiAssignee+"_Name")[0].innerText);
+                                e.preventDefault();
+                            }
+
+                        }
+                        catch (e){
+//                                alert("未选择相关用户！")
+                        }
+                        var variable_json={};
+                        $(variable_json).attr("name", activitiNextStepInfo[0].multiAssignee);
+                        $(variable_json).attr("value", AssigneeUsers);
+                        $(variable_json).attr("type", "string");
+                        $(variable_json).attr("multi", activitiNextStepInfo[0].multi);
+                        variables.push(variable_json);
+                    }
+                    else{
+                        var AssigneeUsers="";
+                        if(activitiNextStepInfo[0].assignee=="drafterUser"){
+                            AssigneeUsers=missiveSignForm.drafterUser.userName;
+                        }
+                        else{
+                            try{
+                                var KendoUsers=$("#"+activitiNextStepInfo[0].assignee).data("kendoMultiSelect").value();
+                                if(KendoUsers.length!=0){
+                                    AssigneeUsers=KendoUsers[0];
+                                }
+                                else{
+                                    alert("未指定"+$("#"+activitiNextStepInfo[0].assignee+"_Name")[0].innerText);
+                                    e.preventDefault();
+                                }
+                            }
+                            catch (e){
+//                                    alert("未选择相关用户！");
+                            }
+                        }
+                        var variable_json={};
+                        $(variable_json).attr("name", activitiNextStepInfo[0].assignee);
+                        $(variable_json).attr("value", AssigneeUsers);
+                        $(variable_json).attr("type", "string");
+                        $(variable_json).attr("multi", activitiNextStepInfo[0].multi);
+                        variables.push(variable_json);
+                    }
+                }
+            }
+        }
+        var variablesString="";
+        for(var j=0;j<variables.length;j++){
+            if(j==0){
+                variablesString+=(variables[j].name+","+variables[j].value+","+variables[j].type+","+variables[j].multi);
+            }
+            else{
+                variablesString+=("|"+variables[j].name+","+variables[j].value+","+variables[j].type+","+variables[j].multi);
+            }
+
+        }
+        $("#activitiVariablesF").val(variablesString);
+        console.log("数据提交成功!");
+//            e.preventDefault();
+    } else {
+        alert("请保证信息填写完整！");
+        e.preventDefault();
+
+
+    }
+
+
+});
+
+function submitAllClick(){
+    try{
+
+        var missiveIDValue= $("#MissiveID")[0].value;//公文号
+
+        var signTypeMultiselect = $("#SignType").data("kendoDropDownList");//类型
+        var signTypeMultiselectvalue = signTypeMultiselect.value();
+
+        var urgentLevelMultiselect = $("#urgentLevel").data("kendoDropDownList");//
+        var urgentLevelMultiselectValue= urgentLevelMultiselect.value();//紧急程度
+
+        var drafterValue = drafterUserName;//拟稿人
+
+        var dep_LeaderCheckmultiselect = $("#dep_LeaderCheck").data("kendoMultiSelect");//部门领导
+        var dep_LeaderCheckValue = dep_LeaderCheckmultiselect.value()[0];
+
+        var dep_LeaderCheck_imgValue= $("#dep_LeaderCheck_img")[0].src;//图片
+        var dep_LeaderCheck_Base30Value= $("#dep_LeaderCheck_Base30img")[0].value;//base30图片
+        var dep_LeaderCheck_ContentValue= $("#dep_LeaderCheck_Content")[0].value.replace(/\n/g,"<br>");//content
+
+
+        var officeCheckmultiselect = $("#officeCheck").data("kendoMultiSelect");//办公室复核
+        var officeCheckValue = officeCheckmultiselect.value()[0];
+
+        var officeCheck_imgValue= $("#officeCheck_img")[0].src;//图片
+        var officeCheck_Base30Value= $("#officeCheck_Base30img")[0].value;//base30图片
+        var officeCheck_ContentValue= $("#officeCheck_Content")[0].value.replace(/\n/g,"<br>");//content
+
+
+        var signIssuemultiselect = $("#signIssue_Person").data("kendoMultiSelect");//签发
+        var signIssuemultiselectvalue = signIssuemultiselect.value()[0];
+        var signIssue_imgValue= $("#signIssue_img")[0].src;//签发图片
+        var signIssueBase30imgValue= $("#signIssueBase30img")[0].value;//签发base30图片
+        var signIssue_ContentValue= $("#signIssue_Content")[0].value.replace(/\n/g,"<br>");//签发content
+
+
+        var counterSignmultiselect = $("#counterSign_Person").data("kendoMultiSelect");//会签
+        var counterSignmultiselectvalue = counterSignmultiselect.value();
+        var counterSignmultiselectvalues="";
+        for(var i=0;i<counterSignmultiselectvalue.length;i++){
+            counterSignmultiselectvalues+=counterSignmultiselectvalue[i]+"|";
+        }
+        var counterSign_imgValue= $("#counterSign_img")[0].src;//会签图片
+        var counterSignBase30imgValue= $("#counterSignBase30img")[0].value;//
+        var counterSign_ContentValue= $("#counterSign_Content")[0].value.replace(/\n/g,"<br>");//
+
+
+
+
+        var missiveTittleValue= $("#missiveTittle")[0].value.replace(/\n/g,"<br>");//标题
+
+
+
+        var attachmentNames="";
+        for(var i=0;i<resultFiles.length;i++){
+            attachmentNames=attachmentNames+resultFiles[i].name+"|";
+        }
+
+
+
+//            var variablesString="";
+//            for(var j=0;j<variables.length;j++){
+//                if(j==0){
+//                    variablesString+=(variables[j].name+","+variables[j].value+","+variables[j].type+","+variables[j].multi);
+//                }
+//                else{
+//                    variablesString+=("|"+variables[j].name+","+variables[j].value+","+variables[j].type+","+variables[j].multi);
+//                }
+//
+//            }
+
+
+        $("#instanceIDF").val(instanceID);
+        $("#taskIDF").val(taskID);
+        $("#missiveNumF").val(missiveIDValue);
+
+        $("#urgentLevelF").val(urgentLevelMultiselectValue);
+        $("#signTypeF").val(signTypeMultiselectvalue);
+
+        $("#docFilePathF").val("NONE");
+        $("#pdfFilePathF").val("NONE");
+
+        $("#missiveTittleF").val(missiveTittleValue);
+        $("#nameF").val("NONE");
+
+        $("#drafterF").val(drafterValue);
+
+        $("#dep_LeaderCheckF").val(dep_LeaderCheckValue);
+        $("#dep_LeaderCheck_imgF").val(dep_LeaderCheck_imgValue);
+        $("#dep_LeaderCheck_Base30F").val(dep_LeaderCheck_Base30Value);
+        $("#dep_LeaderCheck_ContentF").val(dep_LeaderCheck_ContentValue);
+
+
+        $("#officeCheckF").val(officeCheckValue);
+        $("#officeCheck_imgF").val(officeCheck_imgValue);
+        $("#officeCheck_Base30F").val(officeCheck_Base30Value);
+        $("#officeCheck_ContentF").val(officeCheck_ContentValue);
+
+        $("#signIssueUserNameF").val(signIssuemultiselectvalue);
+        $("#signIssueBase30urlF").val(signIssueBase30imgValue);
+        $("#signIssueImageurlF").val(signIssue_imgValue);
+        $("#signIssue_ContentF").val(signIssue_ContentValue);
+
+        $("#counterSignUsersNameF").val(counterSignmultiselectvalues);
+        $("#counterSignBase30urlF").val(counterSignBase30imgValue);
+        $("#counterSignImageurlF").val(counterSign_imgValue);
+        $("#counterSign_ContentF").val(counterSign_ContentValue);
+
+
+
+
+
+
+
+        $("#appendNameF").val(attachmentNames);
+
+//        $("#activitiVariablesF").val(variablesString);
+    }
+    catch (e){
+        console.log(e)
+    }
+
+}
+
+
+</script>
+
+
+<style>
+    #missiveForm div label,#missiveForm div textarea{
+        font-size: 18px;
+        color: #666;
+        font-family: "SimSun";
+    }
+    #validatorDIV div div label,#validatorDIV div div label + div{
+        /*margin-top: 2px;*/
+        display: inline-block;
+
+    }
+    #validatorDIV div div{
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #validatorDIV div div div{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    #GOVatrrDIV div{
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #missiveForm div label{
+        text-align: center;
+    }
+
+</style>
+
+<!-- inline scripts related to this page -->
+</body>
+</html>

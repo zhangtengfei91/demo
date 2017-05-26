@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script th:replace="header :: header"></script>
+</head>
+
+<body>
+<script th:inline="javascript">
+    var userbase64 = [[${userbase64}]];
+    var userId=/*[[${userId}]]*/null;
+    var user=/*[[${username}]]*/null;
+    var currentPage=/*[[${currentPage}]]*/ 'currentPage';//当前显示页码
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'dbzx_mySampleInfo'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">首页</a>
+                    </li>
+
+                    <li>
+                        <a href="/">已分发的样品</a>
+                    </li>
+
+                </ul><!-- .breadcrumb -->
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-16">
+                        <div hidden="hidden" id="sampleWin" resizable="false" style="max-width: 500px;max-height: 300px; margin-top: 5px;margin-left: 20px">
+                            <div class="profile-user-info">
+                                <p>
+                                    <label id="nameLbl">检定人员：</label>
+                                    <label id="userName"></label>
+                                    <label id="userId" hidden="hidden"></label>
+                                    <label id="type" hidden="hidden"></label>
+                                    <label id="distributionId" hidden="hidden"></label>
+                                </p>
+                                <p>
+                                    <label for="Password" id="PasswordLbl"></label>
+                                    <input autocomplete="off" id="Password" onfocus="this.select()" required="true" type="password" />
+                                </p>
+                                <p>
+                                <div id="sampleList"></div>
+                                </p>
+
+                            </div>
+                            <div class="space space-10"></div>
+                            <div class="center"><input class="btn btn-sm btn-primary" id="submitBtn" onclick="configPassword()" style="left: -30px;" type="submit" value="提交" />
+                                <a class="btn btn-sm btn-danger" onclick="closeWindow()">关闭</a></div>
+                            <div class="space space-10"></div>
+                        </div>
+                        <div class="modal-body no-padding">
+                            <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center;width:100px">样品名称</th>
+                                    <th style="text-align: center;width:130px">检测项目</th>
+                                    <th style="text-align: center;width:150px">送检单位</th>
+                                    <th style="text-align: center;width:80px">检定者</th>
+                                    <th style="text-align: center;width:80px">取样状态</th>
+                                    <th style="text-align: center;width:80px">归还状态 </th>
+                                    <th style="text-align: center;width:380px">操作 </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="sampleInfo: ${sampleInfo}">
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.sampleName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.SurveillancePro}"></td>
+                                    <!--<td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.factoryCode}"></td>-->
+                                    <!--<td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.statusName.statusName}"></td>-->
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.remark}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.accreditedId.Name}"></td>
+
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.take}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.back}"></td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                        <a href="javascript:void(0);" th:id="${sampleInfo.accreditedId.id}"  th:name="${sampleInfo.accreditedId.Name}"
+                                           th:title="${sampleInfo.Id}" onclick="openWindow('take',this)"  th:value="${sampleInfo.take}"
+                                           class="btn btn-minier bigger btn-primary"><i class="icon-beaker"></i>取样品</a>&nbsp
+
+                                        <a href="javascript:void(0);" th:id="${sampleInfo.accreditedId.id}"  th:name="${sampleInfo.accreditedId.Name}"
+                                           th:title="${sampleInfo.Id}" onclick="openWindow('back',this)" th:value="${sampleInfo.back}"
+                                           class="btn btn-minier bigger btn-warning"><i class="icon-exchange"></i>还样品</a>&nbsp
+
+                                        <a th:href="@{/MetroCen/sample/print/1/{processId}(processId=${sampleInfo.processId})}"
+                                           class="btn btn-minier bigger btn-purple"><i class="icon-search"></i>打印单据</a>&nbsp
+
+                                        <a href="javascript:void(0);" th:id="${sampleInfo.sampleId}" onclick="deleteProcess(this)"
+                                           class="btn btn-minier bigger btn-danger"><i class="icon-trash"></i>删除流程</a>&nbsp
+
+                                        <a th:href="@{/historyProcess/{instanceid}(instanceid=${sampleInfo.processId})}"  target="_blank"
+                                           class="btn btn-minier bigger btn-success"><i class="icon-check"></i>任务信息</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer no-margin-top" style="margin-bottom: 1px">
+                            <ul class="pagination pull-right no-margin">
+                                <li  th:class="${LookPage==1}?'prev disabled':'prev'">
+                                    <a th:href="@{/MetroCen/sample/mySampleInfo/{pagenum}(pagenum=${LookPage-1})}" th:onclick="${LookPage==1}?'return false'">
+                                        <i class="icon-double-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li th:each="num: ${#numbers.sequence(1,taskIngTotalNum)}" th:class="${num==LookPage}?'active'">
+                                    <a th:href="@{/MetroCen/sample/mySampleInfo/{pagenum}(pagenum=${num})}" th:text="${num}"></a>
+                                </li>
+                                <li th:class="${LookPage==taskIngTotalNum}?'next disabled':'next'">
+                                    <a th:href="@{/MetroCen/sample/mySampleInfo/{pagenum}(pagenum=${LookPage+1})}" th:onclick="${LookPage==taskIngTotalNum}?'return false'">
+                                        <i class="icon-double-angle-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script src="/js/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    //打开窗体
+    function openWindow(type,obj){
+        if(type=="back"){
+            if(obj.attributes[6].value=="已还样品"){
+                swal("该样品已经归还");
+                return;
+            }
+            $('#sampleWin').kendoWindow({
+                title: "样品取样",
+                position: {
+                    top: screen.height / 4,
+                    left: screen.width / 2.4
+                },
+                resizable: true,
+                draggable: true,
+                modal: true
+
+            });
+            $("#PasswordLbl").text("归还密码：");
+            $("#type").text("back");
+            getAllBackSampleByUserId(obj.id);//加载未还列表
+
+        }else{
+            if(obj.attributes[6].value=="已取样品"){
+                swal("该样品已经取样");
+                return;
+            }
+            $('#sampleWin').kendoWindow({
+                title: "样品归还",
+                position: {
+                    top: screen.height / 4,
+                    left: screen.width / 2.4
+
+                },
+                resizable: true,
+                draggable: true,
+                modal: true
+
+            });
+            $("#PasswordLbl").text("取样密码：");
+            $("#type").text("take");
+            getAllGetSampleByUserId(obj.id);//加载未取样列表
+        }
+        $("#userId").text(obj.id);//检定员ID
+        $("#userName").text(obj.name);//检定员姓名
+        $("#distributionId").text(obj.title);//样品Id
+
+        $('#sampleWin').data("kendoWindow").open();
+
+        $("#Password").focus();//使密码框处于焦点状态
+    }
+    //验证密码
+    function configPassword(){
+        //验证用户取样品和还样品密码是否正确
+        var type=$("#type").text();//判定是还还是取样品
+        var userId=$("#userId").text();//检定人员ID
+        var password=$("#Password").val();//获取用户输入密码
+        var distributionId=$("#distributionId").text();//样品Id
+        var distributionIds="";
+        //循环获取选中的分发样品Id
+        $("input[name='code']:checked").each(function () {
+            distributionIds+=this.value+",";
+        });
+        distributionIds=distributionIds.substring(0,distributionIds.length-1);//去掉最后一个,
+//        alert(distributionIds);
+//        return;
+        //提交数据判定
+        $.ajax({
+            type:"GET",
+            url:"/api/user/validate/"+distributionIds+"/"+type+"/"+userId+"/"+password,
+        success:function(data){
+            if(data==false){
+                alert("密码验证失败");
+                $("#Password").focus();//使密码框处于焦点状态
+
+            }else{
+                closeWindow();//关闭窗口
+                //页面重新加载
+                window.location.href="/MetroCen/sample/mySampleInfo/"+currentPage;
+
+            }
+
+
+        }
+    })
+    }
+    //根据用户获取该用户所有未取样品
+    function getAllGetSampleByUserId(userId){
+        $("#sampleList").kendoGrid({
+            dataSource:{
+                type:"json",
+                transport:{
+                    read:"/MetroCen/api/sample/distribution/getTakeSampleByUserId/"+userId
+                }
+            },
+            columns:[
+                {
+                    field:"sampleName",
+                    title:"样品名称",
+                    width:"100px",
+                    template:'<input type="checkbox" name="code" value="#:data.id#"/>&nbsp;&nbsp;&nbsp;#:data.sampleName#'
+                },
+                {
+                    field:"unitName",
+                    title:"单位名称",
+                    width:"200px"
+                },
+                {
+                    field:"sampleNum",
+                    title:"数量",
+                    width:"60px"
+
+                }
+            ]
+        }).data("kendoGrid");
+    }
+    //根据用户获取该用户所有未还样品
+    function getAllBackSampleByUserId(userId){
+        $("#sampleList").kendoGrid({
+            dataSource:{
+                type:"json",
+                transport:{
+                    read:"/MetroCen/api/sample/distribution/getBackSampleByUserId/"+userId
+                }
+            },
+            columns:[
+                {
+                    field:"sampleName",
+                    title:"样品名称",
+                    width:"100px",
+                    template:'<input type="checkbox" name="code" value="#:data.id#"/>&nbsp;&nbsp;&nbsp;#:data.sampleName#'
+                },
+                {
+                    field:"unitName",
+                    title:"单位名称",
+                    width:"200px"
+                },
+                {
+                    field:"sampleNum",
+                    title:"数量",
+                    width:"60px"
+                }
+            ]
+        }).data("kendoGrid");
+    }
+    //关闭窗体
+    function closeWindow(){
+        //$("#sampleWin").data("kendoWindow").cleanData();
+        $("#sampleWin").data("kendoWindow").close();
+        //清空window数据
+        $("#userId").text("");//检定员ID
+        $("#userName").text("");//检定员姓名
+        $("#Password").text("");
+
+
+    }
+    //回车提交事件
+    $('#Password').keypress(function(e) {
+        if(e.which == 13) {
+            jQuery(this).blur();
+            jQuery('#submitBtn').focus().click();
+        }
+    });
+
+    //删除流程
+    function deleteProcess(obj){
+        var sampleId=obj.id;//获取到样品Id
+        submitAjax("/MetroCen/api/sample/deleteSample/"+sampleId,null);
+    }
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:submitURL,
+                    data:objData,
+                    success:function(data){
+                        data=false? swal("删除失败"):swal("删除成功");
+                        self.location="/MetroCen/sample/mySampleInfo/1";//页面跳转
+                    }
+                }
+        )
+    }
+</script>
+</body>
+</html>

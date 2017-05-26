@@ -1,0 +1,20 @@
+<html>
+<body>
+<p id="demo"></p>
+<button onclick="myFunction()">Btn</button>
+</body>
+<script>
+function myFunction(){
+	var str="123456-01123456-02456123-03";
+	var reg=/-\d{2}/g;
+	var arr=str.match(reg);//arr[0]:-01,arr[1]:-02
+    var s=new Array(arr.length);
+	for(var i=0;i<s.length;i++)
+	s[i]=arr[i].replace(reg,arr[i]+"|");
+	for(var i=0;i<arr.length;i++)
+	{alert(s[i]);}
+	
+
+}
+</script>
+</html>

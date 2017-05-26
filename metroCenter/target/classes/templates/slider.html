@@ -1,0 +1,371 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body th:fragment="slidermenu(activeitem)">
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success" title="我的流程">
+                <i class="icon-list"></i>
+            </button>
+
+            <button class="btn btn-info">
+                <i class="icon-pencil"></i>
+            </button>
+
+            <button class="btn btn-warning">
+                <i class="icon-group"></i>
+            </button>
+
+            <button class="btn btn-danger">
+                <i class="icon-cogs"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-success"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-danger"></span>
+        </div>
+    </div><!-- #sidebar-shortcuts -->
+    <!--管理员菜单-->
+    <div th:if="${user.getAuthoritiesList().get(0).authority.contains('1')}">
+        <ul class="nav nav-list">
+            <li th:class="${activeitem.contains('dbzx')}?'active'">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text"> 样品 </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li th:class="${activeitem=='dbzx_mySampleTask'}?'active'">
+                        <a href="/MetroCen/sample/mySampleTask/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-folder-close"></i>
+                            样品任务
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='dbzx_mySampleInfo'}?'active'" >
+                        <a href="/MetroCen/sample/mySampleInfo/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-book"></i>
+                            我的样品
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='dbzx_myWaitSample'}?'active'">
+                        <a href="/MetroCen/sample/myWaitSampleInfo/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-bookmark"></i>
+                            待处理样品
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='dbzx_NewSample'}?'active'">
+                        <a href="/MetroCen/sample/1/none">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-edit"></i>
+                            新建样品检定
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li th:class="${activeitem.contains('certificate')}?'active'">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-fire"></i>
+                    <span class="menu-text"> 证书 </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li th:class="${activeitem=='certificate_myCertificateTask'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificateTask/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-folder-close"></i>
+                            证书任务
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='certificate_myCertificate'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificate/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-book"></i>
+                            我的证书
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='certificate_NewCertificate'}?'active'">
+                        <a href="/MetroCen/certificate/2/none">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-edit"></i>
+                            出具样品证书
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='certificate_myCertificateRemake'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificate/remake/1/0">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-exchange"></i>
+                            补办证书
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li th:class="${activeitem=='search'}?'active'">
+                <a href="/MetroCen/search"  class="dropdown-toggle">
+                    <i class="icon-search"></i>
+                    <span class="menu-text"> 搜索 </span>
+                </a>
+            </li>
+            <li th:class="${user.getAuthoritiesList().get(0).authority.contains('7')}?'active'">
+                <a href="/MetroCen/return" class="dropdown-toggle">
+                    <i class="icon-user"></i>
+                    <span class="menu-text"> 样品领取 </span>
+                </a>
+            </li>
+            <li th:class="${activeitem=='ypgg'}?'active'">
+                <!--<a href="/tzgg" class="dropdown-toggle">-->
+                <a href="/MetroCen/history" class="dropdown-toggle">
+                    <i class="icon-envelope"></i>
+                    <span class="menu-text"> 样品公告 </span>
+                </a>
+            </li>
+            <li th:class="${activeitem.contains('xtsz')}?'active'" ><!--th:style="${!session.user.haveAuthority('admin')}?'display:none'"-->
+                <a href="" class="dropdown-toggle">
+                    <i class="icon-cogs"></i>
+                    <span class="menu-text"> 系统设置 </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li th:class="${activeitem=='xtsz_yhgl'}?'active'">
+                        <a href="/user/userManage">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            用户管理
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='xtsz_khgl'}?'active'">
+                        <a href="/MetroCen/ClientConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            客户管理
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='xtsz_ypgl'}?'active'">
+                        <a href="/MetroCen/sampleConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            样品管理
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='xtsz_pzgl'}?'active'">
+                        <a href="/MetroCen/systemConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            系统配置管理
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='xtsz_zspz'}?'active'">
+                        <a href="/MetroCen/CertificateConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            证书配置管理
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul><!-- /.nav-list -->
+    </div>
+    <!--非管理员菜单-->
+    <div th:unless="${user.getAuthoritiesList().get(0).authority.contains('1')}">
+        <ul class="nav nav-list">
+            <li th:class="${activeitem.contains('dbzx')}?'active'">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-flag"></i>
+                    <span class="menu-text"> 样品 </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li th:class="${activeitem=='dbzx_mySampleTask'}?'active'">
+                        <a href="/MetroCen/sample/mySampleTask/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-folder-close"></i>
+                            样品任务
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='dbzx_mySampleInfo'}?'active'" >
+                        <a href="/MetroCen/sample/mySampleInfo/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-book"></i>
+                            我的样品
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='dbzx_myWaitSample'}?'active'">
+                        <a href="/MetroCen/sample/myWaitSampleInfo/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-bookmark"></i>
+                            待处理样品
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='dbzx_NewSample'}?'active'">
+                        <a href="/MetroCen/sample/1/none">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-edit"></i>
+                            新建样品检定
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li th:class="${activeitem.contains('certificate')}?'active'">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-fire"></i>
+                    <span class="menu-text"> 证书 </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li th:class="${activeitem=='certificate_myCertificateTask'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificateTask/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-folder-close"></i>
+                            证书任务
+                        </a>
+                    </li>
+                    <li th:class="${activeitem=='certificate_myCertificate'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificate/1">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-book"></i>
+                            我的证书
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='certificate_NewCertificate'}?'active'">
+                        <a href="/MetroCen/certificate/2/none">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-edit"></i>
+                            出具样品证书
+                        </a>
+                    </li>
+
+                    <li th:class="${activeitem=='certificate_myCertificateRemake'}?'active'">
+                        <a href="/MetroCen/certificate/myCertificate/remake/1/0">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-exchange"></i>
+                            补办证书
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li th:class="${activeitem=='search'}?'active'">
+                <a href="/MetroCen/search"  class="dropdown-toggle">
+                    <i class="icon-search"></i>
+                    <span class="menu-text"> 搜索 </span>
+                </a>
+            </li>
+            <li th:if="${user.getAuthoritiesList().get(0).authority.contains('7')}" th:class="${activeitem=='return'}?'active'">
+                <!--<a href="/schedule" class="dropdown-toggle">-->
+                <a href="/MetroCen/return" class="dropdown-toggle">
+                    <i class="icon-user"></i>
+                    <span class="menu-text"> 样品领取 </span>
+
+
+                </a>
+
+
+            </li>
+            <li th:class="${activeitem=='ypgg'}?'active'">
+                <!--<a href="/tzgg" class="dropdown-toggle">-->
+                <a href="/MetroCen/history" class="dropdown-toggle">
+                    <i class="icon-envelope"></i>
+                    <span class="menu-text"> 样品公告 </span>
+
+
+                </a>
+            </li>
+            <li th:class="${activeitem.contains('xtsz')}?'active'" ><!--th:style="${!session.user.haveAuthority('admin')}?'display:none'"-->
+                <a href="" class="dropdown-toggle">
+                    <i class="icon-cogs"></i>
+                    <span class="menu-text"> 系统设置 </span>
+                    <b class="arrow icon-angle-down"></b>
+
+                </a>
+
+                <ul class="submenu">
+                    <li th:if="${user.getAuthoritiesList().get(0).authority.contains('2')}" th:class="${activeitem=='xtsz_yhgl'}?'active'">
+                        <a href="/user/userManage">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            用户管理
+                        </a>
+                    </li>
+                    <li th:if="${user.getAuthoritiesList().get(0).authority.contains('3')}" th:class="${activeitem=='xtsz_khgl'}?'active'">
+                        <a href="/MetroCen/ClientConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            客户管理
+                        </a>
+                    </li>
+                    <li th:if="${user.getAuthoritiesList().get(0).authority.contains('3')}" th:class="${activeitem=='xtsz_ypgl'}?'active'">
+                        <a href="/MetroCen/sampleConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            样品管理
+                        </a>
+                    </li>
+                    <li th:if="${user.getAuthoritiesList().get(0).authority.contains('4')}" th:class="${activeitem=='xtsz_pzgl'}?'active'">
+                        <a href="/MetroCen/systemConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            系统配置管理
+                        </a>
+                    </li>
+                    <li th:if="${user.getAuthoritiesList().get(0).authority.contains('5')}" th:class="${activeitem=='xtsz_zsgl'}?'active'">
+                        <a href="/MetroCen/CertificateConfig/">
+                            <i class="icon-double-angle-right"></i>
+                            <i class="icon-cog"></i>
+                            证书配置管理
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        </ul><!-- /.nav-list -->
+    </div>
+
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+    <script type="text/javascript">
+        var user = /*[[${User}]]*/ 'User';
+    </script>
+
+    <script type="text/javascript">
+        function createProcess(processChart,processType){
+            window.location.href="/MetroCen/"+processChart+"/"+processType+"/none";
+        }
+    </script>
+
+</div>
+
+</body>
+
+</html>

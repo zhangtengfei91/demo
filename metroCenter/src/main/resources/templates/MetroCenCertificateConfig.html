@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+        <div th:replace="slider :: slidermenu(${'xtsz_zspz'})"></div>
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">配置管理</a>
+                    </li>
+                </ul><!-- .breadcrumb -->
+                <div class="nav-search" id="nav-search">
+                    <span class="input-icon">
+                        <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                        <i class="icon-search nav-search-icon"></i>
+                    </span>
+                </div><!-- #nav-search -->
+            </div>
+        </div><!-- /.main-content -->
+        <div class="page-content">
+            <div id="tabStrip"  >
+                <ul>
+                    <li class="k-state-active">证书模板</li>    <!--默认展开tabStrip-->
+                    <li>标准器具</li>
+                    <li>结果说明</li>
+                </ul>
+
+                <div class="col-xs-12 col-sm-8">
+                    <div id="certifiModelGrid"  ></div>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                    <div  id="standardEquipmentGrid"></div>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                    <div id="resultModelGrid" ></div>
+                </div>
+            </div>
+
+            <!--证书模板-->
+            <div id="certifiModelWnd">
+                <div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 46px" >证书名称:</label>
+                        <input  style="margin-left: 10px;height:30px;width:394px"  id="certifiModelName" /><label style="color: red;margin-left: 5px">*</label>
+                    </div>
+                    <div style="margin:10px">
+                        <label style="margin-left: 36px" >证书模板:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="certifiModelParentId" /><label style="color: red;margin-left: 5px">*</label>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 32px">所属实验室:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="certifiModelLab" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+
+                        <label style="margin-left: 46px" >续页说明:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px" id="certifiModelNextPage"/><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 46px" >续页高度:</label>
+                        <input  style="margin-left: 10px;height:30px;width:394px"  id="certifiModelPageHeight" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+
+                        <label style="margin-left: 46px" >模板编码:</label>
+                        <input  style="margin-left: 10px;height:30px;width:394px"  id="certifiModelCode" />
+
+                    </div>
+
+                    <div style="margin-left:190px;margin-top:20px;">
+                        <button id="saveCertifiModel"  class="k-button" style="marginleft: 180px;"onclick="submitCertifiModel()">
+                            <i class="icon-ok"></i>
+                            保存
+                        </button>
+                        <button id="closeCertifiModel"  class="k-button" style="margin-left: 100px;" >
+                            <i class="icon-remove"></i>
+                            关闭
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--标准器具-->
+            <div id="standardEquipWnd">
+                <div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 75px" >证书模板:</label>
+                        <select id="parentModelId" style="margin-left: 10px;height:30px;width:170px"/><label style="color: red;margin-left: 5px">*</label>
+                        <select  style="margin-left: 40px;height:30px;width:170px"  id="modelId" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+                    <div style="margin:10px 0">
+                        <label style="margin-left: 75px" >设备名称:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="equipmentName" /><label style="color: red;margin-left: 5px">*</label>
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 46px" >装置证书编号:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="equipCertificateNo" /><label style="color: red;margin-left: 5px">*</label>
+                    </div>
+                    <div style="margin-top: 10px">
+
+                        <label style="margin-left: 75px" >仪器编号:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="instrumentNo" />
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+
+                        <label style="margin-left: 75px" >有效期至:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px" id="dueDate"/>
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px" >测量范围/标称值:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="measureRange" />
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 28px">不确定度/准确度:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400p;"  id="accuracy" />
+
+                    </div>
+                    <div style="margin-top: 10px">
+
+
+                        <label style="margin-left:103px;" >类型:</label>
+                        <input  style="margin-left: 10px;height:30px;width:200px"  id="type" /><label style="color: red;margin-left: 5px">*</label>
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 48px" >标准装置中文:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="accuracyCN" />
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left:48px;" >标准装置英文:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px" id="accuracyEN" />
+
+                    </div>
+
+                    <div style="margin-top: 10px">
+                        <label style="margin-left: 48px" >标准器具中文:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px"  id="instrumentAccuracyCN" />
+                    </div>
+                    <div style="margin-top: 10px">
+                        <label style="margin-left:48px;" >标准器具英文:</label>
+                        <input  style="margin-left: 10px;height:30px;width:400px" id="instrumentAccuracyEN" />
+
+                    </div>
+
+
+                    <div style="margin-left:190px;margin-top:20px;">
+                        <button id="saveStandardEquip"  class="k-button" style="marginleft: 180px;"onclick="submitStandardEquip()">
+                            <i class="icon-ok"></i>
+                            保存
+                        </button>
+                        <button id="closeStandardEquip"  class="k-button" style="margin-left: 100px;" >
+                            <i class="icon-remove"></i>
+                            关闭
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!--结果说明-->
+            <div id="resultModelWnd">
+                <div id="details-container">
+                    <div>
+                        <label id="modelLbl"  class="control-label bolder blue vali_lable">证书模板：</label>
+                        <select id="modelParent" style="width:155px;"/>
+                        <select id="modelChild" style="width:155px;margin-left: 104px;"/>
+                    </div><br>
+                    <div>
+                        <label id="nextPageLbl" class="control-label bolder blue vali_lable">续页说明：</label>
+                        <select id="nextPage" style="width: 155px;height:22px"></select>
+                        <label id="nextPageHeightLbl"  style="margin-left:26px;" class="control-label bolder blue vali_lable">续页高度：</label>
+                        <input id="nextPageHeight" class="vali_input"  style="width: 150px;height:25px;">
+
+                    </div><br>
+                    <div>
+                        <textarea id="modelContent" style="width:570px; height:550px" rows="10" cols="51" ></textarea>
+                    </div>
+                    <div style="margin-left:180px;margin-top:10px;">
+                        <button id="saveResultModel"  class="k-button" style="marginleft: 180px;"onclick="submitResultModel()">
+                            保存
+                        </button>
+                        <button id="closeResultModel"  class="k-button" style="margin-left: 100px;" >
+                            关闭
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.page-content -->
+    </div><!-- /.main-container-inner -->
+</div><!-- /.main-container -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    var crudServiceBaseUrl ="/MetroCen/api/certificateConfig";  //根地址
+    var tabStrip = $("#tabStrip").kendoTabStrip().data("kendoTabStrip");      //切换grid
+
+    /*声明datasource*/
+    var certifiModelGridDataSource,standardEquipmentGridDataSource,resultModelGridDataSource;
+    /*声明弹出的窗体*/
+    var certifiModelWnd,standardEquipWnd,resultModelWnd;
+
+
+    /*声明数据选中行的id*/
+    var certifiModelRecordId;
+    var standardEquipRecordId;
+    var resultModelRecordId;
+
+
+    /*声明模板大类*/
+    var modelParentId=0;
+
+    var metroCenModel=[];
+    var metroCenCertificateModel =[];
+
+    /*证书模板*/
+    // 数据源
+    function setCertifiModelGridDataSource(){
+        certifiModelGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/modelLevelTwo",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createCertifiModel",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateModel",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteCertifiModel",
+                    dataType:"json"
+
+                },
+                parameterMap: function(options, operation) {
+                    if(operation !== "read" && options.models) {
+                        var parentId=options.models[0].parentId==undefined?options.models[0].parentId.id:options.models[0].parentId;
+                        var id=options.models[0].id;
+                        var modelName=options.models[0].modelName;
+                        var modelCode=options.models[0].modelCode;
+                        var nextPage=options.models[0].nextPage;
+                        var pageHeight=options.models[0].pageHeight;
+                        var labId=options.models[0].lab.id==undefined?options.models[0].lab:options.models[0].lab.id;
+
+                        while(operation=="create"){
+                            return {parentId:parentId,modelName:modelName,modelCode:modelCode,
+                                nextPage:nextPage,pageHeight:pageHeight,lab:labId};
+                        }
+                        return {id:id,parentId:parentId,modelName:modelName,modelCode:modelCode,
+                            nextPage:nextPage,pageHeight:pageHeight,lab:labId};
+                    }
+                }
+            },
+            batch: true,
+            pageSize: 10,
+            group: { field: "parentId"},
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        parentId:{validation:{required: { message: "必填项" } }},
+                        modelName:{validation:{required: { message: "必填项" } }},
+                        modelCode:{validation:{required: { message: "必填项" } }},
+                        nextPage:{validation:{required: { message: "必填项" } }},
+                        pageHeight:{validation:{required: { message: "必填项" } }},
+                        lab:{validation:{required: { message: "必填项" } }}
+
+                    }
+                }
+            }
+        });
+    }
+    //证书模板 数据表
+    function setCertifiModelGrid(){
+        $("#certifiModelGrid").kendoGrid({
+            dataSource:certifiModelGridDataSource,
+            toolbar:[{template: kendo.template($("#certifiModel_toolbar").html())}],
+            columns:[
+                { field:"parentId",title:"证书模板",editor:parentIdDropDownEditor,hidden:true,groupHeaderTemplate:"证书模板: #=getParentName(data.value)#"},
+                { field: "modelName", title: "证书名称"},
+                { field: "modelCode", title: "模板编码"},
+                { field: "nextPage", title: "续页说明",template:"#=getNextPage(nextPage)#",editor:nextPageDropDown},
+                { field: "pageHeight", title: "续页高度"},
+                { hidden:true,field: "lab", title: "所属实验室",template:"#=getLabName(lab)#",editor:labDropDown},
+                { command: [
+                    {text: "编辑", click: showCertifiModel },   //编辑窗体内容
+                    { text: "删除",click:delCertifiModel }    //删除记录
+                ] }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row"
+        });
+
+        certifiModelWnd = $("#certifiModelWnd").kendoWindow({
+            title: "证书信息",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 630,
+            height:350
+        }).data("kendoWindow");
+    }
+    //查看弹窗
+    function showCertifiModel(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        certifiModelRecordId=dataItem.id;//记录当前被选中的证书模板的id
+
+        /*声明为 下拉 输入框样式并赋值*/
+        var certifiModelParentId= $("#certifiModelParentId").data("kendoDropDownList");
+        certifiModelParentId.value(dataItem.parentId);
+        var certifiModelLab= $("#certifiModelLab").data("kendoDropDownList");
+        certifiModelLab.value(dataItem.lab);
+        var certifiModelNextPage= $("#certifiModelNextPage").data("kendoDropDownList");
+        certifiModelNextPage.value(dataItem.nextPage);
+
+        $("#certifiModelName").val(dataItem.modelName);
+        $("#certifiModelCode").val(dataItem.modelCode);
+        $("#certifiModelPageHeight").val(dataItem.pageHeight);
+
+        certifiModelWnd.center().open();
+    }
+    //删除数据
+    function delCertifiModel(e){
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        certifiModelRecordId=dataItem.id;   //记录当前被选中的证书模板的id
+        var submitData={
+            //提交当前行数据的所有数据
+            id:certifiModelRecordId,
+            parentId:$("#certifiModelParentId").val(),
+            lab:$("#certifiModelLab").val(),
+            nextPage:$("#certifiModelNextPage").val(),
+            modelName:$("#certifiModelName").val(),
+            ModelCode:$("#certifiModelCode").val(),
+            PageHeight:$("#certifiModelPageHeight").val()
+
+        };
+
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/getCertifiModelAuthority/"+certifiModelRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:submitData,
+                    success:function(certifiModelAuthority){
+                        if (certifiModelAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#certifiModelWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            swal({
+                                        title: "确认要删除该数据吗？",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "删除",
+                                        cancelButtonText: "取消",
+                                        closeOnConfirm: true
+                                    },function(){
+                                        //提交数据
+                                        submitCertifiModelAjax(crudServiceBaseUrl +"/deleteCertifiModel/"+certifiModelRecordId,submitData);
+
+                                    }
+                            );
+                        }
+                    }
+                }
+        )
+
+    }
+    //添加数据
+    function addCertifiModel(){
+        $("#certifiModelName").val("");
+        $("#certifiModelCode").val("");
+        $("#certifiModelPageHeight").val("");
+        var certifiModelParentId= $("#certifiModelParentId").data("kendoDropDownList");
+        certifiModelParentId.value("");
+        var certifiModelLab= $("#certifiModelLab").data("kendoDropDownList");
+        certifiModelLab.value("");
+        var certifiModelNextPage= $("#certifiModelNextPage").data("kendoDropDownList");
+        certifiModelNextPage.value("");
+        certifiModelRecordId=0;//添加证书模板，模板id设为0.
+        certifiModelWnd.center().open();
+    }
+    // 保存
+    function submitCertifiModel(){
+        var certifiModelNameVal= $("#certifiModelName").val();
+        var certifiModelCodeVal= $("#certifiModelCode").val();
+        var certifiModelPageHeightVal= $("#certifiModelPageHeight").val();
+        var certifiModelNextPageVal= $("#certifiModelNextPage").val();
+        var certifiModelLabVal= $("#certifiModelLab").val();
+        var certifiModelParentIdVal= $("#certifiModelParentId").val();
+
+
+        if(certifiModelNameVal==""||certifiModelPageHeightVal==""||certifiModelNextPageVal==""||certifiModelLabVal==""||certifiModelParentIdVal==""){
+            alert("带有红色标记的为必填项");
+            return;
+        }else{
+            var submitCertifiModelData={
+                //提交当前行数据的所有数据
+                id:certifiModelRecordId,
+                modelName:certifiModelNameVal,
+                ModelCode:certifiModelCodeVal,
+                PageHeight:certifiModelPageHeightVal,
+                nextPage:certifiModelNextPageVal,
+                lab:certifiModelLabVal,
+                parentId:certifiModelParentIdVal
+
+            };
+            submitCertifiModelAjax(crudServiceBaseUrl + "/createCertifiModel",submitCertifiModelData);
+        }
+    }
+    //提交数据至后台
+    function submitCertifiModelAjax(submitURL,objData){
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/getCertifiModelAuthority/"+certifiModelRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:objData,
+                    success:function(certifiModelAuthority){
+                        if (certifiModelAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#certifiModelWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            $.ajax(
+                                    {
+                                        type:"POST",
+                                        url:submitURL,
+                                        data:objData,
+                                        success:function(data){
+                                            $("#certifiModelWnd").data("kendoWindow").close();
+                                            //重新加载数据源
+                                            setCertifiModelGridDataSource();   //调用设置证书模板 数据源函数
+                                            setCertifiModelGrid();              //调用设置证书模板 数据表函数
+                                        }
+                                    }
+                            )
+                        }
+                    }
+                }
+        )
+
+    }
+
+
+    /*标准器具*/
+    //数据源
+    function setStandardEquipmentGridDataSource(){
+        standardEquipmentGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/standardEquipment",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createStandardEquipment",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateStandardEquipment",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteStandardEquipment",
+                    dataType:"json"
+
+                },
+                parameterMap: function(options, operation) {
+                    if(operation !== "read" && options.models) {
+                        var id=options.models[0].id;
+                        var modelId=options.models[0].modelId;
+                        var parentModelId=options.models[0].parentModelId;
+                        var equipmentName=options.models[0].equipmentName;
+                        var accuracy=options.models[0].accuracy;
+                        var dueDate=options.models[0].dueDate;
+                        var equipCertificateNo=options.models[0].equipCertificateNo;
+                        var measureRange=options.models[0].measureRange;
+                        var type=options.models[0].type;
+                        var accuracyCN=options.models[0].accuracyCN;
+                        var accuracyEN=options.models[0].accuracyEN;
+                        var instrumentAccuracyCN=options.models[0].instrumentAccuracyCN;
+                        var instrumentAccuracyEN=options.models[0].instrumentAccuracyEN;
+                        var instrumentNo=options.models[0].instrumentNo;
+                        while(operation=="create"){
+                            return {modelId:modelId,parentModelId:parentModelId,equipmentName:equipmentName,accuracy:accuracy,
+                                dueDate:dueDate,equipCertificateNo:equipCertificateNo,measureRange:measureRange,
+                                type:type,accuracyCN:accuracyCN,accuracyEN:accuracyEN,instrumentAccuracyCN:instrumentAccuracyCN,
+                                instrumentAccuracyEN:instrumentAccuracyEN,instrumentNo:instrumentNo};
+                        }
+                        return {id:id,modelId:modelId,parentModelId:parentModelId,equipmentName:equipmentName,accuracy:accuracy,
+                            dueDate:dueDate,equipCertificateNo:equipCertificateNo,measureRange:measureRange,
+                            type:type,accuracyCN:accuracyCN,accuracyEN:accuracyEN,instrumentAccuracyCN:instrumentAccuracyCN,
+                            instrumentAccuracyEN:instrumentAccuracyEN,instrumentNo:instrumentNo};
+                    }
+
+                }
+            },
+            batch: true,
+            pageSize: 10,
+            group: { field: "parentModelId"},
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        modelId:{validation:{required: { message: "必填项" } }},
+                        parentModelId:{validation:{required: { message: "必填项" } }},
+                        equipmentName:{validation:{required: { message: "必填项" } }},
+                        accuracy: {validation:{required: { message: "必填项" } }},
+                        dueDate: {validation:{required: { message: "必填项" } }},
+                        equipCertificateNo: {validation:{required: { message: "必填项" } }},
+                        measureRange:{validation:{required: { message: "必填项" } }},
+                        accuracyCN:{validation:{required: { message: "必填项" } }},
+                        accuracyEN: {validation:{required: { message: "必填项" } }},
+                        instrumentAccuracyCN: {validation:{required: { message: "必填项" } }},
+                        instrumentAccuracyEN: {validation:{required: { message: "必填项" } }},
+                        instrumentNo: {validation:{required: { message: "必填项" } }},
+                        type: {validation:{required: { message: "必填项" } }}
+                    }
+                }
+            }
+        });
+    }
+    //标准器具  数据表函数
+    function setStandardEquipmentGrid(){
+        $("#standardEquipmentGrid").kendoGrid({
+            dataSource:standardEquipmentGridDataSource,
+            toolbar:[{template: kendo.template($("#standardEquip_toolbar").html())}],
+            columns:[
+                { field:"parentModelId",title:"证书模板",editor:parentIdDropDownEditor,hidden:true,groupHeaderTemplate:"证书模板: #=getParentName(data.value)#"},
+                {field: "modelId", title: "证书",  editor: modelNameDropDownEditor, template: "#=getModelName(modelId)#",groupHeaderTemplate:"证书: #=getModelNameById(data.value)#" },
+                {field:"equipmentName",title:"设备名称"},
+                {hidden:true,field:"accuracy",title:"不确定度/准确度"},
+                {hidden:true, field:"dueDate", title:"有效期至" },
+                {hidden:true,field:"equipCertificateNo",title:"装置证书编号"},
+                {field:"type",title:"类型",template: "#=getStanEquipType(type)#",editor:stanEquipTypeDropDown},
+                {hidden:true,field:"accuracyCN",title:"标准装置中文"},
+                {hidden:true,field:"accuracyEN",title:"标准装置英文"},
+                {hidden:true,field:"instrumentAccuracyCN",title:"标准器具中文"},
+                {hidden:true,field:"instrumentAccuracyEN",title:"标准器具英文"},
+                {hidden:true,field:"measureRange",title:"测量范围/标称值"},
+                {hidden:true,field:"instrumentNo",title:"仪器编号"},
+                { command: [
+                    {text: "编辑", click: showStandardEquip },   //编辑窗体内容
+                    { text: "删除",click:delStandardEquip }    //删除记录
+                ] }
+            ],
+            pageable: {
+                pageSize: 10,        //设置grid每页数据量，几条数据
+                buttonCount:10,        //下拉显示哪几页
+                input: true,
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    empty:"没有数据",
+                    morePages:"更多页",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row"
+        });
+        standardEquipWnd = $("#standardEquipWnd").kendoWindow({
+            title: "标准器具/装置",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 630,
+            height:630
+        }).data("kendoWindow");
+    }
+    //查看弹窗
+    function showStandardEquip(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        standardEquipRecordId=dataItem.id;//记录ID
+
+        var equipModelId= $("#modelId").data("kendoDropDownList");
+        equipModelId.value(dataItem.modelId);
+        var equipParentModelId= $("#parentModelId").data("kendoDropDownList");
+        equipParentModelId.value(dataItem.parentModelId);
+
+        $("#equipmentName").val(dataItem.equipmentName);
+        $("#measureRange").val(dataItem.measureRange);
+        $("#equipCertificateNo").val(dataItem.equipCertificateNo);
+        $("#dueDate").val(dataItem.dueDate);
+        var str=dataItem.accuracy;//正则表达式处理html已解决
+         var reg=/<[^>]+>/g;//去掉标签<>
+         $("#accuracy").val(str.replace(reg,""));
+     // str.replace( /<[^>]+>/g,"");//data.accuracy;不确定度
+     //  $("#accuracy").val(str);
+        $("#instrumentNo").val(dataItem.instrumentNo);
+        $("#accuracyCN").val(dataItem.accuracyCN);
+        $("#accuracyEN").val(dataItem.accuracyEN);
+        $("#instrumentAccuracyCN").val(dataItem.instrumentAccuracyCN);
+        $("#instrumentAccuracyEN").val(dataItem.instrumentAccuracyEN);
+
+        var type= $("#type").data("kendoDropDownList");
+        type.value(dataItem.type);
+
+        standardEquipWnd.center().open();
+    }
+    //删除数据
+    function delStandardEquip(e){
+
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        standardEquipRecordId=dataItem.id;
+        var submitData={ id:standardEquipRecordId };
+
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/getEquipAuthority/"+standardEquipRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:submitData,
+                    success:function(equipAuthority){
+                        if (equipAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#standardEquipWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            swal({
+                                        title: "确认要删除该数据吗？",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "删除",
+                                        cancelButtonText: "取消",
+                                        closeOnConfirm: true
+                                    },function(){
+
+
+                                        //提交数据
+                                        submitStandardEquipAjax(crudServiceBaseUrl +"/deleteStandardEquipment/"+standardEquipRecordId,submitData);
+
+                                    }
+                            );
+                        }
+                    }
+                }
+        )
+
+    }
+    //添加数据
+    function addStandardEquip(){
+        var equipModelId= $("#modelId").data("kendoDropDownList");
+        equipModelId.value("");
+        var equipParentModelId= $("#parentModelId").data("kendoDropDownList");
+        equipParentModelId.value("");
+
+        $("#equipmentName").val("");
+        $("#measureRange").val("");
+        $("#equipCertificateNo").val("");
+        $("#dueDate").val("");
+        $("#accuracy").val("");
+
+
+
+
+
+        $("#instrumentNo").val("");
+        $("#accuracyCN").val("");
+        $("#accuracyEN").val("");
+        $("#instrumentAccuracyCN").val("");
+        $("#instrumentAccuracyEN").val("");
+
+        var type= $("#type").data("kendoDropDownList");
+        type.value("");
+
+        standardEquipRecordId=0;//添加设备记录，客户ID为0.
+        standardEquipWnd.center().open();
+    }
+    // 保存
+    function submitStandardEquip(){
+        var equipModelIdVal= $("#modelId").val();
+        var equipParentModelIdVal= $("#parentModelId").val();
+        var equipmentNameVal= $("#equipmentName").val();
+        var typeVal= $("#type").val();
+        var equipCertificateNoVal= $("#equipCertificateNo").val();
+        var accuracyWithHtml=$("#accuracy").val();//获取到输入的不确定度/准确度值
+        //输入不确定度/准确度的只要有U就需要加斜体，如果有U95等相关的，需要将95下标
+        if(accuracyWithHtml.indexOf("U=")>-1 || accuracyWithHtml.indexOf("u=")>-1){
+            accuracyWithHtml=accuracyWithHtml.replace(/U/g,"<i>U</i>");
+        }else if(accuracyWithHtml.indexOf("U")>-1 || accuracyWithHtml.indexOf("u")>-1){
+            //accuracyWithHtml=accuracyWithHtml.replace("u","U");//小写的U替换大写U
+
+            var reg=/[U|u]\d{2}/g;//匹配类似 U95 的字符串   //没有[]则会匹配U或者u\d{2}
+            var arrU=accuracyWithHtml.match(reg);//匹配出U95
+            accuracyWithHtml=accuracyWithHtml.replace(/U|u/g,"<i>|U</i>");
+            if(arrU!=null && arrU.length==1){
+                for(var i=0;i<arrU.length;++i){
+                    var val=arrU[i].replace("U","").replace("u","");//替换掉U或u
+                    var subStr="<sub>"+val+"</sub>";
+                    accuracyWithHtml=accuracyWithHtml.replace(val,subStr);
+              }
+            }else if(arrU!=null && arrU.length>1){
+                //多个U95的 使用|进行划分没有|弹出对话框
+
+                accuracyWithHtml=accuracyWithHtml.replace(/\|U/,"U");
+                if(accuracyWithHtml.indexOf("|")>-1){
+                    var accuracyWithHtmls=accuracyWithHtml.split("|");
+                    var accuracyWithHtmlResult="";//存放结果
+                       for(var i=0;i<accuracyWithHtmls.length;++i){
+                           var val=arrU[i].replace("U","").replace("u","");//替换掉U或u 获取到数字
+                           var subStr="<sub>"+val+"</sub>";
+                           accuracyWithHtmls[i]=accuracyWithHtmls[i].replace(val,subStr);
+                           accuracyWithHtmlResult+=accuracyWithHtmls[i]+"<br/>";//换行
+                       }
+
+                    accuracyWithHtml=accuracyWithHtmlResult;
+                }else{
+                    alert("不确定度/准确度需要分隔符|");
+                    return;
+                }
+            }
+        }
+
+        if(equipModelIdVal==""||equipParentModelIdVal==""||equipmentNameVal==""||typeVal==""||equipCertificateNoVal==""){
+            alert("带有红色标记的为必填项");
+            return;
+        }else{
+            var submitData={
+                //封面信息
+                id:standardEquipRecordId,
+                modelId:$("#modelId").val(),
+                parentModelId:$("#parentModelId").val(),
+                equipmentName:$("#equipmentName").val(),
+                measureRange:$("#measureRange").val(),
+                equipCertificateNo:$("#equipCertificateNo").val(),//任务
+                dueDate:$("#dueDate").val(),
+                accuracy:accuracyWithHtml,
+                instrumentNo:$("#instrumentNo").val(),
+                accuracyCN:$("#accuracyCN").val(),
+                accuracyEN:$("#accuracyEN").val(),
+                instrumentAccuracyCN:$("#instrumentAccuracyCN").val(),
+                instrumentAccuracyEN:$("#instrumentAccuracyEN").val(),
+                type:$("#type").val()
+
+            };
+            submitStandardEquipAjax(crudServiceBaseUrl + "/createStandardEquipment",submitData);
+        }
+    }
+    <!--ajax提交数据方法-->//提交数据至后台
+    function submitStandardEquipAjax(submitURL,objData){
+
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/getEquipAuthority/"+standardEquipRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:objData,
+                    success:function(equipAuthority){
+                        if (equipAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#standardEquipWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            $.ajax(
+                                    {
+                                        type:"POST",
+                                        url:submitURL,
+                                        data:objData,
+                                        success:function(data){
+                                            $("#standardEquipWnd").data("kendoWindow").close();
+                                            //重新加载数据源
+                                            setStandardEquipmentGridDataSource();
+                                            setStandardEquipmentGrid()
+                                        }
+                                    }
+                            )
+                        }
+                    }
+                }
+        )
+
+    }
+
+
+    /*结果说明*/
+    function setResultModelGridDataSource(){
+        resultModelGridDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "/resultModel",
+                    dataType: "json"
+                },
+                create:{
+                    url:crudServiceBaseUrl+"/createResultModel",
+                    dataType:"json"
+                },
+                update:{
+                    url:crudServiceBaseUrl+"/updateResultModel",
+                    dataType:"json"
+                },
+                destroy:{
+                    url:crudServiceBaseUrl+"/deleteResultModel",
+                    dataType:"json"
+                }
+            },
+            batch: true,
+            pageSize: 10,
+            group: { field: "parentModelId"},
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { editable: false, nullable: true },
+                        modelContent:{validation:{required: { message: "必填项" } }},
+                        parentModelId:{validation:{required: { message: "必填项" } }},
+                        modelId:{validation:{required: { message: "必填项" } }},
+                        nextPage:{validation:{required: { message: "必填项" } }},
+                        pageHeight: {validation:{required: { message: "必填项" } }}
+                    }
+                }
+            }
+        });
+    }
+
+    //设置证书模板 数据表函数
+    function setResultModelGrid(){
+        $("#resultModelGrid").kendoGrid({
+            dataSource:resultModelGridDataSource,
+            toolbar:[{template: kendo.template($("#resultModel_toolbar").html())}],
+            columns:[
+                { field:"parentModelId",title:"证书模板",editor:parentIdDropDownEditor,hidden:true,groupHeaderTemplate:"证书模板: #=getParentName(data.value)#"},
+                { field: "modelId", title: "证书",  editor: modelNameDropDownEditor, template: "#=getModelName(modelId)#",groupHeaderTemplate:"证书: #=getModelNameById(data.value)#" },
+                { field: "nextPage", title: "续页说明",template:"#=getNextPage(nextPage)#"},
+                {field:"pageHeight",title:"续页高度"},
+                { command: [
+                    {text: "编辑", click: showResultModel },   //编辑窗体内容
+                    { text: "删除",click:delResultModel }    //删除记录
+                ] }
+            ],
+            pageable: {
+                buttonCount:3,
+                input: true,
+
+                messages:{
+                    display:"共{2}条记录",
+                    first:"第一页",
+                    last:"最后一页",
+                    next:"下一页",
+                    previous:"前一页",
+                    morePages:"更多页",
+                    refresh:"刷新表格",
+                    empty:"没有数据",
+                    itemsPerPage:"项数据每页",
+                    page:"第",
+                    of:"页"
+                }
+            },
+            selectable: "row"
+
+        });
+        resultModelWnd = $("#resultModelWnd").kendoWindow({
+            title: "证书模板",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 580,
+            height:705
+        }).data("kendoWindow");
+    }
+    function showResultModel(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        resultModelRecordId=dataItem.id;//记录Id
+
+        var parent= $("#modelParent").data("kendoDropDownList");
+        parent.value(dataItem.parentModelId);//证书大类
+        var child=$("#modelChild").data("kendoDropDownList");
+        child.value(dataItem.modelId);//证书小类
+        var nextPage= $("#nextPage").data("kendoDropDownList");
+        nextPage.value(dataItem.nextPage);//证书大类
+        var content = $("#modelContent").data("kendoEditor");
+        content.value(dataItem.modelContent);//模板内容
+
+        $("#nextPageHeight").val(dataItem.pageHeight);//续页高度说明
+
+        resultModelWnd.center().open();
+    }
+    function delResultModel(e){
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        resultModelRecordId=dataItem.id;
+        var submit={id:resultModelRecordId};
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/resultModelAuthority/"+resultModelRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:submit,
+                    success:function(resultModelAuthority){
+                        if (resultModelAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#resultModelWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            swal({
+                                        title: "确认要删除该数据吗？",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "删除",
+                                        cancelButtonText: "取消",
+                                        closeOnConfirm: true
+                                    },function(){
+
+                                        //提交数据
+                                        submitAjax(crudServiceBaseUrl +"/deleteResultModel",submit);
+                                    }
+                            );
+                        }
+                    }
+                }
+        )
+
+    }
+    function addResultModel(){
+        var parent= $("#modelParent").data("kendoDropDownList");
+        parent.value("");//证书大类
+        var nextPage= $("#nextPage").data("kendoDropDownList");
+        nextPage.value("");
+        var content = $("#modelContent").data("kendoEditor");
+        content.value("");//模板内容
+        $("#nextPageHeight").val("");//续页高度说明
+
+        resultModelRecordId=0;
+        resultModelWnd.center().open();
+    }
+    // 保存
+    function submitResultModel(){
+        var editor = $("#modelContent").data("kendoEditor");//获取编辑框里的内容
+        var pageHeight=$("#nextPageHeight").val();
+        if(!$.isNumeric(pageHeight)){
+            alert("续页高度请输入整数!");
+            return;
+        }
+        var submit={
+            //封面信息
+            id:resultModelRecordId,
+            parentModelId:$("#modelParent").val(),//模板大类
+            modelId:$("#modelChild").val(),//模板小类
+            nextPage:$("#nextPage").val(),//续页说明
+            pageHeight:$("#nextPageHeight").val(),//续页高度
+            modelContent:editor.value()//证书内容
+        };
+        //提交数据
+        submitAjax(crudServiceBaseUrl + "/createResultModel",submit);
+    }
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData){
+        $.ajax(
+                {
+                    url:crudServiceBaseUrl+"/resultModelAuthority/"+resultModelRecordId,
+                    dataType: "json",   //返回格式为json
+                    async: false,//同步，这也是ajax重要特性
+                    type: "GET",   //请求方式
+                    data:objData,
+                    success:function(resultModelAuthority){
+                        if (resultModelAuthority==false){
+                            //没有权限修改，弹出警示框
+                            $("#resultModelWnd").data("kendoWindow").close();
+                            swal({
+                                title:"您没有权限修改！",
+                                type:"warning",
+                                showCancelButton:false,
+                                closeOnConfirm:true,
+                                closeOnCancel:true
+                            });
+
+                        }else
+                        {
+                            //有权限修改，更新数据
+                            $.ajax(
+                                    {
+                                        type:"POST",
+                                        url:submitURL,
+                                        data:objData,
+                                        success:function(data){
+                                            $("#resultModelWnd").data("kendoWindow").close();
+                                            //重新加载数据源
+                                            setResultModelGridDataSource();        //调用设置字段属性 数据源函数
+                                            setResultModelGrid();              //调用设置 数据表函数
+                                        }
+                                    }
+                            )
+                        }
+                    }
+                }
+        )
+    }
+
+    $("#closeCertifiModel").click( function (e) {
+        $("#certifiModelWnd").data("kendoWindow").close();
+    });
+    $("#closeStandardEquip").click( function (e) {
+        $("#standardEquipWnd").data("kendoWindow").close();
+    });
+    $("#closeResultModel").click( function (e) {
+        $("#resultModelWnd").data("kendoWindow").close();
+    });
+
+
+
+    /*声明一级模板下拉框*/
+    function parentIdDropDownEditor(container, options) {
+        $('<input data-value-primitive=true data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    optionLabel: "请选择...",
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: crudServiceBaseUrl + "/model",
+                                dataType: "json"
+                            }
+                        }
+
+                    }
+                });
+    }
+    /*根据parentId获取一类模板名称*/
+    function getParentName(parentId){
+        var returnVal="";
+        $.ajax({
+            dataType:"json",
+            url:crudServiceBaseUrl + "/model",
+            async:false,                       //是否异步：不异步，页面加载同时加载数据
+            success:function(data){
+                for(var i=0;i<data.length;++i){
+                    if(parentId==data[i].id){
+                        returnVal= data[i].modelName;
+                    }
+                }
+
+            }
+        });
+        return returnVal;
+    }
+    /*续页说明，1代表不续页*/
+    function getNextPage(nextPage){
+        if(nextPage=='1'){
+            return "否"
+        }
+        else{
+            return "是";
+        }
+    }
+    function nextPageDropDown(container, options) {
+        $('<input data-text-field="nextPage" data-value-primitive=true  data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource:[
+                        { nextPage: "否", id: 1 },
+                        { nextPage: "是", id: 2 }
+                    ],
+                    optionLabel: "请选择..."
+                });
+    }
+    /*显示该模板所属实验室*/
+    function getLabName(lab){
+        var returnVal="";
+        $.ajax({
+            dataType:"json",
+            url: "/MetroCen/api/config/labName",
+            async:false,                       //是否异步：不异步，页面加载同时加载数据
+            success:function(data){
+                for(var i=0;i<data.length;++i){
+                    if(lab==data[i].id){
+                        returnVal= data[i].labName;
+                    }
+                }
+
+            }
+        });
+        return returnVal;
+    }
+    function labDropDown(container, options) {
+        $('<input  data-text-field="labName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "/MetroCen/api/config/labName",
+                                dataType: "json"
+                            }
+                        }
+
+                    },
+                    optionLabel: "选择实验室"
+                });
+    }
+
+
+    // 标准器具  二级模板下拉列表 编辑框
+    function modelNameDropDownEditor(container, options) {
+        $('<input  data-text-field="modelName" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: crudServiceBaseUrl + "/modelLevelTwo",
+                                dataType: "json"
+                            }
+                        }
+
+                    },
+                    optionLabel: "请选择..."
+                });
+    }
+    //获取二级模板名称
+    function getModelName(modelId){
+        $.ajax({
+            dataType:"json",
+            url:crudServiceBaseUrl + "/modelLevelTwo",
+            async:false,                       //是否异步：不异步，页面加载同时加载数据
+            success:function(data){
+                metroCenCertificateModel=data;
+            }
+        });
+        for(var i= 0;i<metroCenCertificateModel.length;i++){
+            if(metroCenCertificateModel[i].id==modelId){
+                return metroCenCertificateModel[i].modelName;
+            }
+        }
+    }
+    //标准器具类型
+    function stanEquipTypeDropDown(container, options) {
+        $('<input data-text-field="type" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource:[
+                        { type: "计量（基）标准装置", id: 1 },
+                        { type: "计量标准器具", id: 2 }
+                    ],
+                    optionLabel: "选择类型"
+                });
+    }
+    function getStanEquipType(type){
+        var str1="计量（基）标准装置";
+        var str2="计量标准器具";
+
+        if(type=='1') {return str1}
+        else{
+            return str2;
+        }
+
+    }
+
+
+    //程序入口
+    $(function(){
+        setCertifiModelGridDataSource();   //调用设置证书模板 数据源函数
+        setCertifiModelGrid();              //调用设置证书模板 数据表函数
+
+        setStandardEquipmentGridDataSource();
+        setStandardEquipmentGrid();
+
+        setResultModelGridDataSource();
+        setResultModelGrid();
+
+
+
+
+
+        /*设置证书模板弹出框中，默认下拉列表*/
+        /*证书一级模板*/
+        $("#certifiModelParentId").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:crudServiceBaseUrl + "/model"
+                    }
+                }
+            }
+        });
+        /*证书模板实验室*/
+        $("#certifiModelLab").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "labName",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/MetroCen/api/config/labName",
+                        dataType: "json"
+                    }
+                }
+
+            }
+        });
+        /*证书模板续页说明*/
+        $("#certifiModelNextPage").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "nextPage",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource:[
+                { nextPage: "否", id: 1 },
+                { nextPage: "是", id: 2 }
+            ]
+        });
+
+        /*标准器具*/
+        $("#parentModelId").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:crudServiceBaseUrl + "/model"
+                    }
+                }
+            }
+        });
+        $("#modelId").kendoDropDownList({
+            optionLabel: "请选择...",
+            cascadeFrom: "parentModelId",
+            cascadeFromField: "parentId",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelId,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:crudServiceBaseUrl + "/modelLevelTwo"
+                    }
+                }
+            }
+
+        });
+        $("#type").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "type",
+            dataValueField: "id",
+            dataSource:[
+                { type: "计量（基）标准装置", id: 1 },
+                { type: "计量标准器具", id: 2 }
+            ]
+        });
+
+
+
+        /*结果说明*/
+        //证书模板
+        $("#modelParent").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelParentId,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:crudServiceBaseUrl + "/model"
+                    }
+                }
+            }
+        });
+        //二级证书模板
+        $("#modelChild").kendoDropDownList({
+            optionLabel: "请选择...",
+            cascadeFrom: "modelParent",
+            cascadeFromField: "parentId",
+            dataTextField: "modelName",
+            dataValueField: "id",
+            value:modelId,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:crudServiceBaseUrl + "/modelLevelTwo"
+                    }
+                }
+            }
+        });
+        //续页说明
+        $("#nextPage").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "nextPage",
+            dataValueField: "id",
+            dataSource:[
+                { nextPage: "否", id: 1 },
+                { nextPage: "是", id: 2 }
+            ]
+        });
+        $("#modelContent").kendoEditor(
+                {resizable: true },
+                { name: "Bold", tooltip: "Bold the selected text" });
+
+
+
+    });
+
+</script>
+
+<script id="certifiModel_toolbar" type="text/x-kendo-template">
+    <button class="k-button k-button-icontext k-grid-add" id="certifiModel_toolbar_queryBtn" onclick="addCertifiModel();"><span class="k-icon k-add"></span>添加证书</button>   <!--添加证书-->
+
+</script>
+<script id="resultModel_toolbar" type="text/x-kendo-template">
+    <button class="k-button k-button-icontext k-grid-add" id="resultModel_toolbar_queryBtn" onclick="addResultModel();"><span class="k-icon k-add"></span>添加结果说明</button>   <!--添加证书-->
+
+</script>
+
+<script id="standardEquip_toolbar" type="text/x-kendo-template">
+    <button class="k-button k-button-icontext k-grid-add" id="standardEquip_toolbar_queryBtn" onclick="addStandardEquip();"><span class="k-icon k-add"></span>添加标准器具</button>   <!--添加证书-->
+
+</script>
+</body>
+</html>

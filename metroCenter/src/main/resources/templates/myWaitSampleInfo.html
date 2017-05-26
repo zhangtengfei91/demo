@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script th:replace="header :: header"></script>
+
+
+
+</head>
+
+<body>
+<script th:inline="javascript">
+    var userbase64 = [[${userbase64}]];
+    var userId=/*[[${userId}]]*/null;
+    var user=/*[[${username}]]*/null;
+    var currentPage=/*[[${currentPage}]]*/ 'currentPage';//当前显示页码
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'dbzx_myWaitSample'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">首页</a>
+                    </li>
+
+                    <li>
+                        <a href="/">待处理的样品</a>
+                    </li>
+
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <span class="input-icon">
+                        <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                        <i class="icon-search nav-search-icon"></i>
+                    </span>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-16">
+                        <div hidden="hidden" id="sampleWin" resizable="false" style="max-width: 346px;max-height: 300px; margin-top: 5px;margin-left: 20px">
+                            <div class="profile-user-info">
+                               <div style="font-family: SimSun;font-size: 17px;">
+                                   <label id="sampleCodeLbl">唯一性标识：</label>
+                                   <label id="sampleCode"></label>
+                               </div>
+                                <div class="space space-10"></div>
+                                <div style="font-family: SimSun;font-size: 17px;">
+                                    <label id="sampleNameLbl">样品名称：</label>
+                                    <label id="sampleName"></label>
+                                </div>
+                                <div class="space space-10"></div>
+                                <div style="font-family: SimSun;font-size: 17px;">
+                                    <label id="specificateModelLbl">规格/型号：</label>
+                                    <label id="specificateModel"></label>
+                                </div>
+                                <div class="space space-10"></div>
+                                <div style="font-family: SimSun;font-size: 17px;">
+                                    <label id="distributionIdLbl">分发人员：</label>
+                                    <input id="distributionId"></label>
+                                </div>
+
+                            </div>
+                            <div class="space space-10"></div>
+                            <div class="center"><input class="btn btn-sm btn-primary" id="submitBtn" onclick="dealSample()" style="left: -30px;" type="submit" value="提交" />
+                                <a class="btn btn-sm btn-danger" onclick="closeWindow()">关闭</a></div>
+                            <div class="space space-10"></div>
+                        </div>
+                        <div class="modal-body no-padding">
+                            <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center;width:135px">唯一性标识</th>
+                                    <th style="text-align: center;width:200px">样品名称</th>
+                                    <th style="text-align: center;width:160px">规格/型号</th>
+                                    <th style="text-align: center;width:100px">样品数量</th>
+                                    <th style="text-align: center;width:250px">委托单位</th>
+                                    <th style="text-align: center;width:150px">联系人</th>
+                                    <th style="text-align: center;width:200px">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="sampleInfo: ${sampleInfo}">
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.sampleCode}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.sampleName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.specificateModel}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.sampleNum}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.client.unitName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${sampleInfo.client.contacts}"></td>
+                                    <td style="text-align: center;vertical-align:middle">
+                                    <a href="javascript:void(0);" th:id="${sampleInfo.id}"  th:name="${sampleInfo.sampleName}"
+                                       th:title="${sampleInfo.specificateModel}" onclick="openWindow(this)"  th:value="${sampleInfo.sampleCode}"
+                                       class="btn btn-minier bigger btn-primary"><i class="icon-beaker"></i>处理样品</a>
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                     <div class="modal-footer no-margin-top" style="margin-bottom: 1px">
+                         <ul class="pagination pull-right no-margin">
+                             <li  th:class="${LookPage==1}?'prev disabled':'prev'">
+                                 <a th:href="@{/MetroCen/sample/myWaitSampleInfo/{pagenum}(pagenum=${LookPage-1})}" th:onclick="${LookPage==1}?'return false'">
+                                     <i class="icon-double-angle-left"></i>
+                                 </a>
+                             </li>
+                             <li th:each="num: ${#numbers.sequence(1,taskIngTotalNum)}" th:class="${num==LookPage}?'active'">
+                                 <a th:href="@{/MetroCen/sample/myWaitSampleInfo/{pagenum}(pagenum=${num})}" th:text="${num}"></a>
+                             </li>
+                             <li th:class="${LookPage==taskIngTotalNum}?'next disabled':'next'">
+                                 <a th:href="@{/MetroCen/sample/myWaitSampleInfo/{pagenum}(pagenum=${LookPage+1})}" th:onclick="${LookPage==taskIngTotalNum}?'return false'">
+                                     <i class="icon-double-angle-right"></i>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+    var sampleId=0;//样品Id
+    //打开窗体
+    function openWindow(obj){
+        $('#sampleWin').kendoWindow({
+            title: "样品处理",
+            position: {
+                top: screen.height / 4,
+                left: screen.width / 2.4
+            },
+            resizable: true,
+            draggable: true,
+            modal: true
+
+        });
+        sampleId=obj.id;
+        $("#sampleCode").text(obj.attributes[6].value);
+        $("#sampleName").text(obj.name);
+        $("#specificateModel").text(obj.title);
+
+        //绑定分发人员数据
+        $("#distributionId").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            value:userId,
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByPostId/2"
+                    }
+                }
+            }
+        });
+        $('#sampleWin').data("kendoWindow").open();
+    }
+    //关闭窗体
+    function closeWindow(){
+        //$("#sampleWin").data("kendoWindow").cleanData();
+        $("#sampleWin").data("kendoWindow").close();
+    }
+    //对样品进行处理，启动流程，完成样品的接收工作
+    function dealSample(){
+        var dropdown=$("#distributionId").data("kendoDropDownList");
+        var distributionId=dropdown.value();
+        if(distributionId==""){
+            alert("请选择分发人员");
+            return;
+        }
+        submitAjax("/MetroCen/api/sample/dealSample/"+sampleId+"/"+distributionId+"/",null);
+    }
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:submitURL,
+                    data:objData,
+                    success:function(data){
+                        data=false? swal("样品处理出错"):swal("样品处理成功");
+                        self.location="/MetroCen/sample/myWaitSampleInfo/1";//页面跳转
+                    }
+                }
+        )
+    }
+</script>
+</body>
+</html>

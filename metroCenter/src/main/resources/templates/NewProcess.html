@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>新建流程</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script th:replace="header :: header"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/jquery.base64.min.js"></script>
+</head>
+
+
+<body>
+<script th:inline="javascript">
+    var user=/*[[${user.userName}]]*/ 'user';
+</script>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="slider :: slidermenu(${'dbzx_NewProcess'})"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">首页</a>
+                    </li>
+                    <li class="active">新建流程</li>
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row-fluid">
+                    <div class="span6 widget-container-span ui-sortable">
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-small header-color-orange">
+                                <h6>
+                                    <i class="icon-sort"></i>
+                                    计量检定科
+                                </h6>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="settings">
+                                        <i class="icon-cog"></i>
+                                    </a>
+
+                                    <a href="#" data-action="reload">
+                                        <i class="icon-refresh"></i>
+                                    </a>
+
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-down"></i>
+                                    </a>
+
+                                    <a href="#" data-action="close">
+                                        <i class="icon-remove"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <a href="javascript:void(0);"  class="btn btn-app btn-success btn-sm" onclick="createProcess('sample',1)">
+                                        <i  class="icon-share-alt bigger-130"></i>
+                                        样品检定
+                                    </a>&nbsp&nbsp&nbsp
+                                    <a href="javascript:void(0);"  class="btn btn-app btn-warning btn-sm" onclick="createProcess('certificate',2)">
+                                        <i  class="icon-edit bigger1230"></i>
+                                        样品证书
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="span6 widget-container-span ui-sortable">
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-large">
+                                <h4>办公室</h4>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="settings">
+                                        <i class="icon-cog"></i>
+                                    </a>
+
+                                    <a href="#" data-action="reload">
+                                        <i class="icon-refresh"></i>
+                                    </a>
+
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+
+                                    <a href="#" data-action="close">
+                                        <i class="icon-remove"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <a href="#"  class="btn btn-app btn-primary btn-sm">
+                                        <i  class="icon-folder-open-alt bigger-130"></i>
+                                        车辆管理
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+
+
+    </div><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    function createProcess(processChart,processType){
+        window.location.href="/MetroCen/"+processChart+"/"+processType+"/none";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script th:replace="header :: header"></script>
+
+    <link rel="stylesheet" href="/css/image-circle.css"/>
+
+</head>
+
+<body>
+<script  th:inline="javascript">
+
+    var userbase64 = "[[${userbase64}]]";
+    var jobName=/*[[${jobName}]]*/ 'jobName';//职称名称
+    var authority=/*[[${authority}]]*/ 'authority';//管理员
+    var postName=/*[[${postName}]]*/ 'postName';//岗位
+
+</script>
+
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'dbzx'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">首页</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/user/info/{userId}.html(userId=${user.id})}">个人设置</a>
+                    </li>
+
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tab-content no-border padding-24" style="font-size: 14px;background-color:#fff;width:800px;font-family: Microsoft YaHei">
+                            <h2 class="header blue bolder smaller center">用户基本信息</h2>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3 center">
+
+                                    <!--<img id="avatar"  th:src="*{user} ? *{user.imagePath} : '(no user specified)'" />-->
+
+                                    <div style="margin:0 auto" id="avatar1" class="img-circle1" ><div id="avatar" class="img-circle" th:style="'background-image:url(/user/image/'+${userEdit.id}+');'"></div></div> <!---头像-->
+
+                                    <div class="space space-4"></div>
+
+                                </div>
+                                <div class="col-xs-12 col-sm-9">
+
+                                    <div class="profile-user-info">
+                                        <input name="id" type="hidden" th:value="*{userEdit} ? *{userEdit.id} : '0'"/>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 用户名： </div>
+
+                                            <div class="profile-info-value">
+                                                <label th:text="*{userEdit} ? *{userEdit.userName} : '(no userEdit specified)'"></label>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name" style="letter-spacing: 5px;"> 姓名： </div>
+
+                                            <div class="profile-info-value">
+                                                <label th:text="*{userEdit} ? *{userEdit.Name} : '(no userEdit specified)'"></label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 性&nbsp;&nbsp;&nbsp;&nbsp;别： </div>
+
+                                            <div class="profile-info-value">
+                                                <label th:text="*{userEdit} ? *{userEdit.sex} : '(no userEdit specified)'"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</div>
+
+                                            <div class="profile-info-value">
+                                                <label th:text="*{userEdit} ? *{userEdit.email} : '(no userEdit specified)'"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 手&nbsp;&nbsp;&nbsp;&nbsp;机： </div>
+
+                                            <div class="profile-info-value">
+                                                <label th:text="*{userEdit} ? *{userEdit.tel} : '(no userEdit specified)'"></label>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name">科&nbsp;&nbsp;&nbsp;&nbsp;室： </div>
+
+                                            <div class="profile-info-value">
+
+                                                <!--<label  th:text="*{user != null and user.group != null and user.group.group !=null or user.group.group.group !=null}?*{user.group.groupName}:'(no user specified)'"></label>-->
+                                                <label  th:text="*{userEdit != null and userEdit.group != null and userEdit.group.groupName!=null}?*{userEdit.group.groupName}:'(no userEdit specified)'"></label>
+
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name">职&nbsp;&nbsp;&nbsp;&nbsp;称： </div>
+
+                                            <div class="profile-info-value">
+                                                <label id="jobNameLbl"></label>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name">岗&nbsp;&nbsp;&nbsp;&nbsp;位： </div>
+
+                                            <div class="profile-info-value">
+
+                                                <label id="postNameLbl"></label>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name">管理员： </div>
+
+                                            <div class="profile-info-value">
+
+                                                <label id="authorityLbl"></label>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="hr hr-8 dotted"></div>
+                                    <div class="center"><a style="left: -60px;" th:href="@{/user/edit/{userid}.html(userid=${userEdit.id})}" class="btn btn-primary">编辑</a>
+                                        <a th:href="@{/MetroCen/index/Sample/{userid}.html(userid=${user.id})}" class="btn btn-primary">返回</a></div>
+                                    <div class="hr hr-8 dotted"></div>
+                                </div><!-- /span -->
+                            </div><!-- /row-fluid -->
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+
+
+    </div><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script>
+$(function(){
+    $("#jobNameLbl")[0].innerHTML=jobName;//加载职称名称
+    $("#authorityLbl")[0].innerHTML=authority;//加载管理
+    $("#postNameLbl")[0].innerHTML=postName;//加载管理
+
+})
+</script>
+</body>
+</html>

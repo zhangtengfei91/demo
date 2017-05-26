@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+   <script th:replace="header :: header"></script>
+    <style>
+        #missiveForm div textarea,label{
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+<!--上传文件相关样式-->
+
+
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+
+
+
+
+    <div id="missiveForm" style="width:891px;height:1250px;background-image: url('/img/faxCablePublishStatic.png');background-size:contain;background-repeat:no-repeat">
+        <img th:src=@{/api/bgPng/FaxCable/{processID}(processID=${proTaskID.processID})}
+             th:if="${hasBgPng}"
+             style="float:left;position:absolute;top:0px;left:0px"/>
+        <div  style="height: 40px;width: 65px;top: 112px;position: absolute;left: 190px;">
+            <label id="FaxCableNumLbl" style="width: 65px;"th:text="${proTaskID.FaxCableNum!=null?proTaskID.FaxCableNum:''}"></label>
+        </div>
+
+        <!--密级-->
+        <div style="height: 40px;width: 100px;top: 113px;left: 490px;position: absolute;">
+            <label  id="FaxCableSecLvLbl" th:text="${proTaskID.secretLevel!=null?proTaskID.secretLevel:''}" style="width: 100px;"/>
+        </div>
+        <!--传真电报种类-->
+        <div style="height: 40px;width: 100px;top: 112px;left: 740px;position: absolute;">
+            <label  id="FaxCableMisTypeLbl"th:text="${proTaskID.FaxCableMisType!=null?proTaskID.FaxCableMisType:''}" style="width: 130px;"/>
+        </div>
+        <!--签发place-->
+        <div style="height: 40px;width: 250px;top: 165px;left: 135px;position: absolute;">
+            <label  id="FaxCableSigPersonLbl" th:text="${proTaskID.FaxCableSigPerson!=null?proTaskID.FaxCableSigPerson:''}" style="width: 250px;"/>
+        </div>
+        <div style="height: 250px;width: 410px;top: 220px;left: 45px;position: absolute;">
+            <img id="signIssue_img" th:src="${proTaskID.signIssue_img!=null?proTaskID.signIssue_img:''}" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+        </div>
+        <div style="height: 250px;width: 410px;top: 220px;left: 45px;position: absolute;">
+            <label id="signIssueBase30img" th:src="${proTaskID.signIssueBase30img!=null?proTaskID.signIssueBase30img:''}" hidden="hidden"/>
+        </div>
+        <div style="height: 250px;width: 410px;top: 220px;left: 35px;background:none;position: absolute;">
+            <label id="FaxCableSigContent" th:text="${proTaskID.FaxCableSigContent!=null?proTaskID.FaxCableSigContent:''}"
+                      style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></label>
+        </div>
+        <!--处室领导核搞place-->
+        <div style="height: 40px;width: 260px;top: 165px;left: 625px;position: absolute;">
+            <label id="FaxCableDepChkPersonLbl" th:text="${proTaskID.FaxCableDepChkPerson!=null?proTaskID.FaxCableDepChkPerson:''}" style="width: 260px;"></label>
+        </div>
+        <div  style="height: 250px;width: 410px;top: 220px;left: 460px;position: absolute;">
+            <label id="counterSignBase30img" th:text="${proTaskID.counterSignBase30img!=null?proTaskID.counterSignBase30img:''}" hidden/>
+        </div>
+        <div  style="height: 250px;width: 410px;top: 220px;left: 460px;position: absolute;">
+            <img id="counterSign_img" th:src="${proTaskID.counterSign_img!=null?proTaskID.counterSign_img:''}" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+        </div>
+        <div style="height: 250px;width: 410px;top: 220px;left: 35px;background:none;position: absolute;">
+            <label id="FaxCableLeaderContent" th:text="${proTaskID.FaxCableLeaderContent!=null?proTaskID.FaxCableLeaderContent:''}"
+                   style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></label>
+        </div>
+        <div style="height: 40px;width: 250px;top: 490px;left: 135px;position: absolute;">
+            <label id="FaxCableMainSendPersonLbl" th:text="${proTaskID.FaxCableMainSendPerson!=null?proTaskID.FaxCableMainSendPerson:''}" style="width: 250px;"></label>
+        </div>
+        <div style="height: 40px;width: 250px;top: 490px;left: 535px;position: absolute;">
+            <label id="FaxCableMainCopyPersonLbl"  th:text="${proTaskID.FaxCableMainCopyPerson!=null?proTaskID.FaxCableMainCopyPerson:''}" style="width: 250px;"></label>
+        </div>
+
+
+        <!---->
+        <div style="height: 35px;width: 280px;top: 535px;left: 170px;position: absolute;">
+            <label id="sponsorUnit" th:text="${proTaskID.sponsorUnit!=null?proTaskID.sponsorUnit:''}" style="width: 280px;"></label>
+        </div>
+        <div style="height: 35px;width: 280px;top: 590px;left: 170px;position: absolute;">
+            <label id="drafter" th:text="${proTaskID.drafter!=null?proTaskID.drafter:''}" style="width: 280px;/* border: solid */"></label>
+        </div>
+        <div style="height: 35px;width: 280px;top: 635px;left: 170px;position: absolute;">
+            <label id="phoneNum" th:text="${proTaskID.phoneNum!=null?proTaskID.phoneNum:''}" style="width: 280px;"></label>
+        </div>
+        <div style="height: 35px;width: 280px;top: 680px;left: 170px;position: absolute;">
+            <label id="composeUser" th:text="${proTaskID.composeUser!=null?proTaskID.composeUser:''}" style="width: 280px;"></label>
+        </div>
+
+        <div style="height: 35px;width: 270px;top: 540px;left: 600px;position: absolute;">
+            <label id="officeCheck" th:text="${proTaskID.officeCheck!=null?proTaskID.officeCheck:''}" style="width: 270px;"></label>
+        </div>
+        <div style="height: 35px;width: 80px;top: 585px;left: 600px;position: absolute;">
+            <label id="printCountLbl" th:text="${proTaskID.printCountLbl!=null?proTaskID.printCountLbl:''}" style="width: 150px;"/>
+        </div>
+        <div style="height: 35px;width: 270px;top: 630px;left: 600px;position: absolute;">
+            <label id="CheckReader" th:text="${proTaskID.CheckReader!=null?proTaskID.CheckReader:''}" style="width: 280px;"></label>
+        </div>
+
+
+        <!--公开属性-->
+        <div style="height: 5%;width: 50%;top: 750px;left: 250px;position: absolute;">
+                <label id="initiativePublicLbl" th:text="${proTaskID.initiativePublic!=null?proTaskID.initiativePublic:''}" style="font-size: 20px;color: red; font-weight: bold"/>
+        </div>
+        <!--标题-->
+        <div style="height: 115px;width: 775px;top: 900px;left: 70px;position: absolute;">
+            <label  id="FaxCableTitleLbl" th:text="${proTaskID.FaxCableTitle!=null?proTaskID.FaxCableTitle:''}" style="width: 100%;height: 100%;position: absolute;background: none;"></label>
+        </div>
+        <!--附件标题-->
+        <div style="height: 75px;width: 775px;top: 1110px;left: 70px;position: absolute;">
+            <label id="FaxCableAttrTitleLbl" th:text="${proTaskID.FaxCableAttrTitle!=null?proTaskID.FaxCableAttrTitle:''}" style="width: 100%;height: 100%;position: absolute;background: none;"></label>
+        </div>
+
+    </div>
+</body>
+</html>

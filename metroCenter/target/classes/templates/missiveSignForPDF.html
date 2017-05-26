@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <script th:replace="header :: header"></script>
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+</head>
+
+<body style="width:891px;height:1260px;">
+<!-- PAGE CONTENT BEGINS -->
+<div id="missiveForm" style="width:891px;height:1260px;background-image: url('/img/MissiveSign.png');background-size:contain;background-repeat:no-repeat">
+    <!--<img th:src="${missiveSignForm.backgroudImage!=null?missiveSignForm.backgroudImage:blankImage}"-->
+         <!--style="width: 891px; height: 1260px; position: absolute; margin-left: 0px; background-size: contain; background-repeat: no-repeat;">-->
+    <!--</img>-->
+    <img th:src=@{/api/bgPng/missiveSign/{instanceID}(instanceID=${instanceID})}
+         th:if="${hasBgPng}"
+         style="float:left;position:absolute;top:0px;left:0px"/>
+    <div style="height: 40px;width: 152px;top: 28px;position: absolute;left: 737px;text-align: center;">
+        <label id="MissiveID_lable" th:text="${missiveSignForm.missiveInfo!=null?missiveSignForm.missiveInfo.missiveNum:''}" style="width: 100%;"></label>
+    </div>
+
+    <!-- 161px 327px -->
+    <div th:if="${missiveSignForm.signType.typeName=='请示件'}" style="width: 40px; height: 40px; top: 120px;left: 161px;position: absolute;
+                  background-image: url('/img/OK.png'); background-size: contain; background-repeat: no-repeat;">
+    </div>
+    <div th:if="${missiveSignForm.signType.typeName=='报告件'}" style="width: 40px; height: 40px; top: 120px;left: 327px;position: absolute;
+                   background-image: url('/img/OK.png'); background-size: contain; background-repeat: no-repeat;">
+    </div>
+    <!-- 490px 661px 803px-->
+    <div th:if="${missiveSignForm.missiveInfo.urgentLevel.value=='加急'}" style="width: 40px; height: 40px; top: 120px;left: 490px;position: absolute;
+                  background-image: url('/img/OK.png');  background-size: contain; background-repeat: no-repeat;">
+    </div>
+    <div th:if="${missiveSignForm.missiveInfo.urgentLevel.value=='急'}"  style="width: 40px; height: 40px; top: 120px;left: 661px;position: absolute;
+                  background-image: url('/img/OK.png');  background-size: contain; background-repeat: no-repeat;">
+    </div>
+    <div th:if="${missiveSignForm.missiveInfo.urgentLevel.value=='普通'}"  style="width: 40px; height: 40px; top: 120px;left: 803px;position: absolute;
+                  background-image: url('/img/OK.png');  background-size: contain; background-repeat: no-repeat;">
+    </div>
+
+    <div style="height: 35px;width: 240px;top: 170px;left: 215px;position: absolute;">
+        <label th:text="${missiveSignForm!=null&&missiveSignForm.drafterUser!=null
+                            &&missiveSignForm.drafterUser.group!=null
+                            &&missiveSignForm.drafterUser.group.groupName!=null?missiveSignForm.drafterUser.group.groupName:''}"
+               style="width: 100%;"></label>
+    </div>
+    <div style="height: 35px;width: 219px;top: 170px;left: 640px;position: absolute;">
+        <label th:text="${missiveSignForm!=null
+                            &&missiveSignForm.drafterUser!=null
+                            &&missiveSignForm.drafterUser.name!=null?missiveSignForm.drafterUser.name:''}"
+               style="width: 100%;"></label>
+    </div>
+    <div style="height: 35px;width: 240px;top: 216px;left: 215px;position: absolute;">
+        <label th:text="${missiveSignForm!=null
+                            &&missiveSignForm.createdDate!=null?missiveSignForm.createdDate:''}"
+               style="width: 100%;">to do</label><!--//to do。。。。。。-->
+    </div>
+    <div style="height: 35px;width: 219px;top: 216px;left: 640px;position: absolute;">
+        <label th:text="${missiveSignForm!=null
+                            &&missiveSignForm.drafterUser!=null
+                            &&missiveSignForm.drafterUser.tel!=null?missiveSignForm.drafterUser.tel:''}"
+               style="width: 100%;"></label>
+    </div>
+    <!--处室领导意见            -->
+
+    <div style="height: 135px;width: 402px;top: 281px;left: 55px;background:none;position: absolute;">
+        <img th:src="${missiveSignForm.dep_LeaderCheckContent!=null
+                        &&missiveSignForm.dep_LeaderCheckContent.imageurl!=null?missiveSignForm.dep_LeaderCheckContent.imageurl:blankImage}" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 55px;background:none;position: absolute;">
+        <textarea
+
+                th:text="${missiveSignForm!=null
+                            &&missiveSignForm.dep_LeaderCheckContent!=null
+                            &&missiveSignForm.dep_LeaderCheckContent.contentText!=null?missiveSignForm.dep_LeaderCheckContent.contentText:''}"
+                 style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none;border:none">
+        </textarea>
+    </div>
+    <!--办公室意见-->
+
+    <div style="height: 135px;width: 402px;top: 281px;left: 459px;background:none;position: absolute;">
+        <img th:src="${missiveSignForm.officeCheckContent!=null
+                        &&missiveSignForm.officeCheckContent.imageurl!=null?missiveSignForm.officeCheckContent.imageurl:blankImage}" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 135px;width: 402px;top: 281px;left: 459px;background:none;position: absolute;">
+        <textarea
+                th:text="${missiveSignForm!=null
+                            &&missiveSignForm.officeCheckContent!=null
+                            &&missiveSignForm.officeCheckContent.contentText!=null?missiveSignForm.officeCheckContent.contentText:''}"
+                style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none;border:none">
+        </textarea>
+    </div>
+
+    <!--会签place-->
+
+
+    <div  style="height: 227px;width: 771px;top: 446px;left: 72px;position: absolute;">
+        <img th:src="${missiveSignForm.counterSignContent!=null
+                        &&missiveSignForm.counterSignContent.imageurl!=null?missiveSignForm.counterSignContent.imageurl:blankImage}"
+             style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 227px;width: 771px;top: 446px;left: 72px;position: absolute;background:none;">
+        <textarea
+                th:text="${missiveSignForm!=null
+                            &&missiveSignForm.counterSignContent!=null
+                            &&missiveSignForm.counterSignContent.contentText!=null?missiveSignForm.counterSignContent.contentText:''}"
+                style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none;border:none"></textarea>
+    </div>
+
+
+    <!--签发place-->
+
+    <div style="height: 251px;width: 771px;top: 703px;left: 72px;position: absolute;">
+        <img th:src="${missiveSignForm.signIssueContent!=null
+                        &&missiveSignForm.signIssueContent.imageurl!=null?missiveSignForm.signIssueContent.imageurl:blankImage}"
+             style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+    </div>
+    <div style="height: 251px;width: 771px;top: 703px;left: 72px;position: absolute;background:none;">
+        <textarea
+                th:text="${missiveSignForm!=null
+                            &&missiveSignForm.signIssueContent!=null
+                            &&missiveSignForm.signIssueContent.contentText!=null?missiveSignForm.signIssueContent.contentText:''}" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></textarea>
+
+    </div>
+
+    <!--标题-->
+    <div style="height: 222px;width: 750px;top: 981px;left: 84px;position: absolute;">
+        <pre style="background: none;border: none">
+            <label th:text="${missiveSignForm!=null
+                            &&missiveSignForm.missiveTittle!=null?missiveSignForm.missiveTittle:''}"
+                   style="word-wrap: break-word;width: 100%;text-align: left"></label>
+        </pre>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+<!--发文稿纸-->
+
+
+
+
+<style>
+    #missiveForm div label{
+        font-size: 18px;
+        text-align: center;
+        font-family: "SimSun";
+        color: #666;
+
+    }
+    #missiveForm div pre label{
+        font-size: 18px;
+        font-family: "SimSun";
+        color: #666;
+    }
+    #missiveForm div textarea{
+        font-size: 18px;
+        border: none;
+        background: none;
+        font-family: "SimSun";
+        color: #666;
+    }
+    #missiveForm div{
+        margin-left: -12px;
+    }
+
+</style>
+
+<!-- inline scripts related to this page -->
+</body>
+</html>

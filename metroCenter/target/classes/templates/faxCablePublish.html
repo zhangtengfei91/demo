@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+    <link rel="stylesheet" type="text/css" href="/styles/ContentMenu/main.css">
+    <link rel="stylesheet" type="text/css" href="/styles/ContentMenu/ContextMenu.css">
+    <link rel="stylesheet" type="text/css" href="/styles/sweet-alert.css">
+    <script type="text/javascript" src="/js/ContextMenu.js"></script>
+    <script type="text/javascript" src="/js/sweet-alert.js"></script>
+   <script th:replace="header :: header"></script>
+
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+
+
+</head>
+
+<body>
+
+<!--上传文件相关样式-->
+<style scoped>
+    .file-icon
+    {
+        display: inline-block;
+        float: left;
+        width: 48px;
+        height: 48px;
+        margin-left: 10px;
+        margin-top: 13.5px;
+    }
+
+    .img-file { background-image: url(/img/jpg.png) }
+    .doc-file { background-image: url(/img/doc.png) }
+    .pdf-file { background-image: url(/img/pdf.png) }
+    .xls-file { background-image: url(/img/xls.png) }
+    .zip-file { background-image: url(/img/zip.png) }
+    .default-file { background-image: url(/img/default.png) }
+
+    #example .file-heading
+    {
+        font-family: Arial;
+        font-size: 1.1em;
+        display: inline-block;
+        float: left;
+        width: 450px;
+        margin: 0 0 0 20px;
+        height: 25px;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow:hidden;
+        white-space:nowrap;
+    }
+
+    #example .file-name-heading
+    {
+        font-weight: bold;
+    }
+
+    #example .file-size-heading
+    {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    li.k-file .file-wrapper .k-upload-action
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    li.k-file div.file-wrapper
+    {
+        position: relative;
+        height: 75px;
+    }
+</style>
+<div th:replace="navbar :: navbar(${user})"></div>
+<div class="main-container" id="main-container">
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+<div class="main-container-inner">
+
+<div th:include="slider :: slidermenu(${'wzpb'})"></div>
+
+<div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="/">首页</a>
+            </li>
+
+            <li class="active">传真电报</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search">
+            <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+
+    <div class="page-content">
+    <div class="widget-box" style="min-width: 1000px">
+        <div class="widget-header widget-header-blue widget-header-flat">
+            <h4 id="taskName_lable" class="lighter">
+
+            </h4>
+        </div>
+        <div id="updateing_div" style="position:absolute;"> &nbsp;</div><!--进度条-->
+        <div class="widget-body" style="min-width:891px;">
+            <div class="widget-main">
+                    <div class="row" style="width: 100%; display: inline-block">
+                        <div id="validatorDIV" class="col-xs-12">
+                            <div class="col-xs-6">
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableNum')}?'':'hide'">
+                                    <label id="FaxCableLbl" for="FaxCableNum" class="control-label bolder blue vali_lable">传真号: &nbsp;&nbsp;</label>
+                                    <input id="FaxCableNum" class="vali_input" data-required-msg="请填写传真号" onchange="faxCableChange()"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableNum"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableSecLv')}?'':'hide'">
+                                    <label id="FaxCableSecLbl" for="FaxCableNum" class="control-label bolder blue vali_lable">公文密级: &nbsp;&nbsp;</label>
+                                    <input id="FaxCableSecLv" class="vali_dropdown" data-required-msg="请选择密级"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableSecLv"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableMisType')}?'':'hide'">
+                                    <label id="FaxCableType" for="FaxCableMisType" class="control-label bolder blue vali_lable">公文种类: &nbsp;&nbsp;</label>
+                                    <input id="FaxCableMisType" class="vali_dropdown" data-required-msg="请选择类型"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableMisType"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableSigPerson')}?'':'hide'">
+                                    <label id="FaxCableSigLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">签发用户: &nbsp;&nbsp;</label>
+                                    <select id="FaxCableSigPerson" class="vali_select" data-required-msg="请选择签发用户"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableSigPerson"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableDepChkPerson')}?'':'hide'">
+                                    <label id="FaxCableDepChkLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">处室领导: &nbsp;&nbsp;</label>
+                                    <select id="FaxCableDepChkPerson" class="vali_select" data-required-msg="请选择处室领导"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableDepChkPerson"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableMainSendPerson')}?'':'hide'">
+                                    <label id="FaxCableMainSendLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">主送部门: &nbsp;&nbsp;</label>
+                                    <select id="FaxCableMainSendPerson" class="vali_select" data-required-msg="请选择主送部门"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableMainSendPerson"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'FaxCableMainCopyPerson')}?'':'hide'">
+                                    <label id="FaxCableMainCopyLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">抄送部门: &nbsp;&nbsp;</label>
+                                    <select id="FaxCableMainCopyPerson" class="vali_select" data-required-msg="请选择抄送部门"/>
+                                    <span class="k-invalid-msg" data-for="FaxCableMainCopyPerson"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'composeUser')}?'':'hide'">
+                                    <label id="composeLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">排版人: &nbsp;&nbsp;</label>
+                                    <select id="composeUser" class="vali_select" data-required-msg="请选择排版人"/>
+                                    <span class="k-invalid-msg" data-for="composeUser"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'officeCheck')}?'':'hide'">
+                                    <label id="officeChkLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">办公室复核: &nbsp;&nbsp;</label>
+                                    <select id="officeCheck" class="vali_select" data-required-msg="请选择办公室复核人"/>
+                                    <span class="k-invalid-msg" data-for="officeCheck"></span>
+                                </div>
+                                <div  th:class="${#lists.contains(currentEditableField,'CheckReader')}?'':'hide'">
+                                    <label id="CheckRedLbl" for="FaxCableMisType" class="control-label bolder blue vali_lable">校对者: &nbsp;&nbsp;</label>
+                                    <select id="CheckReader" class="vali_select" data-required-msg="请选择校对者"/>
+                                    <span class="k-invalid-msg" data-for="CheckReader"></span>
+                                </div>
+                                <!--<div th:class="${#lists.contains(currentEditableField,'FaxCablePrintCount')}?'':'hide'" >-->
+                                    <div th:class="hide" >
+                                    <label id="printCount_Name" for="printCount" class="control-label bolder blue vali_lable">打印份数: &nbsp;&nbsp;</label>
+                                    <input id="printCount" name="printCount" class="vali_dropdown" data-required-msg="请选择打印份数">
+                                    <span class="k-invalid-msg" data-for="printCount"></span>
+                                </div>
+                                <div id="GOVatrrDIV" th:class="${#lists.contains(currentEditableField,'FaxCableGovInfo')}?'':'hide'" style="padding-top: 5px">
+                                    <label class="control-label bolder blue">政府信息属性: &nbsp;&nbsp;</label><div></div>
+                                    <div class="radio" style="margin-top: 10px">
+                                        <label>
+                                            <input th:Disabled="${#lists.contains(currentEditableField,'initiativePublic')}?false:true" id="GOV1" name="GOV_attr" type="radio" class="ace" onclick="GovAttrClick()">
+                                            <span class="lbl"> 主动公开</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="radio" style="margin-top: 10px">
+                                        <label>
+                                            <input th:Disabled="${#lists.contains(currentEditableField,'applyForPublic')}?false:true" id="GOV2" name="GOV_attr" type="radio" class="ace" onclick="GovAttrClick()">
+                                            <span class="lbl"> 依申请公开</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="margin-top: 10px">
+                                        <label>
+                                            <input th:Disabled="${#lists.contains(currentEditableField,'forbiddenPublic')}?false:true" id="GOV3" name="GOV_attr" type="radio" class="ace" onclick="GovAttrClick()">
+                                            <span class="lbl"> 不予以公开</span>
+                                        </label>
+                                    </div>
+                                    <span class="k-invalid-msg" data-for="GOV_attr"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-xs-6">
+                                <div th:class="${#lists.contains(currentEditableField,'FaxCableTitle')}?'':'hide'">
+                                    <label class="control-label bolder blue" for="FaxCableTitle">标题: &nbsp;&nbsp;</label><br/>
+                                    <textarea th:Disabled="${#lists.contains(currentEditableField,'FaxCableTitle')}?false:true"
+                                              id="FaxCableTitle" class="vali_textarea" name="missiveTittle" onchange="missiveTittletextChange()" style="height: 120px;width: 400px;"
+                                              data-required-msg="标题不能为空">
+                                    </textarea>
+                                    <span class="k-invalid-msg" data-for="FaxCableTitle"></span>
+                                </div>
+                                <div th:class="${#lists.contains(currentEditableField,'FaxCableAttrTitle')}?'':'hide'">
+                                    <label class="control-label bolder blue" for="FaxCableAttrTitle">附件标题: &nbsp;&nbsp;</label><br/>
+                                    <textarea th:Disabled="${#lists.contains(currentEditableField,'FaxCableAttrTitle')}?false:true"
+                                              id="FaxCableAttrTitle" class="vali_textarea" name="FaxCableAttrTitle" onchange="appendTittletextChange()" style="height: 120px;width: 400px;"
+                                              data-required-msg="附件标题不能为空">
+                                    </textarea>
+                                </div>
+                                <span class="k-invalid-msg" data-for="FaxCableAttrTitle"></span>
+                            </div>
+                            <div id="activitiOptionDiv" class="hide">
+                                <div class="hr hr-double hr-dotted hr18"></div>
+                                <div id="activitiOption" class="control-group">
+                                    <label id="activitiOption_lable" class="control-label bolder blue" style="width: 300px;text-align: left;"></label><div></div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-xs-12" style="margin-top: 5px">
+                                <div >
+                                    <a th:href=@{/historyProcess/{instanceID}(instanceID=${instanceID})} class="btn btn-sm bigger btn-success" ><i class="icon-check"></i>任务信息</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div id="missiveForm" style="width:891px;height:1260px;background-image: url('/img/faxCablePublish.png');background-size:contain;background-repeat:no-repeat">
+                    <!--叠加领导移动端的手写图片-->
+                    <div id="signatureDiv" class="" style="top: -20px;left: -50px;height:1px;width:1px;position: absolute;"></div>
+                    <div id="bgPNG" style="width:891px;height:1263px;background-size:contain;background-repeat:no-repeat"></div>
+
+                    <div  style="height: 40px;width: 65px;top: 112px;position: absolute;left: 190px;">
+                        <label id="FaxCableNumLbl" style="width: 65px;"></label>
+                    </div>
+                    <!--密级-->
+                    <div style="height: 40px;width: 100px;top: 113px;left: 480px;position: absolute;">
+                        <label  id="FaxCableSecLvLbl" style="width: 100px;"/>
+                    </div>
+                    <!--传真电报种类-->
+                    <div style="height: 40px;width: 100px;top: 112px;left: 720px;position: absolute;">
+                        <label id="FaxCableMisTypeLbl" style="width: 130px;"/>
+
+                    </div>
+                    <!--签发place-->
+                    <div style="height: 40px;width: 250px;top: 160px;left: 115px;position: absolute;">
+                        <label id="FaxCableSigPersonLbl" style="width: 250px;"></label>
+                    </div>
+                    <div style="height: 250px;width: 410px;top: 220px;left: 35px;position: absolute;">
+                        <img id="signIssue_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+                    </div>
+                    <div style="height: 250px;width: 410px;top: 220px;left: 45px;position: absolute;">
+                        <label id="signIssueBase30img" hidden="hidden"/>
+                    </div>
+                    <div style="height: 250px;width: 410px;top: 220px;left: 45px;position: absolute;">
+                        <label id="isSelf" hidden="hidden"/>
+                    </div>
+
+                    <div id="textAreaDiv" style="height: 250px;width: 410px;top: 220px;left: 35px;background:none;position: absolute;">
+                        <textarea th:disabled="${#lists.contains(currentEditableField,'FaxCableSigContent')}?false:false" id="FaxCableSigContent"
+                                  style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></textarea>
+                    </div>
+                    <div  style="height: 20px;width: 20px;top: 192px;left: 50px;position: absolute;">
+                        <!--<button th:if="${#lists.contains(currentEditableField, 'FaxCableSigHadBtn')}" id="FaxCableSigHadBtn" class="btn btn-xs btn-primary"-->
+                        <button id="FaxCableSigHadBtn" class="btn btn-xs btn-primary"
+                                onclick="signaturePlace('signatureDiv',820,500,'signIssue_img',410,250,'signIssueBase30img',signIssueBase30url,'FaxCableSigContent')">
+                            <i class="icon-edit bigger-110"></i>
+                            手写
+                        </button>
+                        <button id="btnSign" class="btn btn-xs btn-primary" style="left: 100px;top:-26px;" onclick="signaturePlace2('signatureDiv',820,500,'signIssue_img',410,250,'signIssueBase30img',signIssueBase30url,'FaxCableSigContent','isSelf')"><i class="icon-edit bigger-110"></i>
+                            签名
+                        </button>
+
+                    </div>
+                    <div class="contextMenu" style="display: none; left: 315px; top: 332px; opacity: 1;">
+
+                        <table class="item active" cellpadding="0" cellspacing="0" style="width: 100%;">
+                            <tbody>
+                            <tr>
+                                <td class="icon"></td>
+                                <td class="label">插入签名</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="item active" cellpadding="0" cellspacing="0" style="width: 100%;">
+                            <tbody>
+                            <tr>
+                                <td class="icon"></td>
+                                <td class="label">插入短语</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div id="container" style="height: 250px;width: 410px;top: 220px;left: 35px;position: absolute;">-->
+
+                    </div>
+
+                    <!--处室领导核搞place-->
+                    <div style="height: 40px;width: 260px;top: 160px;left: 600px;position: absolute;">
+                        <label id="FaxCableDepChkPersonLbl" style="width: 260px;"></label>
+                    </div>
+                    <div  style="height: 250px;width: 410px;top: 220px;left: 460px;position: absolute;">
+                        <label id="counterSignBase30img" hidden/>
+                    </div>
+                    <div  style="height: 250px;width: 410px;top: 220px;left: 460px;position: absolute;">
+                        <img id="counterSign_img" style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"/>
+                    </div>
+                    <div style="height: 250px;width: 410px;top: 220px;left: 460px;background:none;position: absolute;">
+                        <textarea th:Disabled="${#lists.contains(currentEditableField,'FaxCableDepChkContent')}?false:false" id="FaxCableDepChkContent"
+                                  style="width: 100%;height: 100%;position: absolute;margin:0px;padding:0px;background: none"></textarea>
+                    </div>
+                    <div  style="height: 20px;width: 20px;top: 192px;left: 460px;position: absolute;">
+                        <button th:if="${#lists.contains(currentEditableField,'FaxCableDepHadBtn')}" id="FaxCableDepHadBtn" class="btn btn-xs btn-primary"
+                                onclick="signaturePlace('signatureDiv',820,500,'counterSign_img',410,250,'counterSignBase30img',counterSignBase30url,'FaxCableDepChkContent')">
+                            <i class="icon-edit bigger-110"></i>
+                            手写
+                        </button>
+
+                    </div>
+
+                    <div style="height: 40px;top: 490px;left: 120px;position: absolute;">
+                        <label id="FaxCableMainSendPersonLbl"></label>
+                    </div>
+                    <div style="height: 40px;top: 490px;left: 520px;position: absolute;">
+                        <label id="FaxCableMainCopyPersonLbl"></label>
+                    </div>
+                    <!---->
+                    <div style="height: 35px;width: 280px;top: 537px;left: 170px;position: absolute;">
+                        <label id="sponsorUnit" style="width: 280px;"></label>
+                    </div>
+                    <div style="height: 35px;width: 280px;top: 590px;left: 170px;position: absolute;">
+                        <label id="drafter" style="width: 280px;/* border: solid */" hidden="hidden"></label>
+                        <img id="signImg" style="width: 280px;height: 35px;"/>
+                    </div>
+                    <div style="height: 35px;width: 280px;top: 635px;left: 170px;position: absolute;">
+                        <label id="phoneNum" style="width: 280px;"></label>
+                    </div>
+                    <div style="height: 35px;width: 280px;top: 680px;left: 170px;position: absolute;">
+                        <label id="composeUserLbl" style="width: 100px;"></label>
+                    </div>
+
+                    <div style="height: 35px;width: 270px;top: 540px;left: 600px;position: absolute;">
+                        <label id="officeCheckLbl" style="width: 100px;"></label>
+                        <!--<label id="officeCheck" style="width: 270px;">韦躐晟</label>-->
+                    </div>
+                    <div style="height: 35px;width: 80px;top: 585px;left: 600px;position: absolute;">
+                        <label id="printCountLbl" style="width: 150px;"/>
+                    </div>
+                    <div style="height: 35px;width: 270px;top: 630px;left: 600px;position: absolute;">
+                        <label id="CheckReaderLbl" style="width: 100px;"></label>
+                    </div>
+
+
+                    <!--公开属性-->
+                    <div style="height: 22px;width: 22px;top: 735px;left: 225px;position: absolute;z-index: 1">
+                        <label>
+                            <input id="initiativePublic" name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2" checked
+                                   onclick="checkboxChange('initiativePublic','applyForPublic','forbiddenPublic')"/>
+                            <span class="lbl" style="width: 105px;height:25px"></span>
+                        </label>
+                    </div>
+                    <div style="height: 22px;width: 22px;top: 735px;left: 468px;position: absolute;">
+                        <label>
+                            <input id="applyForPublic"  name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2"
+                                   onclick="checkboxChange('applyForPublic','initiativePublic','forbiddenPublic')"/>
+                            <span class="lbl" style="width: 125px;height:25px"></span>
+                        </label>
+                    </div>
+                    <div style="height: 22px;width: 22px;top: 785px;left: 225px;position: absolute;">
+                        <label>
+                            <input id="forbiddenPublic" name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2"
+                                   onclick="checkboxChange('forbiddenPublic','applyForPublic','initiativePublic')"/>
+                            <span class="lbl" style="width: 105px;height:25px"></span>
+                        </label>
+                    </div>
+                    <!--标题-->
+                    <div style="height: 115px;width: 775px;top: 920px;left: 70px;position: absolute;">
+                        <pre style="background: none;border: none">
+                            <label id="FaxCableTitleLbl" style="word-wrap: break-word;width: 740px;"></label>
+                        </pre>
+                    </div>
+                    <!--附件标题-->
+                    <div style="height: 75px;width: 775px;top: 1110px;left: 70px;position: absolute;">
+                        <pre style="background: none;border: none">
+                            <label id="FaxCableAttrTitleLbl" style="word-wrap: break-word;width: 740px;"></label>
+                        </pre>
+                    </div>
+
+                </div>
+                <!--上传附件-->
+               <div>
+                <table width="891px">
+                    <!--Un-->
+                    <tr class="trClass borderNone">
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                        <td class="borderNone"  style="width: 16.66%;height: 0px"></td>
+                    </tr>
+
+                    <tr th:class="${#lists.contains(currentEditableField,'files')}?'trClass borderNone':'hide'">
+                        <td class="borderNone" colspan="6">
+                            <div class="hr hr-double hr-dotted hr18"></div>
+                            <h3 class="header smaller lighter header-color-red">
+                                <i class="icon-cloud-upload"></i>
+                                上传附件
+                            </h3>
+                        </td>
+                    </tr>
+                    <tr th:class="${#lists.contains(currentEditableField,'files')}?'trClass borderNone':'hide'">
+                        <td class="borderNone" colspan="6">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="demo-section k-header" id="filesDIV">
+                                        <input type="file" name="files" id="files" />
+                                    </div><!-- PAGE CONTENT ENDS -->
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+
+                        </td>
+
+                    </tr>
+                    <tr class="trClass borderNone">
+                        <td class="borderNone" colspan="6">
+
+                            <div class="widget-box transparent">
+                                <div class="widget-header widget-header-small">
+                                    <h4 class="blue smaller">
+                                        <i class="icon-list orange"></i>
+                                        附件
+                                    </h4>
+
+                                    <div class="widget-toolbar action-buttons">
+                                        <a href="#" data-action="collapse">
+                                            <i class="icon-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="widget-body">
+                                    <div class="widget-main padding-8" id="fileList">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="trClass borderNone">
+                        <td class="tdClass borderNone" colspan="6">
+                            <div class="clearfix form-actions" style="min-width : 768px">
+                                <div class="col-xs-3 col-xs-offset-3 col-sm-offset-3 col-sm-3 col-md-offset-3 col-md-3 ">
+                                    <button th:if="${#lists.contains(currentEditableField,'处室拟稿')}" id="submitAll" class="btn btn-info" type="button" onclick="submitData()">
+                                        <i class="icon-ok bigger-110"></i>
+                                        提交
+                                    </button>
+                                    <button th:if="${#lists.contains(currentEditableField,'处室领导审核')}" id="submitDepLeader" class="btn btn-info" type="button" onclick="submitDepLeader()">
+                                        <i class="icon-ok bigger-110"></i>
+                                        同意
+                                    </button>
+                                    <button th:if="${#lists.contains(currentEditableField,'局领导签字')}" id="submitSigLeader" class="btn btn-info" type="button" onclick="submitSigLeader()">
+                                        <i class="icon-ok bigger-110"></i>
+                                        同意
+                                    </button>
+                                </div>
+
+                                <div class="col-xs-3 col-xs-offset-3 col-sm-offset-3 col-sm-3 col-md-offset-3 col-md-3 ">
+
+                                    <button th:if="${#lists.contains(currentEditableField,'处室拟稿')}" id="cancel" class="btn btn-danger" data-action="close" type="reset" onclick="cancelData()">
+                                        <i class="icon-remove bigger-110"></i>
+                                        取消
+                                    </button>
+                                    <button th:if="${#lists.contains(currentEditableField,'处室领导审核')}" id="DepLeaderCancel" class="btn btn-danger" data-action="close" type="reset" onclick="cancelDepLeader()">
+                                        <i class="icon-remove bigger-110"></i>
+                                        不同意
+                                    </button>
+                                    <button th:if="${#lists.contains(currentEditableField,'局领导签字')}" id="SigLeaderCancel" class="btn btn-danger" data-action="close" type="reset" onclick="cancelSigLeader()">
+                                        <i class="icon-remove bigger-110"></i>
+                                        不同意
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+              </div>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+<div class="ace-settings-container" id="ace-settings-container">
+    <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+        <i class="icon-cog bigger-150"></i>
+    </div>
+
+    <div class="ace-settings-box" id="ace-settings-box">
+        <div>
+            <div class="pull-left">
+                <select id="skin-colorpicker" class="hide">
+                    <option data-skin="default" value="#438EB9">#438EB9</option>
+                    <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                    <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                    <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                </select>
+            </div>
+            <span>&nbsp; Choose Skin</span>
+        </div>
+
+        <div>
+            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+            <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+        </div>
+
+        <div>
+            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+            <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+        </div>
+
+        <div>
+            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+            <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+        </div>
+
+        <div>
+            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+            <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+        </div>
+
+        <div>
+            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+            <label class="lbl" for="ace-settings-add-container">
+                Inside
+                <b>.container</b>
+            </label>
+        </div>
+    </div>
+</div><!-- /#ace-settings-container -->
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+<script src="/js/kinetic-v5.0.1.min.js"></script>
+<!--<script src="js/jSingnature/libs/jSignature.min.noconflict.js"></script>-->
+<!--<script src="js/jSingnature/libs/modernizr.js"></script>-->
+<script src="/js/jSingnature/src/jSignature.js"></script>
+<script src="/js/pictureSignature.js"></script>
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+
+<script src="/js/elementUseage.js"></script>
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/fileList.wls.js" type="text/javascript"></script>
+<script src="/js/jSingnature/jSignature.wlsh.js" type="text/javascript"></script>
+<script src="/js/jSingnature/src/plugins/jSignature.CompressorBase30.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    var textAreaDiv;
+    function itemAlert(e) {
+//        alert(
+//                        "Item Clicked: \"" + e.item.label.replace(/<[^>]+>/g, "")  + "\"\n" +
+//                        "Target: \""       + e.target.id   + "\""
+//        );
+        if(e.item.label.replace(/<[^>]+>/g, "")=="插入签名"){
+            signaturePlace2('signatureDiv',820,500,'signIssue_img',410,250,'signIssueBase30img',signIssueBase30url,'FaxCableSigContent');
+        }else{
+            swal("功能尽请期待着。。。。。。。");
+        }
+    }
+
+
+
+    function init() {
+        textAreaDiv = new ContextMenu();
+        textAreaDiv.addItem("insert",   "插入签名",   itemAlert, "/img/disk.png");
+        textAreaDiv.addItem("save",   "插入短语",   itemAlert, "/img/folder.png");
+        textAreaDiv.addSeparator();
+        textAreaDiv.register("textAreaDiv");
+    }
+
+    CM_addEvent(window, 'load', init);
+
+    function signaturePlace(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Previous,textareaID){
+        /*
+         divName:需要弹出并用来签名的div名称
+         width：需要进行签名div的width
+         height：需要进行签名div的height
+         imgDivName：导出生成图片的div名称
+         imgID:生成图片的ID
+         imgWidth：导出生成图片的div的width
+         imgHeight：导出生成图片的div的height
+         imgUrlForSave:用来保存signature的base30格式的lable的ID
+         signBase30Url_Previous:前一个签字的base30编码
+         signBase30Url_Editer:本次签字的base30编码
+         textareaID */
+        var signBase30Url_Editer;
+
+
+        try{
+            signBase30Url_Editer=$("#"+imgUrlForSave)[0].value;
+        }
+        catch(error){
+            console.log(error);
+        }
+        openSignatureWindow(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Editer,signBase30Url_Previous,textareaID);
+
+    }
+
+    function signaturePlace2(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Previous,textareaID,isSelf){
+        /*
+         divName:需要弹出并用来签名的div名称
+         width：需要进行签名div的width
+         height：需要进行签名div的height
+         imgDivName：导出生成图片的div名称
+         imgID:生成图片的ID
+         imgWidth：导出生成图片的div的width
+         imgHeight：导出生成图片的div的height
+         imgUrlForSave:用来保存signature的base30格式的lable的ID
+         signBase30Url_Previous:前一个签字的base30编码
+         signBase30Url_Editer:本次签字的base30编码
+         textareaID */
+        var signBase30Url_Editer;
+        var isSelfVal;
+
+        try{
+            signBase30Url_Editer=$("#"+imgUrlForSave)[0].value;
+            isSelfVal=$("#"+isSelf)[0].value;
+        }
+        catch(error){
+            console.log(error);
+        }
+        openPictureSignatureWindow(divName,width,height,imgDivName,imgWidth,imgHeight,imgUrlForSave,signBase30Url_Editer,signBase30Url_Previous,textareaID,isSelf);
+
+    }
+
+
+    function Changecheckbox(checkbox1,checkbox2,checkbox3){
+
+
+        $("#"+checkbox1)[0].checked=true;
+        $("#"+checkbox2)[0].checked=false;
+        $("#"+checkbox3)[0].checked=false;
+
+    }
+    function checkboxChange(checkbox1,checkbox2,checkbox3){
+
+
+        if($("#"+checkbox1)[0].checked){
+
+            $("#"+checkbox2)[0].checked=false;
+            $("#"+checkbox3)[0].checked=false;
+        }
+    }
+    function GovAttrClick(){
+        if($("#GOV1")[0].checked){
+            Changecheckbox('initiativePublic','applyForPublic','forbiddenPublic');
+        }
+        else if($("#GOV2")[0].checked){
+            Changecheckbox('applyForPublic','initiativePublic','forbiddenPublic');
+        }
+        else if($("#GOV3")[0].checked){
+            Changecheckbox('forbiddenPublic','initiativePublic','applyForPublic');
+        }
+    }
+</script>
+<script>
+    $(document).ready(function() {
+//        $("#bgPNG").style("width:891px;height:1263px;background-image: url('/img/test.png');background-size:contain;background-repeat:no-repeat");
+       // $("#bgPNG").css("backgroundImage","url('/img/test.png')");
+
+        $("#printCount").kendoNumericTextBox({
+            decimals: 0,
+            format: "n0",
+            value:0,
+            min: 0,
+            change: function() {
+                var value = this.value();
+                $("#printCountLbl")[0].innerText = value;
+            }
+        });
+
+        $("#FaxCableSigPerson").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择签发人员...",
+            dataTextField: "name",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                            dataType:"json",
+                            url:"/api/user/getalluser"
+                      }
+                }
+            },
+            tagTemplate:'#: name #',
+            itemTemplate:'#: name # -- #: group.groupName #',
+
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].name;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].name;
+                    }
+                    $("#FaxCableSigPersonLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+
+        //传真排版
+        $("#composeUser").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择排版人...",
+            dataTextField: "name",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/user/getalluser"
+                    }
+                }
+            },
+            tagTemplate:'#: name #',
+            itemTemplate:'#: name # -- #: group.groupName #',
+
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].name;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].name;
+                    }
+                    $("#composeUserLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+        //传真办公室审核
+        $("#officeCheck").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择审核人...",
+            dataTextField: "name",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/user/getalluser"
+                    }
+                }
+            },
+            tagTemplate:'#: name #',
+            itemTemplate:'#: name # -- #: group.groupName #',
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].name;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].name;
+                    }
+                    $("#officeCheckLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+        //传真校准
+        $("#CheckReader").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择校准人...",
+            dataTextField: "name",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/user/getalluser"
+                    }
+                }
+            },
+            tagTemplate:'#: name #',
+            itemTemplate:'#: name # -- #: group.groupName #',
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].name;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].name;
+                    }
+                    $("#CheckReaderLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+
+        //密级
+        $("#FaxCableSecLv").kendoDropDownList({
+
+            dataTextField: "secretLevelName",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/missive/secretlevel/getsecretlevel"
+                    }
+                }
+            },
+            change: function(e) {
+                $("#FaxCableSecLvLbl")[0].innerText = this.text();
+            }
+        });
+        //传真电报文档类型
+        $("#FaxCableMisType").kendoDropDownList({
+
+            dataTextField: "typeName",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/missive/missivetype/getmissivetype"
+                    }
+                }
+            },change: function(e) {
+                $("#FaxCableMisTypeLbl")[0].innerText = this.text();
+            }
+        });
+        $("#FaxCableDepChkPerson").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择部门领导...",
+            dataTextField: "name",
+            dataValueField: "id",
+            autoBind: false,
+            maxSelectedItems:1,
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/user/getalluser"
+                    }
+                }
+            },
+            tagTemplate:'#: name #',
+            itemTemplate:'#: name # -- #: group.groupName #',
+
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].name;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].name;
+                    }
+                    $("#FaxCableDepChkPersonLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+        $("#FaxCableMainSendPerson").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择主送部门...",
+            dataTextField: "groupName",
+            dataValueField: "id",
+            autoBind: false,
+
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/group/getallgroup"
+                    }
+                }
+            },
+            tagTemplate:'#: groupName #',
+            itemTemplate:'#: groupName #',
+
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].groupName;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].groupName;
+                    }
+                    $("#FaxCableMainSendPersonLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+        $("#FaxCableMainCopyPerson").kendoMultiSelect({
+            theme: "[bootstrap]",
+            placeholder: "请选择抄送部门...",
+            dataTextField: "groupName",
+            dataValueField: "id",
+            autoBind: false,
+
+            dataSource: {
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/api/group/getallgroup"
+                    }
+                }
+            },
+            tagTemplate:'#: groupName #',
+            itemTemplate:'#: groupName #',
+            change:function(e) {
+                try {
+                    var mainsendgroups = null;
+                    for (var i = 0; i < this.dataItems().length; i++) {
+                        if (i == 0) {
+                            mainsendgroups = this.dataItems()[i].groupName;
+                        }
+                        else mainsendgroups = mainsendgroups + ", " + this.dataItems()[i].groupName;
+                    }
+                    $("#FaxCableMainCopyPersonLbl")[0].innerText = mainsendgroups;
+                }
+                catch (ex){}
+            }
+        });
+       // var multiselect = $("#signIssue_Person").data("kendoMultiSelect");
+    });
+</script>
+<script type="text/javascript" th:inline="javascript">
+
+    var blankBase30url="data:image/jsignature;base30,";
+    var blankImageurl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxEAAAFjCAYAAABCEoaFAAAWB0lEQVR4Xu3XoREAAAgDMbr/0szwPuiqHOZ3jgABAgQIECBAgAABAkFgYWtKgAABAgQIECBAgACBExGegAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSQgIhKXMQECBAgQIECAAAECIsIPECBAgAABAgQIECCQBERE4jImQIAAAQIECBAgQEBE+AECBAgQIECAAAECBJKAiEhcxgQIECBAgAABAgQIiAg/QIAAAQIECBAgQIBAEhARicuYAAECBAgQIECAAAER4QcIECBAgAABAgQIEEgCIiJxGRMgQIAAAQIECBAgICL8AAECBAgQIECAAAECSUBEJC5jAgQIECBAgAABAgREhB8gQIAAAQIECBAgQCAJiIjEZUyAAAECBAgQIECAgIjwAwQIECBAgAABAgQIJAERkbiMCRAgQIAAAQIECBAQEX6AAAECBAgQIECAAIEkICISlzEBAgQIECBAgAABAiLCDxAgQIAAAQIECBAgkAREROIyJkCAAAECBAgQIEBARPgBAgQIECBAgAABAgSSgIhIXMYECBAgQIAAAQIECIgIP0CAAAECBAgQIECAQBIQEYnLmAABAgQIECBAgAABEeEHCBAgQIAAAQIECBBIAiIicRkTIECAAAECBAgQICAi/AABAgQIECBAgAABAklARCQuYwIECBAgQIAAAQIERIQfIECAAAECBAgQIEAgCYiIxGVMgAABAgQIECBAgICI8AMECBAgQIAAAQIECCQBEZG4jAkQIECAAAECBAgQEBF+gAABAgQIECBAgACBJCAiEpcxAQIECBAgQIAAAQIiwg8QIECAAAECBAgQIJAERETiMiZAgAABAgQIECBAQET4AQIECBAgQIAAAQIEkoCISFzGBAgQIECAAAECBAiICD9AgAABAgQIECBAgEASEBGJy5gAAQIECBAgQIAAARHhBwgQIECAAAECBAgQSAIiInEZEyBAgAABAgQIECAgIvwAAQIECBAgQIAAAQJJQEQkLmMCBAgQIECAAAECBESEHyBAgAABAgQIECBAIAmIiMRlTIAAAQIECBAgQICAiPADBAgQIECAAAECBAgkARGRuIwJECBAgAABAgQIEBARfoAAAQIECBAgQIAAgSTwRdcBZA2nfHIAAAAASUVORK5CYII=";//上一个流程的会签签字状态
+
+    var signIssueBase30url="";//上一个流程的签发签字状态
+    var signIssueImageurl="";//上一个流程的签发签字状态
+
+    var counterSignBase30url="";//上一个流程的会签签字状态
+    var counterSignImageurl="";//上一个流程的会签签字状态
+
+
+
+    var faxID;//传真电报收文号
+    var MissiveID;//传真电报信息编号
+    var secretLevel;//密级
+    var missiveType;//公文类型
+
+    var signIssue_Person;//签发人员
+    var signIssue_img;//签发内容图片地址
+    var signIssue_30url;//钱人内容图片
+    var signIssue_Content;//签发内容textArea
+    var signIssue_SignBtn;//签发签字按钮
+
+    var leaderSign_Person;//处室领导
+    var leaderSign_img;//处理领导内容地址
+    var leaderSign_30url;//处室领导内容
+    var leaderSign_Content;//处室领导内容textArea
+    var leaderSign_SignBtn;//处室领导签字按钮
+
+    var mainSend_Person;//主送人员
+    var copyTo_Person;//抄送人员
+    var sponsorUnit;//主办单位
+    var drafter;//拟稿人
+    var phoneNum;//电话
+    var composeUser;//排版
+    var officeCheck;//办公室复核
+    var printCount;//打印份数
+    var CheckReader;//校对人
+
+    var initiativePublic;//主动公开
+    var applyForPublic;//申请公开
+    var forbiddenPublic;//禁止公开
+
+    var govPublic;//政府信息属性 1代表主动公开 2代表申请公开 3 禁止公开
+
+    var FaxCableTitle;//标题
+    var FaxCableAttrTittle;//附件标题
+    var proTaskID = /*[[${proTaskID}]]*/ 'proTaskID';//获取流程和任务ID
+    var currentEditableField=/*[[${currentEditableField}]]*/ 'currentEditableField';//
+    var proTaskIDObj=eval("("+proTaskID+")");
+    //alert(proTaskIDObj.processID);
+    $("#bgPNG").css("backgroundImage","url('/api/bgPng/FaxCable/"+proTaskIDObj.processID+"')");
+
+    $(function($) {//页面载入上一次任务状态
+        //proTaskIDObj.faxCableID=0表示新插入数据
+        if(proTaskIDObj.faxCableID!="0"){
+//            if(proTaskIDObj.FaxCableAttrList!="FaxCableAttrList"){
+//                $("#files").toggle();
+//            }
+            loadData(proTaskIDObj.faxCableID);//加载数据
+        }
+
+
+
+
+    })
+    //对页面进行赋值
+    function loadData(faxCableID){
+        //ajax请求后台数据，对控件进行数据加载
+        $.ajax(
+                {
+                    type:"POST",
+                    url:"/api/UpdateData/getFaxCableData/"+faxCableID,
+                    success:function(data){
+                        var obj=eval("("+data+")");
+                        bindData(obj);
+                    }
+                }
+        )
+    }
+    //对页面空间信息进行加载
+    function bindData(obj){
+        //console.log($("#FaxCableNum").val());
+        //首先判断是否可以输入
+        //$("#FaxCableNum").val()==undefined?$("#FaxCableNumLbl").text(obj.faxID):$("#FaxCableNum").val(obj.faxID);//设置传真号码
+        $("#taskName_lable")[0].innerText=proTaskIDObj.taskName;//当前任务名称,下一步任务名称为：proTaskIDObj.nextTaskName
+        $("#FaxCableNumLbl").text(obj.faxID);
+        $("#FaxCableNum").val(obj.faxID);
+        var secretLv=$("#FaxCableSecLv").data("kendoDropDownList");//创建密级对象
+        secretLv.value([obj.secretLv]);//设置密级值
+        $("#FaxCableSecLvLbl").text(obj.secretLvName);
+
+        var faxType=$("#FaxCableMisType").data("kendoDropDownList");//创建类别对象
+        faxType.value([obj.faxType]);//设置类别值
+        $("#FaxCableMisTypeLbl").text(obj.faxTypeName);
+
+        //传真电报排版
+        var composeUser=$("#composeUser").data("kendoMultiSelect");
+        composeUser.value([obj.composeUser]);
+        $("#composeUserLbl").text(obj.composeUserName);
+
+
+        //传真电报办公室审核
+        var officeCheck=$("#officeCheck").data("kendoMultiSelect");
+        officeCheck.value([obj.officeCheck]);
+        $("#officeCheckLbl").text(obj.officeCheckName);
+        //传真电报校准
+        var CheckReader=$("#CheckReader").data("kendoMultiSelect");
+        CheckReader.value([obj.CheckReader]);
+        $("#CheckReaderLbl").text(obj.CheckReaderName);
+
+        $("#drafter").text(proTaskIDObj.userName);//设置拟稿人
+        $("#signImg").attr("src",proTaskIDObj.userSign);//用户签名
+        $("#phoneNum").text(proTaskIDObj.userPhone==null?"":proTaskIDObj.userPhone);//设置电话号码
+        $("#sponsorUnit").text(proTaskIDObj.userGroup);//设置部门
+
+        var FaxCableSigPerson=$("#FaxCableSigPerson").data("kendoMultiSelect");//创建会签对象
+        FaxCableSigPerson.value([obj.signIssue_Person]);//设置签发人员值
+        $("#FaxCableSigPersonLbl").text(obj.signIssue_PersonName);//签发人员姓名
+
+        $("#signIssue_img")[0].src=obj.signIssue_img;//设置手写图片地址
+        $("#signIssueBase30img").text(obj.signIssue_30url);//设置手写图片内容
+        $("#FaxCableSigContent")[0].value=obj.signIssue_Content;//设置签发输入内容
+
+        var FaxCableDepChkPerson=$("#FaxCableDepChkPerson").data("kendoMultiSelect");//设置处室领导对象
+        FaxCableDepChkPerson.value([obj.leaderSign_Person]);//设置处室领导值
+        $("#FaxCableDepChkPersonLbl").text(obj.leaderSign_PersonName);//签发人员姓名
+        $("#FaxCableDepChkContent")[0].value=obj.leaderSign_Content;//设置处室领导输入内容
+        $("#counterSign_img")[0].src=obj.leaderSign_img;//设置手写图片地址
+        $("#counterSignBase30img").text(obj.leaderSign_30url);//设置手写图片内容
+
+        var FaxCableMainSendPerson=$("#FaxCableMainSendPerson").data("kendoMultiSelect");//设置主送人员对象
+        FaxCableMainSendPerson.value(obj.mainSend_Person.split(','));//设置主送部门值
+        $("#FaxCableMainSendPersonLbl").text(obj.mainSend_PersonName=="0"?"":obj.mainSend_PersonName);//设置主送部门姓名
+
+        var FaxCableMainCopyPerson=$("#FaxCableMainCopyPerson").data("kendoMultiSelect");//设置抄送部门对象
+        FaxCableMainCopyPerson.value(obj.copyTo_Person.split(','));//设置抄送值 由于返回的是字符串，因此需要将字符串转换成数组
+        $("#FaxCableMainCopyPersonLbl").text(obj.copyTo_PersonName=="0"?"":obj.copyTo_PersonName);//
+
+        userObj.drafter=obj.drafter;//设置拟稿人
+        userObj.phoneNum=obj.phoneNum;//设置电话号码
+        userObj.composeUser=obj.composeUser;
+        //$("#officeCheck")[0].htmlFor="ssss";//设置label的for属性
+        userObj.officeCheck=obj.officeCheck;
+        userObj.CheckReader=obj.CheckReader;
+        userObj.versionNum=obj.VersionNum;
+        signIssueBase30url=obj.signIssue_30url;
+        signIssueImageurl=obj.signIssue_img;
+        counterSignBase30url=obj.leaderSign_30url;
+        counterSignImageurl=obj.leaderSign_img;
+
+        $("#signIssueBase30img")[0].value=signIssueBase30url;
+        $("#signIssue_img")[0].src=signIssueImageurl;
+        console.log($("#signIssue_img")[0]);
+        $("#counterSignBase30img")[0].value=counterSignBase30url;
+        $("#counterSign_img")[0].src=counterSignImageurl;
+
+        var numerictextbox = $("#printCount").data("kendoNumericTextBox");//打印分数
+        numerictextbox.value(obj.printCount);
+
+        $("#printCountLbl").text(obj.printCount);
+        var GovInfoAttr=obj.govPublic;//政府属性
+
+
+        if(GovInfoAttr==1){//-----------------------//政府公开属性
+            $("#initiativePublic")[0].checked=true;
+            $("#GOV1")[0].checked=true;
+        }
+        else if(GovInfoAttr==2){
+            $("#applyForPublic")[0].checked=true;
+            $("#GOV2")[0].checked=true;
+        }
+        else if(GovInfoAttr==3){
+            $("#forbiddenPublic")[0].checked=true;
+            $("#GOV3")[0].checked=true;
+        }
+        $("#FaxCableTitle").val(obj.FaxCableTitle);//设置传真标题
+        $("#FaxCableTitleLbl").text(obj.FaxCableTitle);//设置传真标题
+        $("#FaxCableAttrTitle").text(obj.FaxCableAttrTittle);//设置附件标题
+        $("#FaxCableAttrTitleLbl").text(obj.FaxCableAttrTittle);//设置附件标题
+
+
+    }
+    //处理多选内容 由于select可以多选，因此需要对所有select多选值进行转换成字符串
+     function dealMutilSelect (arrStr){
+         var returnStr="";
+         for(var i=0;i<arrStr.length;++i){
+             returnStr+=arrStr[i]+",";
+         }
+         //去掉最后一个(,)
+         returnStr=returnStr.substring(0,returnStr.length-1);
+        return returnStr;
+    }
+    //用来存放拟稿人等信息对象
+    var userObj={
+        officeCheck:"4",//办公室复核
+        drafter:"4",//拟稿人
+        CheckReader:"4",//校对人
+        composeUser:"4",//排版
+        phoneNum:"15692166810",//联系电话
+        versionNum:"0"//最新版本号信息
+
+    }
+    //处室领导提交数据
+    function submitDepLeader(){
+        alert("处室领导同意，哈哈哈");
+        DepEvent("ok");
+    }
+    //局领导提交数据
+    function submitSigLeader(){
+        alert("局领导也同意，太开森了");
+        SigEvent("ok");
+    }
+    //局领导不同意
+    function cancelSigLeader(){
+        alert("55555555,局领导不同意。");
+        SigEvent("no")
+    }
+    //处室领导不同意
+    function cancelDepLeader(){
+        alert("竟然处室领导不同意");
+        DepEvent("no");
+    }
+    //签发领导处理事件
+    function SigEvent(vars){
+        signIssue_Person=$("#FaxCableSigPerson").data("kendoMultiSelect").value()[0];//获取会签人员
+        signIssue_img=$("#signIssueBase30img").val();//获取签发手写图片内容
+        signIssueImageurl=$("#signIssue_img")[0].src;//获取签发手写图片地址
+        signIssue_Content=$("#FaxCableSigContent")[0].value;//获取签发输入内容
+        leaderSign_Person=$("#FaxCableDepChkPerson").data("kendoMultiSelect").value()[0];//获取处室领导人员
+        //drafter=$("#drafter").text();//拟稿人
+        //为弹出对话框准备
+        var nextUserName=$("#drafter").text();//同意与否都是拟稿人，下一步是拟稿人
+        var currentTaskName=proTaskIDObj.taskName;//当前任务名称,
+        var nextTaskName=proTaskIDObj.nextTaskName;// 下一步任务名称
+
+
+        var  objData={
+            faxCableID:proTaskIDObj.faxCableID,//公文ID
+            processID:proTaskIDObj.processID,
+            taskID:proTaskIDObj.taskID,
+
+            signIssue_Person:signIssue_Person,
+            signIssue_img:signIssueImageurl,
+            signIssue_30url:signIssue_img,
+            signIssue_Content:signIssue_Content,
+            leaderSign_Person:leaderSign_Person,
+            drafter:proTaskIDObj.currentUser,
+
+
+            processID:proTaskIDObj.processID//流程实例ID
+
+        };
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:"/api/UpdateData/updateSigCommentContent/"+vars,
+                    data:objData,
+                    success:function(data){
+                        data=false? alert("保存数据失败"):alert("保存数据成功");
+                    }
+                }
+        )
+    }
+    //处室领导处理事件
+    function DepEvent(vars){
+
+        signIssue_Person=$("#FaxCableSigPerson").data("kendoMultiSelect").value()[0];//获取会签人员
+        leaderSign_Person=$("#FaxCableDepChkPerson").data("kendoMultiSelect").value()[0];//获取处室领导人员
+        leaderSign_Content=$("#FaxCableDepChkContent")[0].value;//获取处室领导输入内容
+        leaderSign_img=$("#counterSign_img")[0].src;//获取处室领导手写地址
+        leaderSign_30url=$("#counterSignBase30img").val();//获取处室领导手写内容
+        //drafter=$("#drafter").text();//拟稿人
+        var nextUserName="";//流程下一步的用户名
+        if(vars=="ok"){
+            var nextUserName=$("#FaxCableSigPersonLbl").text();//如果同意，下一步用户是局领导
+        }else{
+            var nextUserName=$("#drafter").text();//如果不同意，下一步是拟稿人
+        }
+        //为弹出对话框准备
+
+        var currentTaskName=proTaskIDObj.taskName;//当前任务名称,
+        var nextTaskName=proTaskIDObj.nextTaskName;// 下一步任务名称
+
+
+        var  objData={
+            faxCableID:proTaskIDObj.faxCableID,//公文ID
+            processID:proTaskIDObj.processID,
+
+            taskID:proTaskIDObj.taskID,
+
+            signIssue_Person:signIssue_Person,
+            leaderSign_Person:leaderSign_Person,
+            leaderSign_30url:leaderSign_30url,
+            leaderSign_img:leaderSign_img,
+            leaderSign_Content:leaderSign_Content,
+            drafter:proTaskIDObj.currentUser,
+
+            processID:proTaskIDObj.processID//流程实例ID
+
+        };
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:"/api/UpdateData/updateDepCommentContent/"+vars,
+                    data:objData,
+                    success:function(data){
+                        data=false? alert("保存数据失败"):alert("保存数据成功");
+                    }
+                }
+        )
+    }
+    //拟搞取消
+    function cancelData(){
+        alert("拟稿都能不同意");
+        //对已经上传的文件夹进行删除操作
+        var version=userObj.versionNum;//获取到当前版本号
+        var processID=proTaskIDObj.processID;//流程编号
+        version=parseInt(version)+1;//需要删除的版本号
+
+        $.ajax(
+                {
+                    type:"POST",
+                    url:"/api/UpdateData/cancelData/"+processID+"/"+version
+                }
+        )
+
+
+    }
+    //提交数据
+    function submitData(){
+        if($("#initiativePublic")[0].checked){
+                govPublic=1;
+        }else if($("#applyForPublic")[0].checked){
+            govPublic=2;
+        }else{
+            govPublic=3;
+        }
+        secretLevel=$("#FaxCableSecLv").data("kendoDropDownList").value()[0];//获取密级
+        missiveType=$("#FaxCableMisType").data("kendoDropDownList").value()[0];//获取公文类别
+        faxID=$("#FaxCableNum").val();//获取传真号
+        //签发
+        signIssue_Person=$("#FaxCableSigPerson").data("kendoMultiSelect").value()[0];//获取会签人员
+        composeUser=$("#composeUser").data("kendoMultiSelect").value()[0];//获取排版
+        officeCheck=$("#officeCheck").data("kendoMultiSelect").value()[0];//获取办公室审核
+        CheckReader=$("#CheckReader").data("kendoMultiSelect").value()[0];//获取校对
+        signIssueImageurl=$("#signIssueBase30img").val();//获取签发手写图片内容
+        var signSrcStr=$("#signIssue_img")[0].src;
+        signIssue_img=signSrcStr.indexOf("data:image/png;base64")>-1?signSrcStr:"";//获取签发手写图片地址
+        signIssue_Content=$("#FaxCableSigContent")[0].value;//获取签发输入内容
+        //处室领导
+        leaderSign_Person=$("#FaxCableDepChkPerson").data("kendoMultiSelect").value()[0];//获取处室领导人员
+        leaderSign_Content=$("#FaxCableDepChkContent")[0].value;//获取处室领导输入内容
+        var leaderSrcStr=$("#counterSign_img")[0].src;
+        leaderSign_img=leaderSrcStr.indexOf("data:image/png;base64")>-1?leaderSrcStr:"";//获取处室领导手写地址
+        counterSignBase30url=$("#counterSignBase30img").val();//获取处室领导手写内容
+
+        mainSend_Person=dealMutilSelect($("#FaxCableMainSendPerson").data("kendoMultiSelect").value());//获取主送人员
+        copyTo_Person=dealMutilSelect($("#FaxCableMainCopyPerson").data("kendoMultiSelect").value());//抄送人员
+        drafter=proTaskIDObj.currentUser;//拟稿人
+        phoneNum=$("#phoneNum").text();//电话号码
+        //composeUser=$("#composeUser").text();//排版
+        //officeCheck=$("#officeCheck").text();//办公室复核
+        printCount=$("#printCount").val();//打印分数
+        //CheckReader=$("#CheckReader").text();//校对人
+        FaxCableTitle=$("#FaxCableTitle").val();//标题
+        FaxCableAttrTittle=$("#FaxCableAttrTitle").val();//附件标题
+
+        //为弹出对话框准备
+        var nextUserName=$("#FaxCableDepChkPerson").text();//流程下一步的用户名
+        var currentTaskName=proTaskIDObj.taskName;//当前任务名称,
+        var nextTaskName=proTaskIDObj.nextTaskName;// 下一步任务名称
+
+        if(signIssue_Person=="" || leaderSign_Person==""){
+            alert("请选择");
+            return;
+        }
+
+
+        var  objData={
+            faxCableID:proTaskIDObj.faxCableID,//公文ID
+            processID:proTaskIDObj.processID,
+            taskID:proTaskIDObj.taskID,
+            secretLv:secretLevel,
+            faxType:missiveType,
+            faxID:faxID,
+            currentUser:drafter,
+            signIssue_Person:signIssue_Person,
+            signIssue_img:signIssue_img,
+            signIssue_30url:signIssueImageurl,
+            signIssue_Content:signIssue_Content,
+
+            leaderSign_Person:leaderSign_Person,
+            leaderSign_Content:leaderSign_Content,
+            leaderSign_img:leaderSign_img,
+            leaderSign_30url:counterSignBase30url,
+
+            mainSend_Person:mainSend_Person,
+            copyTo_Person:copyTo_Person,
+            drafter:proTaskIDObj.currentUser,
+            phoneNum:phoneNum,
+            composeUser:composeUser,
+            officeCheck:officeCheck,
+            printCount:printCount,
+            CheckReader:CheckReader,
+            govPublic:govPublic,
+            FaxCableTitle:FaxCableTitle,
+            FaxCableAttrTittle:FaxCableAttrTittle,
+            processID:proTaskIDObj.processID,//流程实例ID
+            currentUserID:proTaskIDObj.currentUser//获取当前用户
+
+        };
+        //将附件文件存放在objData
+        var attStr="";
+        for(var i=0;i<resultFiles.length;++i){
+            attStr+=resultFiles[i].name+",";
+        }
+        attStr=attStr.substring(0,attStr.length-1);//去掉最后一个，
+        objData.AttrNameList=attStr;//将附件名称列表赋值给数据对象，传输至后台
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:"/api/UpdateData/insertData",
+                    data:objData,
+                    success:function(data){
+                        data=false? alert("插入数据失败"):alert("插入数据成功");
+                        window.location.href="/dbzx";
+                        window.event.returnValue = false;
+                    }
+                }
+        )
+        //alert(counterSign_img);
+
+    }
+
+<!--上传文件相关js代码-->
+    var resultFiles=[];//存放结果文件集合
+    var initFiles = [];
+    var version=0;
+
+    var filePath_version=0;
+    if(version==0)
+        filePath_version=version+1;
+    else
+        filePath_version=version;
+
+    $(function($) {
+        <!--上传文件相关js代码-->
+//        var attachmentkendoUpload = $("#attachments").data("kendoUpload").options.files;
+
+        //get Initialize FileList
+        if(proTaskIDObj.attrNameList!=""){
+            var attrList=proTaskIDObj.attrNameList.split(',');
+            for(var i=0;i<attrList.length;++i){
+                var temp={};
+                temp.extension="."+attrList[i].split('.')[1];//后缀
+                temp.name=attrList[i];
+                initFiles.push(temp);
+                fileListCreate("fileList",temp,"files","filesDIV",currentEditableField);
+            }
+        }
+        resultFiles=initFiles;//将初始化的文件数字赋值给结果数据，然后将上传文件加入文件数组
+        $("#files").kendoUpload({
+            multiple: true,
+            async: {
+                saveUrl: "/faxCablePublish/upload/"+proTaskIDObj.processID,
+                autoUpload: false
+            },
+            localization: {
+                select: "选择文件....",
+                uploadSelectedFiles:"上传"
+            },
+            select: onSelect,
+            success: onSuccess,
+            files: initFiles
+        });
+        //set init_files visible be false;
+        for(var initfiles_i=0;initfiles_i<initFiles.length;initfiles_i++){
+            var hide_init_file=$("span[class='k-filename'][title='"+initFiles[initfiles_i].name+"']");
+            for(var hide_init_file_i=0;hide_init_file_i<hide_init_file.length;hide_init_file_i++){
+                $(hide_init_file[hide_init_file_i]).parent()[0].setAttribute("class","hide");
+            }
+        }
+    });
+    //选择文件时触发事件
+    function onSelect(e) {
+    }
+
+    //上传文件成功时触发事件
+    function onSuccess(e) {
+        // Array with information about the uploaded files
+        var files = e.files;
+        //将上传的文件写入到resultFiles数组中
+
+        if(e.operation=="upload"){
+            if (e.response == true) {
+                addObjFromObj(e);//添加文件信息到文件数组
+            }
+        }else{
+            if (e.response == true) {
+                //初始文件对象中删除指定对象
+                delObjFromObj(e);
+            }
+        }
+
+        filePath_version=version+1;
+
+        $("#fileList").empty();
+        for(var i=0;i<resultFiles.length;i++){
+            var temp=resultFiles[i];
+            //-------add list of attachments--->>>>>
+            fileListCreate("fileList",temp,"files","filesDIV",currentEditableField);
+        }
+
+    }
+    //初始文件对象中增加上传文件对象
+    function addObjFromObj(e){
+        var files= e.files[0];
+
+        var fileName = e.files[0].name;
+        resultFiles=resultFiles.filter(function(el){
+            return el.name!==fileName;
+        });
+
+        var temp={};
+        temp.name= files.name;//文件名
+        temp.extension=files.extension;//后缀名
+        resultFiles.push(temp);
+        var hide_span_file=$("span[class='k-filename'][title='"+e.files[0].name+"']");
+        for(var span_file_i=0;span_file_i<hide_span_file.length;span_file_i++){
+            $(hide_span_file[span_file_i]).parent()[0].setAttribute("class","hide");
+        }
+    }
+    function fileListCreate(fileListDiv_id,file,attachment_id,attachmentparent_id,editableElementList){
+        //fileListDiv_id--文件列表的id
+        //file：文件{name;extension;size}
+        //attachment_id:附件控件的id   //其必须有父级元素
+        //attachmentparent_id:父级元素
+        //editableElementList：当前可编辑控件集合的数组
+        //pdfViewerURL:pdf浏览器URL
+        //fileURL：文件下载的URL
+        //fileUploadUrl  文件上传的URL//'/missivePublish/upload/'+instanceID,
+        //fileRemoveURL;文件删除的URL// "/missivePublish/remove/"+instanceID;
+        var pdfViewerURL="/pdfViewer/web/viewer.html?file=";
+        var fileURL="/pdf/faxCablePublish/"+proTaskIDObj.processID+"/"+filePath_version+"/"+file.name;
+        var fileRemoveURL = "/faxCablePublish/remove/"+proTaskIDObj.processID;
+        var fileUploadUrl="/faxCablePublish/upload/"+proTaskIDObj.processID;
+        createFileListElement(fileListDiv_id,file,attachment_id,attachmentparent_id,editableElementList,pdfViewerURL,fileURL,fileUploadUrl,fileRemoveURL);
+    }
+//头部选择时间
+    function faxCableChange(){
+        var missiveNum= $("#FaxCableNum")[0].value//输入公文编号
+        $.ajax(
+                {
+                    type:"GET",
+                    url:"/api/UpdateData/missiveNumExit/"+missiveNum,
+                    success:function(data){
+                        if(!data){
+                            $("#FaxCableNum").focus();//获取焦点
+                            alert("该公文号已存在");
+                        }else{
+                            $("#FaxCableNumLbl")[0].innerHTML= missiveNum;//
+                        }
+
+                    }
+                }
+        )
+
+    }
+    function missiveTittletextChange(){
+        $("#FaxCableTitleLbl")[0].innerHTML=  $("#FaxCableTitle")[0].value;
+    }
+    function appendTittletextChange(){
+        $("#FaxCableAttrTitleLbl")[0].innerHTML=  $("#FaxCableAttrTitle")[0].value;
+    }
+//插入签名
+
+</script>
+<style>
+    #missiveForm div label,#missiveForm div textarea{
+        font-size: 18px;
+        color: #666;
+        font-family: "SimSun";
+    }
+    #validatorDIV div div label,#validatorDIV div div label + div{
+        /*margin-top: 2px;*/
+        display: inline-block;
+
+
+    }
+    #validatorDIV div div{
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #validatorDIV div div div{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .vali_lable{ /*表单内的lable样式*/
+        width: 100px;
+        text-align: right;
+        padding-top: 5px;
+        padding-right: 5px;
+    }
+    .vali_input{
+        width: 330px;
+        border-radius: 4px;
+        border-width: 1px;
+        box-shadow: none;
+        height: 30px;
+    }
+    .vali_dropdown{
+        width: 330px;
+    }
+    .vali_select{
+        width: 330px;
+        display: inline-flex;
+        margin-left: 2px;
+    }
+    .vali_textarea{
+        border-radius: 4px!important;
+        border-width: 1px;
+        box-shadow: none;
+    }
+
+
+    #GOVatrrDIV div{
+        margin-top: 5px;
+        margin-bottom: 5px;
+        /*color: #507f50;*/
+    }
+
+    span[class="k-numeric-wrap k-state-default"]{
+        line-height: 30px;
+    }
+    #FaxCableNum{
+        width: 330px;border-radius: 4px;line-height: 2;border: 1px solid #d5d5d5;color: #858585;
+    }
+
+</style>
+<!-- inline scripts related to this page -->
+</body>
+</html>

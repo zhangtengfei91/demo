@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script th:replace="header :: header"></script>
+
+</head>
+
+<body>
+<script>
+
+    var userbase64 = "[[${userbase64}]]";
+
+</script>
+
+<div th:replace="navbar :: navbar(${session.user})"></div>
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'dbzx'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="#">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Other Pages</a>
+                    </li>
+                    <li class="active">Blank Page</li>
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+                                        <span class="input-icon">
+                                            <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                                            <i class="icon-search nav-search-icon"></i>
+                                        </span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+
+                <div class="page-header">
+                    <h1>
+                        流程时间轴
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            流程执行状态
+                        </small>
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div id="timeline-1">
+                            <div class="row">
+                                <!--生成历史流程图片-->
+                                <div class="col-sm-5" id="processConttent">
+
+                                    <img id="processImg" src="" style="float:right;"/>
+
+                                </div>
+                                <!--动态生成历史流程-->
+                                <div class="col-sm-7">
+
+                                    <div class="timeline-container">
+
+                                        <!-- /.timeline-items -->
+
+                                    </div>
+
+                                    <!-- /.timeline-container -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+
+        <div class="ace-settings-container" id="ace-settings-container">
+            <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                <i class="icon-cog bigger-150"></i>
+            </div>
+
+            <div class="ace-settings-box" id="ace-settings-box">
+                <div>
+                    <div class="pull-left">
+                        <select id="skin-colorpicker" class="hide">
+                            <option data-skin="default" value="#438EB9">#438EB9</option>
+                            <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                            <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                            <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                        </select>
+                    </div>
+                    <span>&nbsp; Choose Skin</span>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                    <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                    <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                    <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                    <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                    <label class="lbl" for="ace-settings-add-container">
+                        Inside
+                        <b>.container</b>
+                    </label>
+                </div>
+            </div>
+        </div><!-- /#ace-settings-container -->
+    </div><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/assets/js/jquery.1.10.2.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/js/kendo.all.min.js"></script>
+
+<script th:inline="javascript" type="text/javascript" >
+    jQuery(function ($) {
+
+        var instanceId = [[${instanceId}]];
+
+        $.ajax({
+
+            type:"POST",
+            url:"/process/history/instance",
+            data:{instanceId:instanceId},
+            dataType:"json",
+
+            //POST"请求成功"
+            success:function(result){
+
+                $('#processImg').get(0).src="/test/process/trace/auto/"+result[0].executionId;
+
+                $.ajax({
+
+                    url:"/process/history/documentation",
+                    type:"POST",
+                    data:{instanceId:instanceId},
+                    success:function(req){
+
+                        $('.timeline-container').append('<div class="timeline-label"><span class="label label-warning arrowed-in-right label-lg"><b>'+req+'</b></span></div>');
+
+                        for(var i=result.length;i>0;i--){
+
+                            if((i==result.length)&(result[i-1].activityName!='流程结束')){//当前正在运行的流程，非“结束事件”
+
+                                $('.timeline-container').append('<div class="timeline-items"><div class="timeline-item clearfix" style="margin-bottom:20px;"><div class="timeline-info"><i class="timeline-indicator fa fa-spinner fa-spin btn btn-primary no-hover"></i></div><div class="widget-box"><div class="widget-header header-color-blue widget-header-small" style="border-radius: 3px;"><h5 class="smaller">'+result[i-1].activityName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-user bigger-110"></i>:&nbsp;'+result[i-1].assignee+'</h5><span class="widget-toolbar no-border"><i class="icon-time pink bigger-130"></i>正在运行</span><span class="widget-toolbar"><a href="#" data-action="reload"><i class="icon-refresh"></i></a><a href="#" data-action="collapse"><i class="icon-chevron-up"></i></a></span></div><div class="widget-body"><div class="widget-main">Please download the new patch</div></div></div></div></div>');
+
+                            }else if(result[i-1].activityName=='流程结束'){
+
+                                $('.timeline-container').append('<div class="timeline-items"><div class="timeline-item clearfix" style="margin-bottom:20px;"><div class="timeline-info"><i class="timeline-indicator fa fa-dot-circle-o btn btn-success  no-hover"></i></div><div class="widget-box"><div class="widget-header header-color-grey widget-header-small" style="border-radius: 8px;text-align: center"><h5 class="smaller">'+result[i-1].activityName+'</h5><span class="widget-toolbar no-border"><i class="icon-time pink bigger-130"></i>'+(new Date(result[0].endTime)).toLocaleString()+'</span></div></div></div></div>');
+
+                            }
+                            else if(i==1){ //流程开始事件
+                                $('.timeline-container').append('<div class="timeline-items"><div class="timeline-item clearfix" style="margin-bottom:20px;"><div class="timeline-info"><i class="timeline-indicator fa fa-circle-o btn btn-success  no-hover"></i></div><div class="widget-box"><div class="widget-header header-color-green widget-header-small" style="border-radius: 8px;text-align: center"><h5 class="smaller">'+result[0].activityName+'</h5><span class="widget-toolbar no-border"><i class="icon-time pink bigger-130"></i>'+(new Date(result[0].endTime)).toLocaleString()+'</span></div></div></div></div>');
+
+
+                            }else{ //历史流程实例
+
+                                $('.timeline-container').append('<div class="timeline-items"><div class="timeline-item clearfix" style="margin-bottom:20px;"><div class="timeline-info"><i class="timeline-indicator fa fa-check-square-o btn btn-success no-hover"></i></div><div class="widget-box"><div class="widget-header header-color-green widget-header-small" style="border-radius: 3px;"><h5 class="smaller">'+result[i-1].activityName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-user bigger-110"></i>:&nbsp;'+result[i-1].assignee+'</h5><span class="widget-toolbar no-border"><i class="icon-time pink bigger-130"></i>'+(new Date(result[0].endTime)).toLocaleString()+'</span><span class="widget-toolbar"><a href="#" data-action="reload"><i class="icon-refresh"></i></a><a href="#" data-action="collapse"><i class="icon-chevron-up"></i></a></span></div><div class="widget-body"><div class="widget-main">Please download the new patch</div></div></div></div></div>');
+
+                            }
+
+                        }//for循环结束
+
+                    }
+
+                });
+
+            },
+            error:function(){
+                alert("服务不允许或POST请求错误");
+            }
+        });
+
+    });
+
+</script>
+
+<!-- inline scripts related to this page -->
+</body>
+</html>
+
+

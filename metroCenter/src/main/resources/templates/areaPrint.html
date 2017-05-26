@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+
+</head>
+<body>
+<input type="button" id="btnPrint" value="打印"/>
+<div id="printContent">
+
+    <div style="position: absolute;z-index: -1;">
+        <img src="/img/JD/结果说明续页.png" style="height: 900px;width: 690px;">
+    </div>
+
+    <div style="margin-top: 200px;margin-left: 10px;">
+        <p>主温度表示值范围：+0.05 &nbsp;℃</p><p>分度值： -0.04℃</p><p>水银对玻璃的视膨胀系数(&gamma;值)： 1/20000<span style="text-decoration:underline;"></span></p><p>主温度表(0℃)标线到接收泡顶端的毛细管的体积以一度毛细管的体积表示(VO值)： 3000<span style="text-decoration:underline;"></span></p><table style="border-collapse:collapse;border-spacing:0;border:1px solid #888;"><tbody><tr><td align="center" colspan="2">主温度表</td><td align="center" colspan="2">副温度表</td></tr><tr><td align="center">示值(℃)</td><td align="center">修正值(℃)</td><td align="center">示值(℃)</td><td align="center">修正值(℃)</td></tr><tr><td align="center">0</td><td align="center">+0.02</td><td align="center" rowspan="2">0</td><td align="center" rowspan="2">+0.1</td></tr><tr><td align="center">5</td><td align="center">+0.03</td></tr><tr><td align="center">10</td><td align="center">+0.02</td><td align="center" rowspan="2">0</td><td align="center" rowspan="2">+0.1</td></tr><tr><td align="center">15</td><td align="center">+0.02</td></tr><tr><td align="center">20</td><td align="center">+0.04</td><td align="center" rowspan="2">0</td><td align="center" rowspan="2">+0.1</td></tr><tr><td align="center">25</td><td align="center">+0.04</td></tr><tr><td align="center">30</td><td align="center">+0.02</td><td align="center">0</td><td align="center">+0.1</td></tr></tbody></table>
+    </div>
+</div>
+
+
+    <script type="text/javascript">
+        var certificateInfoDiv={
+            width:"1276px",
+            height:"900px",
+            left:"0px",
+            top:"0px"
+        };//证书背景图片图层的位置、尺寸等相关信息
+        function getChangeEquipMent(name,obj,bgImage){
+            $("#"+name).css({
+                "width":obj.width,
+                "height":obj.height,
+                "position":"absolute",
+                "margin-left":obj.left,
+                "margin-top":obj.top,
+                "background-image":bgImage,
+                "background-size":"contain",
+                "background-repeat":"no-repeat"
+            });
+        }
+    </script>
+<style type="text/css">
+    table,th,td
+    {
+        border:1px solid blue;
+    }
+</style>
+</body>
+</html>

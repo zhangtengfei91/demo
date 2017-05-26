@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="/css/jquery.tokenize.css"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+<script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+<div class="main-container-inner">
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+
+
+<div th:replace="slider :: slidermenu(${'history'})"></div>
+
+
+<div class="main-content">
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home home-icon"></i>
+            <a href="/">主页</a>
+        </li>
+        <li class="active">
+            <a href="#">样品公告</a>
+        </li>
+        <!--<li class="active">Blank Page</li>-->
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索 ..."  class="nav-search-input" id="nav-search-input" autocomplete="off""/>
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+    </div><!-- #nav-search -->
+</div>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                状态公告
+            </h1>
+        </div>
+        <div class="span6 widget-container-span ui-sortable" id="register">
+            <div >
+                <!--进度圈圈-->
+                <div id="fuelux-wizard1" class="row-fluid" data-target="#step-container">
+                    <ul class="wizard-steps">
+                        <li data-target="#step1" class="active">
+                                    <span class="step">1</span>
+                                    <span class="title">暂存样品</span>
+                                </li>
+
+                        <li data-target="#step2"class="active">
+                                    <span class="step">2</span>
+                                    <span class="title">样品接收登记</span>
+                                </li>
+
+                        <li data-target="#step3"class="active">
+                                    <span class="step">3</span>
+                                    <span class="title">样品分发</span>
+                                </li>
+
+                        <li data-target="#step4"class="active">
+                                    <span class="step">4</span>
+                                    <span class="title">收发样品</span>
+                                </li>
+                        <li data-target="#step5"class="active">
+                            <span class="step">5</span>
+                            <span class="title">仪器检定</span>
+                        </li>
+                    </ul>
+                </div>
+                <div hidden="hidden" id="fuelux-wizard2" class="row-fluid" data-target="#step-container">
+                    <ul class="wizard-steps">
+                        <li data-target="#step6"class="active">
+                            <span class="step">6</span>
+                            <span class="title">出具证书</span>
+                        </li>
+                        <li data-target="#step7"class="active">
+                            <span class="step">7</span>
+                            <span class="title">审核证书</span>
+                        </li>
+                        <li data-target="#step8" class="active">
+                            <span class="step">8</span>
+                            <span class="title">授权证书</span>
+                        </li>
+                        <li data-target="#step9"class="active">
+                            <span class="step">9</span>
+                            <span class="title">打印盖章</span>
+                        </li>
+                        <li data-target="#step10"class="active">
+                            <span class="step">10</span>
+                            <span class="title">交接证书</span>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="hr hr8 hr-double hr-dotted"style="margin-top: 50px"></div>
+                <!--展示数据区域-->
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="myTab" style="height: 34px">
+                        <li id="sampleTab"class="active"  onclick="changeTab(this.id)">
+                            <a data-toggle="tab" href="#sampleInfo">
+                                <i class="green icon-beaker bigger-110"></i>
+                                        样品状态
+                            </a>
+                        </li>
+
+                        <li id="certiTab" onclick="changeTab(this.id)">
+                            <a data-toggle="tab" href="#certiInfo">
+                                <i class="orange icon-book bigger-110"></i>
+                                证书状态
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="sampleInfo" class="tab-pane in active" ></div>
+
+                        <div id="certiInfo" class="tab-pane"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/span-->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+</div>
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+<script src="/js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="/js/jquery-barcode.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/js/jquery-ui.js"></script>
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript"  th:inline="javascript">
+    var sampleDataSource;
+    var serialNumber;//编号对象
+    var currentUserName=/*[[${currentUserName}]]*/ 'currentUserName';
+
+
+
+    function setSampleDataSource(){
+        sampleDataSource=new kendo.data.DataSource({
+        transport: {
+            read:  {
+                url: "/api/history/sampleInfo",
+                dataType: "json"
+            },
+            parameterMap: function(options, operation) {
+                if(operation !== "read" && options.models) {
+                    var identifier=options.models[0].identifier;
+                    var sampleName=options.models[0].sampleName;
+                    var sampleCode=options.models[0].sampleCode;
+                    var sampleStatus=options.models[0].sampleStatus;
+                    var sampleCharge=options.models[0].sampleCharge;
+                    var statusPercent=options.models[0].statusPercent;
+
+                    return {identifier:identifier,sampleName:sampleName,sampleCode:sampleCode,sampleStatus:sampleStatus,
+                        sampleCharge:sampleCharge,statusPercent:statusPercent};
+                }
+
+            }
+        },
+        batch: true,
+        pageSize: 20,
+        schema: {
+            model: {
+                id: "identifier",
+                fields: {
+                    sampleName: { editable: false, nullable: true },
+                    sampleCode: {type:"string"},
+                    sampleStatus: {type:"string"},
+                    sampleCharge:{type:"string"},
+                    statusPercent:{type:"string"}
+
+                }
+            }
+        }
+    });
+    }
+    function setCertiDataSource(){
+        certiDataSource=new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: "/api/history/certiInfo",
+                    dataType: "json"
+                },
+                parameterMap: function(options, operation) {
+                    if(operation !== "read" && options.models) {
+                        var identifier=options.models[0].identifier;
+                        var sampleName=options.models[0].sampleName;
+                        var sampleCode=options.models[0].sampleCode;
+                        var certiStatus=options.models[0].certiStatus;
+                        var certiCharge=options.models[0].certiCharge;
+                        var certificateNo=options.models[0].certificateNo;
+                        var statusPercent=options.models[0].statusPercent;
+
+
+                        return {identifier:identifier,sampleName:sampleName,sampleCode:sampleCode,certiStatus:certiStatus,
+                            certiCharge:certiCharge,certificateNo:certificateNo,statusPercent:statusPercent};
+                    }
+
+                }
+            },
+            batch: true,
+            group:{field:"identifier"},
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "certificateNo",
+                    fields: {
+                        sampleName: { editable: false, nullable: true },
+                        serialNumber: {type:"string"},
+                        sampleId: {type:"string"},
+                        certiStatus: {type:"string"},
+                        certiCharge:{type:"string"},
+                        statusPercent:{type:"string"}
+                    }
+                }
+            }
+        });
+    }
+
+
+
+$(function(){
+    setSampleDataSource();
+    setCertiDataSource();
+    if($("#certiTab")[0].className=="active"){
+
+    }
+
+    $("#sampleInfo").kendoGrid({
+        dataSource:sampleDataSource,
+        columns:[
+            {
+                field: "identifier",
+                title: "样品批次"
+            },
+            {
+                field: "sampleName",
+                title: "样品名称"
+            },{
+                field: "sampleCode",
+                title: "出厂编号"
+            },
+            {
+                field: "sampleStatus",
+                title: "样品状态"
+            }, {
+                field: "statusPercent",
+                title: "进度百分比"
+            }, {
+                field: "sampleCharge",
+                title: "负责人"
+            }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        groupable:true,
+        sortable: true,
+        selectable: "row",
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    contains: "模糊匹配",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索结果",
+                clear: "全部显示"
+            }
+
+        }
+
+    });
+    $("#certiInfo").kendoGrid({
+        dataSource:certiDataSource,
+        columns:[
+            {
+                field: "identifier",
+                title: "样品批次",
+                hidden:true,
+                groupHeaderTemplate:"样品批次:  #=data.value#"
+            },
+            {
+                field: "certificateNo",
+                title: "证书编号"
+            },{
+                field: "sampleName",
+                title: "样品名称"
+            }, {
+                field: "sampleCode",
+                title: "出厂编号"
+            }, {
+                field: "certiStatus",
+                title: "证书状态"
+            },
+            {
+                field: "statusPercent",
+                title: "进度百分比"
+            }, {
+                field: "certiCharge",
+                title: "负责人"
+            }
+        ],
+        pageable: {
+            buttonCount:3,
+            input: true,
+
+            messages:{
+                display:"共{2}条记录",
+                first:"第一页",
+                last:"最后一页",
+                next:"下一页",
+                previous:"前一页",
+                morePages:"更多页",
+                refresh:"刷新表格",
+                empty:"没有数据",
+                itemsPerPage:"项数据每页",
+                page:"第",
+                of:"页"
+            }
+        },
+        groupable:true,
+
+        sortable: true,
+        selectable: "row",
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "选择条件",
+                    contains: "模糊匹配",
+                    eq: "等于",
+                    neq: "不等于"
+
+                }
+            },
+            messages: {
+                info: "筛选",
+                and: "且",
+                or: "或",
+                filter: "搜索结果",
+                clear: "全部显示"
+            }
+
+        }
+
+    });
+
+
+});
+    function changeTab(a){
+        if(a=="sampleTab"){
+            $("#fuelux-wizard1").show();
+            $("#fuelux-wizard2").hide();
+        }
+        else{
+            $("#fuelux-wizard2").show();
+            $("#fuelux-wizard1").hide();
+        }
+    }
+
+</script>
+</body>
+</html>
+

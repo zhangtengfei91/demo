@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${title}"></title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/dropzone.css" />
+
+
+    <script th:replace="header :: header"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <script src="/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="/css/myTableCSS/myTableCSS.css"/>
+    <link rel="stylesheet" href="/css/myTableCSS/wlsh.defult.css" title="Default Styles" media="screen"/>
+    <link rel="stylesheet" href="/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="/css/jquery.tokenize.css"/>
+
+</head>
+
+<body>
+<div th:replace="navbar :: navbar(${user})"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+</script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+
+        <div th:replace="slider :: slidermenu(${'dbzx_NewSample'})"></div>
+
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/">主页</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">样品接收登记</a>
+                    </li>
+                    <!--<li class="active">Blank Page</li>-->
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+                </div><!-- #nav-search -->
+            </div>
+            <div class="page-content">
+                <div class="span6 widget-container-span ui-sortable" id="register">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h5><label id="taskName"></label> </h5>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="settings">
+                                    <i class="icon-cog"></i>
+                                </a>
+
+                                <a href="#" data-action="reload">
+                                    <i class="icon-refresh"></i>
+                                </a>
+
+                                <a href="#" data-action="collapse">
+                                    <i class="icon-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <!--客户信息选择-->
+                                <div id="clientInfo" th:class="${#lists.contains(currentEditableField,'clientInfo')}?'alert alert-info':'hide'">
+                                    <div style="margin:10px 0">
+                                        <label id="contractNoLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">委托方合同号：</label>
+                                        <input id="contractNo" class="vali_input" style="width: 300px;"/>
+                                        <label id="certiCodeLbl" class="control-label bolder blue vali_lable" style="margin-left:32px;">证书单位机构代码：</label>
+                                        <input id="certiCode" class="vali_input" style="width: 300px;"/>
+
+                                    </div>
+                                    <div style="margin:10px 0">
+                                        <label id="unitNameLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">委托单位全称：</label>
+                                        <input id="unitName" class="vali_input" onchange="change('unitName','input')" style="width: 300px;"/>
+                                        <label>*</label>
+                                        <label id="contactsLbl" class="control-label bolder blue vali_lable" style="margin-left:46px;">委托方联系人：</label>
+                                        <input id="contacts" class="vali_input" onchange="change('contacts','input')" style="width: 300px;"/>
+                                        <label>*</label>
+                                    </div>
+                                    <div style="margin:10px 0">
+                                        <label id="certiNameLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">证书单位全称：</label>
+                                        <input id="certiName" class="vali_input" onchange="change('certiName','input')" style="width: 300px;"/>
+                                        <label>*</label>
+
+                                        <label id="telephoneLbl" class="control-label bolder blue vali_lable" style="margin-left:74px;">联系电话：</label>
+                                        <input id="telephone" class="vali_input" style="width: 300px;"/>
+
+
+                                    </div>
+                                    <div style="margin:10px 0">
+                                        <label id="emailLbl" class="control-label bolder blue vali_lable">电子邮箱(Email)：</label>
+                                        <input id="email" class="vali_input" style="width: 300px;"/>
+                                        <label id="phoneLbl" class="control-label bolder blue vali_lable" style="margin-left:44px;">手机(短信通知)：</label>
+                                        <input id="phone" class="vali_input" onchange="change('phone','input')" style="width: 300px;"/>
+                                        <label>*</label>
+                                    </div>
+                                    <div>
+                                        <label id="unitAddressLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">委托单位地址：</label>
+                                        <input id="unitAddress" class="vali_input" onchange="change('unitAddress','input')" style="width: 773px;"/>
+                                        <label>*</label>
+
+                                    </div>
+
+                                </div>
+                                <!--样品信息选择-->
+                                <div id="sampleInfo" style="height: 650px;" th:class="${#lists.contains(currentEditableField,'sampleInfo')}?'alert alert-success':'hide'">
+                                    <div style="position:absolute;">
+                                        <label id="sampleNameLbl" class="control-label bolder blue vali_lable" style="margin-left: 51px;">样品名称：</label>
+                                        <input id="sampleName" class="vali_input" onchange="change('sampleName','input')" style="width:300px;"/>
+                                        <label>*</label>
+
+                                        <label id="sampleCodeLbl" class="control-label bolder blue vali_lable" style="margin-left:59px;">唯一性标识：</label>
+                                        <input id="sampleCode" class="vali_input" onchange="change('sampleCode','input')" style="width:300px;"/>
+                                        <label>*</label>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 40px;">
+                                        <label id="factoryNameLbl" class="control-label bolder blue vali_lable" style="margin-left: 22px;">样品制造厂商：</label>
+                                        <input id="factoryName" class="vali_input" onchange="change('factoryName','input')" style="width:300px;"/>
+                                        <label id="specificateModelLbl" class="control-label bolder blue vali_lable" style="margin-left:80px;">规格/型号：</label>
+                                        <input id="specificateModel" class="vali_input" onchange="change('specificateModel','input')" style="width:300px;"/>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 80px;">
+                                        <label id="accuracyLevelLbl" class="control-label bolder blue vali_lable" style="margin-left: 36px;">准确度等级：</label>
+                                        <input id="accuracyLevel" class="vali_input" onchange="change('accuracyLevel','input')" style="width:300px;"/>
+                                        <label id="measureRangeLbl" class="control-label bolder blue vali_lable" style="margin-left: 88px;">测量范围：</label>
+                                        <input id="measureRange" class="vali_input" onchange="change('measureRange','input')" style="width:300px;"/>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 120px;" class="span50">
+                                        <label id="sampleFactoryCodeLbl" class="control-label bolder blue" style="margin-left: 50px;margin-top:-40px;">出厂编号：</label>
+                                        <!--<input class="vali_input" id="sampleFactoryCode" style="width: 770px;height: 50px;"/>-->
+                                        <select id="sampleFactoryCode" multiple="multiple" class="tokenize-sample" style="margin: 0px; padding: 0px; border: 0px; display: none;">
+
+                                        </select>
+                                        <label style="margin-top:-40px">*</label>
+                                        <label  style="margin-top:-70px">
+                                            <button id="testBar" onclick="testBar()"  style="margin-left:5px">矫正条码</button> </label>
+                                        <label  style="margin-top:-10px;margin-left:-80px">
+                                            <button id="printBar" onclick="printBar()">打印条码</button></label>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 180px;">
+                                        <div style="float: left;margin-left: 50px;">
+                                            <label id="serviceTypeLbl" class="control-label bolder blue vali_lable">服务类型：</label>
+                                            <select id="serviceType" style="width: 300px;" onchange="change('serviceType','DropDownList')"/>
+                                            <label>*</label>
+
+                                        </div>
+                                        <div style="margin-left: 520px;">
+                                            <label id="sampleMethodLbl" class="control-label bolder blue vali_lable">取样方式：</label>
+                                            <select id="sampleMethod" style="width: 300px;" onchange="change('sampleMethod','DropDownList')"/>
+                                            <label>*</label>
+
+                                        </div>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 220px;">
+                                        <div style="float: left;margin-left: 50px;">
+                                            <label id="serviceWaylLbl" class="control-label bolder blue vali_lable">服务方式：</label>
+                                            <select id="serviceWay" style="width: 300px;" onchange="change('serviceWay','DropDownList')"/>
+                                            <label>*</label>
+
+                                        </div>
+                                        <div style="margin-left: 520px;">
+                                            <label id="characterServiceLbl" class="control-label bolder blue vali_lable">特色服务：</label>
+                                            <select id="characterService" style="width: 300px;" onchange="change('characterService','DropDownList')"/>
+                                        </div>
+
+                                    </div>
+
+                                    <div style="position: absolute;margin-top: 260px;">
+                                        <div style="float: left;margin-left: 50px;">
+                                            <label id="receptIdLbl" class="control-label bolder blue vali_lable">收发人员：</label>
+                                            <select id="receptId" style="width: 300px;" onchange="change('receptId','DropDownList')"/>
+                                            <label>*</label>
+
+                                        </div>
+                                        <div style="margin-left: 520px;">
+                                            <label id="distributionIdLbl" class="control-label bolder blue">分发人员：</label>
+                                            <select id="distributionId" style="width: 300px;"/>
+                                            <label>*</label>
+
+                                        </div>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 300px;">
+                                        <div style="margin-left: 50px;">
+                                            <label id="statusLbl" class="control-label bolder blue">样品状态：</label>
+                                            <select id="status" style="width: 300px;"></select>
+                                        </div>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 350px;">
+                                        <div style="margin-left: 53px;">
+                                            <label id="surveillanceProLbl" class="control-label bolder blue">检测项目：</label>
+                                            <select id="surveillanceProId" style="width: 765px; position: relative; margin-left: 75px;margin-top:-30px;"/>
+                                            <label>*</label>
+                                        </div>
+                                    </div>
+
+                                    <div style="position: absolute;margin-top: 390px;margin-left: 53px;">
+                                        <label id="sampleTestLbl" class="control-label bolder blue vali_lable">样品初查：外包装检查：</label>
+                                        <input type="checkbox" name="sampleTest" value="3" onclick="chooseOne(this,'sampleTest')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleTestSpan3">好；</span>
+                                        <input type="checkbox" name="sampleTest" value="4" onclick="chooseOne(this,'sampleTest')" style="margin-left: 15px;">
+                                        <span class="control-label bolder blue vali_lable" id="sampleTestSpan4">差。</span>
+                                        <label class="control-label bolder blue vali_lable">样品外观检查：</label>
+                                        <input type="checkbox" name="sampleSurface" value="3" onclick="chooseOne(this,'sampleSurface')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleSurfaceSpan3">好；</span>
+                                        <input type="checkbox" name="sampleSurface" value="4" onclick="chooseOne(this,'sampleSurface')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleSurfaceSpan4">坏。</span>
+                                        <label class="control-label bolder blue vali_lable">通电检查：</label>
+                                        <input type="checkbox" name="sampleElectric" value="3" onclick="chooseOne(this,'sampleElectric')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleElectricSpan3">需；</span>
+                                        <input type="checkbox" name="sampleElectric" value="4" onclick="chooseOne(this,'sampleElectric')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleElectricSpan4">不需。</span>
+                                        <label class="control-label bolder blue vali_lable">特殊需求：</label>
+                                        <input type="checkbox" name="sampleSpecial" value="3" onclick="chooseOne(this,'sampleSpecial')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleSpecialSpan3">有；</span>
+                                        <input type="checkbox" name="sampleSpecial" value="4" onclick="chooseOne(this,'sampleSpecial')">
+                                        <span class="control-label bolder blue vali_lable" id="sampleSpecialSpan4">无。</span>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 420px;margin-left: 123px;">
+                                        <label class="control-label bolder blue vali_lable">电源电压110V及特殊事项需特别标注并告知受理人员。为检查部分和无外包装样品的任何失效、损坏由委托方自行承担。</label>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 450px;margin-left: 53px;">
+                                        <label id="principalRequreLbl" class="control-label bolder blue vali_lable">委托需求：</label>
+                                        <input type="checkbox" name="principalRequre" value="3" onclick="chooseOne(this,'principalRequre')">
+                                        <span class="control-label bolder blue vali_lable" id="principalRequreSpan3">同意受所选定服务类型和检测方法</span>
+                                        <input type="checkbox" name="principalRequre" value="4" onclick="chooseOne(this,'principalRequre')" style="margin-left: 15px;">
+                                        <span class="control-label bolder blue vali_lable" id="principalRequreSpan4">委托方选定检测方法</span>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 450px;margin-left: 753px;">
+                                        <input type="checkbox" id="chkMessageSend" name="messageSend" value="3">
+                                        <span class="control-label bolder blue vali_lable" id="messageSendSpan3"></span>
+                                        <label  id="messageSendLbl" class="control-label bolder blue vali_lable">发送短信</label>
+
+                                    </div>
+                                    <div style="position: absolute;margin-top: 480px;margin-left: 50px;">
+                                        <label id="principalTestRequreLbl" class="control-label bolder blue vali_lable">检测要求：</label>
+                                        <input id="principalTestRequre" class="vali_input" onchange="change('principalTestRequre','input')" style="width: 190px;"/>
+                                        <label id="principalTestBaseOnlLbl" class="control-label bolder blue vali_lable" style="margin-left:10px;">检测依据：</label>
+                                        <input id="principalTestBaseOn" class="vali_input" onchange="change('principalTestBaseOn','input')" style="width: 190px;"/>
+                                        <label id="principalOtherLbl" class="control-label bolder blue vali_lable" style="margin-left:10px;">其他要求：</label>
+                                        <input id="principalOther" class="vali_input" onchange="change('principalOther','input')" style="width: 190px;"/>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 520px;margin-left: 68px;">
+                                        <label class="control-label bolder blue vali_lable">附件：</label>
+                                        <textarea id="attachment" class="vali_input" style="height: 50px;width: 760px;" onchange="change('attachment','input')"></textarea>
+                                    </div>
+                                    <div style="position: absolute;margin-top: 580px;margin-left: 40px;">
+                                        <label id="remarkLbl" class="control-label bolder blue vali_lable">备注信息：</label>
+                                        <textarea id="remark" class="vali_input" style="height: 50px;width: 760px;" onchange="change('remark','input')"></textarea>
+                                    </div>
+                                </div>
+                                <!--样品分发信息选择-->
+                                <div id="distributionInfo" th:class="${#lists.contains(currentEditableField,'distributionInfo')}?'alert alert-success':'hide'">
+
+                                    <div style="margin:10px 0">
+                                        <label id="labNameLbl" class="control-label bolder blue vali_lable">实验室名称：</label>
+                                        <input id="labName" style="width:200px;font-size: 12px;" onchange="bindAccredited(this)"/>
+                                        <label id="sampleNameDisLbl" class="control-label bolder blue vali_lable" style="margin-left: 36px;">样品名称：</label>
+                                        <input id="sampleNameDis" class="vali_input" style="width: 200px;font-size: 12px;" disabled="disabled"/>
+                                        <label id="factoryCodeLbl" class="control-label bolder blue vali_lable" style="margin-left: 39px;">出厂编号：</label>
+                                        <input id="factoryCode" class="vali_input" style="width: 200px;font-size: 12px;"/>
+                                    </div>
+                                    <div style="margin:10px 0">
+                                        <label id="receivedDateLbl" class="control-label bolder blue " style="margin-left: 13px;">分发日期：</label>
+                                        <input id="receivedDate" style="width:200px;font-size: 12px;"/>
+                                        <label id="recReturnDateLbl" class="control-label bolder blue" style="margin-left: 10px;">建议归还日期：</label>
+                                        <input id="recReturnDate" style="width:200px;font-size: 12px;"/>
+                                        <div id="actReturnDateDiv" th:class="${#lists.contains(currentEditableField,'actReturnDateDiv')}?'':'hide'" style="position: absolute;margin-left: 610px;margin-top:-30px;">
+                                            <label id="actReturnDateLbl" class="control-label bolder blue vali_lable" style="margin-left: 10px;">实际归还日期：</label>
+                                            <input id="actReturnDate" style="width:200px;font-size: 12px;"/>
+                                        </div>
+                                        <div style="position: absolute;margin-top: -25px;margin-left: 663px;">
+                                            <input type="checkbox" id="chkMessageSendDis" name="messageSend" value="4">
+                                            <span class="control-label bolder blue vali_lable" id="messageSendSpan4"></span>
+                                            <label  id="messageSendDisLbl" class="control-label bolder blue vali_lable">发送短信</label>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div style="margin:10px 0">
+                                        <label id="projectTypeLbl" class="control-label bolder blue vali_lable" style="margin-left: 13px;">项目类型：</label>
+                                        <input id="projectType" class="vali_input" style="width: 200px;font-size: 12px;"/>
+                                        <label id="receiveIdLbl" class="control-label bolder blue vali_lable" style="margin-left:37px;">收发人员：</label>
+                                        <input id="receiveId" class="vali_input" style="width: 200px;font-size: 12px;"/>
+                                        <label id="accreditedIdLbl" class="control-label bolder blue vali_lable" style="margin-left: 38px;">检定人员：</label>
+                                        <select id="accreditedId" class="vali_select" style="width: 200px;font-size: 12px;"/>
+                                    </div>
+                                    <div style="margin:10px 0">
+                                        <label id="statusDisLbl" class="control-label bolder blue vali_lable" style="margin-left: 13px;">流转状态：</label>
+                                        <input id="statusDis" class="vali_input" style="width: 200px;font-size: 12px;"readonly/>
+                                        <label id="surveillanceProDisLbl" class="control-label bolder blue vali_lable" style="margin-left:37px;">检测项目：</label>
+                                        <input id="surveillanceProIdDis" class="vali_input" style="width: 520px;position: absolute;margin-top: -30px;margin-left: 414px;"/>
+
+                                    </div>
+
+                                    <div style="margin:10px 0">
+                                        <label id="remarkDisLbl" class="control-label bolder blue vali_lable" style="margin-left: 13px;">备注信息：</label>
+                                        <textarea id="remarkDis" class="vali_input" style="margin-left:0px;height: 50px;width: 845px;font-size: 12px;"></textarea>
+                                    </div>
+
+
+
+                                </div>
+
+                                <!--仪器检定选择等相关信息-->
+                                <div id="generalInfo" th:class="${#lists.contains(currentEditableField,'generalInfo')}?'alert alert-success':'hide'">
+                                    <div style="margin:10px 0">
+                                        <label id="receivedDateLblGen" class="control-label bolder blue " style="margin-left: 13px;">接收日期：</label>
+                                        <input id="receivedDateGen" style="width:200px;font-size: 12px;" disabled="disabled"/>
+                                        <label id="recReturnDateLblGen" class="control-label bolder blue" style="margin-left: 10px;">建议归还日期：</label>
+                                        <input id="recReturnDateGen" style="width:200px;font-size: 12px;" disabled="disabled"/>
+                                        <label id="actReturnDateLblGen" class="control-label bolder blue vali_lable" style="margin-left: 10px;">实际归还日期：</label>
+                                        <input id="actReturnDateGen" style="width:200px;font-size: 12px;"/>
+                                    </div>
+                                    <div style="margin:20px 0">
+                                        <label id="receiveIdLblGen" class="control-label bolder blue vali_lable" style="margin-left:13px;">收发人员：</label>
+                                        <input id="receiveIdGen" class="vali_input" style="width: 200px;font-size: 12px;"/>
+                                        <label id="distributionIdGenLbl" class="control-label bolder blue" style="margin-left: 37px;">分发人员：</label>
+                                        <select id="distributionIdGen" style="width: 200px;font-size: 12px;"/>
+                                    </div>
+                                    <div>
+                                        <label id="surveillanceProGenLbl" class="control-label bolder blue vali_lable" style="margin-left:13px;">检测项目：</label>
+                                        <input id="surveillanceProIdGen" class="vali_input" style="width: 515px;position: absolute;margin-top: -30px;margin-left: 85px;"/>
+                                    </div>
+                                    <div style="position: absolute;margin-top: -20px;margin-left: 653px;">
+                                        <input type="checkbox" id="chkMessageSendSur" name="messageSend" value="5">
+                                        <span class="control-label bolder blue vali_lable" id="messageSendSpan5"></span>
+                                        <label  id="messageSendSurLbl" class="control-label bolder blue vali_lable">发送短信</label>
+
+                                    </div>
+                                    <div style="margin:20px 0">
+                                        <label id="sampleStatusLbl" class="control-label bolder blue vali_lable" style="margin-left:13px;">流转状态：</label>
+
+                                        <input type="checkbox" name="sampleStatus" value="3" onclick="chooseOne(this,'sampleStatus')" checked style="margin-left: 50px;">
+                                        <span class="control-label bolder blue vali_lable" id="sampleStatusSpan3">检毕</span>
+                                        <input type="checkbox" name="sampleStatus" value="4" onclick="chooseOne(this,'sampleStatus')" style="margin-left: 50px;">
+                                        <span class="control-label bolder blue vali_lable" id="sampleStatusSpan4">退检</span>
+                                        <input id="reason" class="vali_input" hidden="hidden" style="margin-left: 10px;width: 352px;">
+
+                                    </div>
+
+
+                                </div>
+                                <!--收发仪器-->
+                                <div id="TransceiverInfo" th:class="${#lists.contains(currentEditableField,'TransceiverInfo')}?'alert alert-success':'hide'">
+                                    <div id="PorcessInfo"></div>
+                                    <div id="Send" style="margin: 20px 0">
+                                        <label id="distributionIdTranLbl" class="control-label bolder blue" >分发人员：</label>
+                                        <select id="distributionIdTran" style="width: 200px;font-size: 12px;"/>
+                                    </div>
+                                    <div style="position: absolute;margin-top:-5px;margin-left: 0px;">
+                                        <input type="checkbox" id="chkMessageSendTra" name="messageSend" value="6">
+                                        <span class="control-label bolder blue vali_lable" id="messageSendSpan6"></span>
+                                        <label  id="messageSendTraLbl" class="control-label bolder blue vali_lable">发送短信</label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--样品接收登记-->
+                <div id="sample" th:class="${#lists.contains(currentEditableField,'sample')}?'span6 widget-container-span ui-sortable':'hide'">
+                    <div class="widget-box" style="border-bottom: none;">
+                        <div id="printContent" style="width: 930px;height: 800px;">
+                            <div style="position: absolute;margin-left:90px;margin-top: 1px;">
+                                <label style="font-family:SimSun;font-size: 17px;">SZ/QP23-2011-1</label>
+                                <img src="/img/logo.png" style="position:absolute;margin-left:50px;margin-top:10px;height: 100px;width: 100px;">
+                            </div>
+                            <div style="position: absolute;margin-left:280px;margin-top: 50px;">
+                                <label style="font-family:SimSun;font-size: 30px;letter-spacing: 10px;">国家海洋计量站上海分站</label>
+                            </div>
+                            <div style="position: absolute;margin-left:350px;margin-top: 100px;">
+                                <label style="font-family:SimSun;font-size: 30px;letter-spacing: 10px;">样品接收登记单</label>
+                                <div id="bcTarget" style="position:absolute;margin-left: 400px;margin-top: -140px;">
+                                </div>
+
+                            </div>
+                            <div id="title" style="position: absolute;margin-left:90px;margin-top: 160px;">
+                                <label style="font-family: SimSun;font-size: 17px;">编号:</label>
+                                <label id="fileNo" style="font-family: SimSun;font-size: 17px;"></label>
+                                <!--<label style="font-family:SimSun;font-size: 17px;margin-left: 500px;">SZ/QP23-2011-1</label>-->
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 200px; margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">委托单位全称:</label>
+                                <label id="unitNameVal" style="width: 380px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">委托方联系人:</label>
+                                <label id="contactsVal" style="width:150px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 240px; margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">证书单位全称:</label>
+                                <label id="certiNameVal" style="width:380px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 8px;font-family: SimSun;font-size: 17px;" >联系电话:</label>
+                                <label id="phoneVal" style="width:50px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 280px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">委托单位地址:</label>
+                                <label id="unitAddressVal" style="width:580px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 320px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+
+                            <div style="position: absolute;margin-top: 335px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">样品名称:</label>
+                                <label id="sampleNameVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">规格/型号:</label>
+                                <label id="specificateModelVal" style="width:150px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 370px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">制造厂商:</label>
+                                <label id="factoryNameVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="letter-spacing: 5px;font-family: SimSun;font-size: 17px;">批量数量:</label>
+                                <label id="num" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 420px;margin-left:90px;" hidden="hidden">
+                                <label style="letter-spacing: 15px;font-family: SimSun;font-size: 17px;">测量范围:</label>
+                                <label id="measureRangeVal" style="width: 350px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">准确度等级:</label>
+                                <label id="accuracyLevelVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position:absolute;margin-top: 400px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">唯一性标识:</label>
+                                <label id="sampleCodeVal" style="width:250px;font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position:absolute;margin-top: 435px;margin-left:90px;">
+                                <label style="letter-spacing: 3px;font-family: SimSun;font-size: 17px;">出厂编号:</label>
+                                <!-- <textarea  id="factoryCodeVal" style=" line-height :100px;margin-left:95px;margin-top: -52px;height:150px;width: 700px;font-family: SimSun;font-size: 17px;border:0px ;color:
+             #000000" ></textarea>-->
+                                <textarea  id="factoryCodeVal" style="line-height :25px;margin-left: 1px;margin-top: -5px;height:150px;width: 720px;font-family:SimSun;font-size: 17px;border:0px ;color:
+#000000" ></textarea>
+                                <!-- <label id="factoryCodeVal" style="width: 700px;font-family: SimSun;font-size: 17px;"></label>-->
+                            </div>
+                            <div style="position: absolute;margin-top: 535px;margin-left:90px;">
+                                <label style="letter-spacing: 20px;font-family: SimSun;font-size: 17px;">附件:</label>
+                                <label id="attachmentVal" style="width: 500px;font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+
+                            <div style="position: absolute;margin-top: 570px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 580px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">服务方式:</label>
+                                <label id="serviceTypeVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">服务类型:</label>
+                                <label id="serviceWayVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 610px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">特色服务:</label>
+                                <label id="characterServiceVal" style="width: 400px;font-family: SimSun;font-size: 17px;">/</label>
+                                <label style="font-family: SimSun;font-size: 17px;">取样方式:</label>
+                                <label id="sampleMethodVal" style="font-family: SimSun;font-size: 17px;"></label>
+                            </div>
+                            <div style="position: absolute;margin-top: 640px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">委托需求:</label>
+                                <label id="principalRequreVal" style="width: 400px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="font-family: SimSun;font-size: 17px;">检测要求:</label>
+                                <label id="principalTestRequreVal" style="font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 670px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">检测依据:</label>
+                                <label id="principalTestBaseOnVal" style="width: 400px;font-family: SimSun;font-size: 17px;">/</label>
+                                <label style="font-family: SimSun;font-size: 17px;">其他:</label>
+                                <label id="principalOtherVal" style="font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 700px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">检测项目:</label>
+                                <label id="surveillanceProIdVal" style="width: 580px;font-family: SimSun;font-size: 17px;"></label>
+
+                            </div>
+                            <div style="position: absolute;margin-top: 730px;margin-left:90px;">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">样品初查:</label>
+                                <label>外包装检查：</label>
+                                <label id="sampleTestVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+                                <label>样品外观检查：</label>
+                                <label id="sampleSurfaceVal" style="width: 50px;font-family: SimSun;font-size: 17px;"></label>
+                                <label>通电检查：</label>
+                                <label id="sampleElectricVal" style="width: 50px;font-family: SimSun;font-size: 10px;"></label>
+                                <label>特殊需求：</label>
+                                <label id="sampleSpecialVal" style="width: 50px;font-family: SimSun;font-size: 10px;"></label>
+
+                            </div>
+                            <div style="position: absolute;margin-top: 760px;margin-left:90px;">
+                                <label style="width: 800px;font-family: SimSun;font-size: 14px;">电源电压110V及特殊事项需特别标注并告知受理人员。为检查部分和无外包装样品的任何失效、损坏由委托方自行承担。</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 760px;margin-left:90px;" hidden="hidden">
+                                <label style="letter-spacing: 2px;font-family: SimSun;font-size: 17px;">备注信息:</label>
+                                <label id="remarkVal" style="width: 500px;font-family: SimSun;font-size: 17px;">/</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 790px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 800px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">受理人员:</label>
+                                <label id="receptIdVal" style="width: 200px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="width: 210px;font-family: SimSun;font-size: 17px;">委托人签名:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">领取人签字:</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 830px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">受理日期:</label>
+                                <label id="dealDateVal" style="width: 200px;font-family: SimSun;font-size: 17px;"></label>
+                                <label style="width: 210px;letter-spacing: 4px;font-family: SimSun;font-size: 17px;">委托日期:</label>
+                                <label style="letter-spacing: 4px;font-family: SimSun;font-size: 17px;">领取日期:</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 860px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 870px;margin-left:90px;">
+                                <label style="width: 280px;font-family: SimSun;font-size: 17px;">国家海洋计量站上海分站</label>
+                                <label style="font-family: SimSun;font-size: 17px;">地址:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">上海市临港新城海港大道1593号</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 900px;margin-left:90px;">
+                                <label style="font-family: SimSun;font-size: 17px;">电话:</label>
+                                <label style="width: 235px;font-family: SimSun;font-size: 17px;">021-20950832</label>
+                                <label style="font-family: SimSun;font-size: 17px;">传真:</label>
+                                <label style="font-family: SimSun;font-size: 17px;">021-20950802</label>
+                            </div>
+                            <div style="position: absolute;margin-top: 930px;margin-left:90px;">
+                                <input disabled style="position: absolute;height:1px;width:800px;border-bottom: 1px dotted black;border-left: none;border-right: none;border-top: none;" />
+                            </div>
+                            <div style="position: absolute;margin-top: 940px;margin-left:90px;">
+                                <p>1、本表一式二份，第二份作为客户取样凭证。</p>
+                                <p>2、"样品外观检查"只限于确认样品外观有无明显损伤；"通电检查"只限于查看样品在通电后是否有电源显示。对样品工作状态的最终判断有专业实验实时人员进行鉴定。</p>
+                                <p>3、请向受理人员说明样品外观和性能是否为110V(或其他非200V)。</p>
+                                <p>4、取件时请仔细核对样品外观和性能是否正常。</p>
+                                <p>5、送检样品的保管期限为6个月，超期未领将作为无主处理。</p>
+                                <p>6、建议送检样品使用原厂包装，如因无适合的外包装而造成玻璃器皿或其他易损易碎送检样品的损坏，由委托方自己负责。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/span-->
+            <!--短信发送的checkbox-->
+
+
+
+
+            <!--样品流转单信息-->
+            <div id="distribution" th:class="${#lists.contains(currentEditableField,'distribution')}?'span6 widget-container-span ui-sortable':'hide'">
+                <div class="widget-box">
+                    <div class="widget-header header-color-blue">
+                        <h5 class="bigger lighter">
+                            <i class="icon-table"></i>
+                            国家海洋计量站上海分站——样品流转单(内部)
+                        </h5>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main no-padding">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center;">样品名称</th>
+                                    <th style="text-align: center;">接收日期</th>
+                                    <th style="text-align: center;">项目类型</th>
+                                    <th style="text-align: center;">检测项目</th>
+                                    <th style="text-align: center;">收发员</th>
+                                    <th style="text-align: center;">检定员</th>
+                                    <th style="text-align: center;">状态</th>
+                                    <th style="text-align: center;">唯一性标识</th>
+                                    <th style="text-align: center;">实验室名称</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="distribution: ${distribution}">
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.sampleName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${#dates.format(distribution.receivedDate,'yyyy-MM-dd')}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.projectType.serviceName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.surveillancePro}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.receiveId.Name}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.accreditedId.Name}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.statusName.statusName}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.sampleCode}"></td>
+                                    <td style="text-align: center;vertical-align:middle" th:text="${distribution.labName.labName}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/span-->
+            <div id="TransceiverList" th:class="${#lists.contains(currentEditableField,'TransceiverList')}?'span6 widget-container-span ui-sortable':'hide'">
+                <div class="widget-box">
+                    <div class="widget-header header-color-blue">
+                        <h5 class="bigger lighter">
+                            <i class="icon-table"></i>
+                            国家海洋计量站上海分站——样品流转单(内部)
+                        </h5>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main no-padding">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center;">样品名称</th>
+                                    <th style="text-align: center;">规格/型号</th>
+                                    <th style="text-align: center;">样品状态</th>
+                                    <th style="text-align: center;">已检项目</th>
+                                    <th style="text-align: center;">未检项目</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td style="text-align: center;vertical-align:middle"><label id="sampleNameTran"></label></td>
+                                    <td style="text-align: center;vertical-align:middle"><label id="specificateModelTran"></label></td>
+                                    <td style="text-align: center;vertical-align:middle"><label id="statusNameTran"></label></td>
+                                    <td style="text-align: center;vertical-align:middle"><label id="sampleDetectedTran"></label></td>
+                                    <td style="text-align: center;vertical-align:middle"><label id="surveillanceProTran"></label></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/span-->
+            <div class="clearfix form-actions" id="submitDiv" style="min-width : 768px;margin-top:350px;">
+                <div class="col-md-offset-3 col-md-9" style="position: relative;margin-left: 250px;width:500px;">
+                    <button id="submitAll" class="btn btn-info" type="button" onclick="submit()">
+                        <i class="icon-ok bigger-110"></i>
+                        提交
+                    </button>
+                    <button id="btnPrint" th:class="${#lists.contains(currentEditableField,'btnPrint')}?'btn btn-info':hide"  type="button" class="btn" style="margin-left: 50px;">
+                        <i class="icon-print bigger-110"></i>
+                        打印
+                    </button>
+                    <button id="cancel" class="btn" type="reset" style="margin-left: 50px;" onclick="javascript:history.go(-1);">
+                        <i class="icon-undo bigger-110"></i>
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+</div>
+
+</div><!-- /.main-container-inner -->
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+<script src="/js/elementUseage.js"></script>
+
+<script src='/assets/js/jquery-2.0.3.min.js'></script>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/typeahead-bs2.min.js"></script>
+<script src="/js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="/js/jquery-barcode.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/js/jquery-ui.js"></script>
+<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/jquery.slimscroll.min.js"></script>
+<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="/assets/js/jquery.sparkline.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets/js/dropzone.min.js"></script>
+
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/jSingnature/libs/flashcanvas.js"></script>
+<![endif]-->
+<!-- ace scripts -->
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<script src="/js/console.js"></script>
+<script src="/js/kendo.web.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" th:inline="javascript">
+   //  var nextUserTel=/*[[${nextUserTel}]]*/'nextUserTel';
+    var currentEditableField=/*[[${currentEditableField}]]*/ 'currentEditableField';//加载字段
+    var sampleInfo=/*[[${sampleInfo}]]*/ 'sampleInfo';//样品相关信息
+
+    var sample=/*[[${sample}]]*/ 'sample';//样品及客户信息
+    var activitiNextStepInfo=/*[[${activitiNextStepInfo}]]*/ 'activitiNextStepInfo';//洗一步流程信息
+    //var currentUser=/*[[${currentUser}]]*/ 'currentUser';//洗一步流程信息
+    var status=sampleInfo.currentStatus;//判断当前任务状态 如果为none，表示样品接收
+    var currentDistribution=/*[[${currentDistribution}]]*/ 'currentDistribution';//当前用户的样品流转信息
+    var checkedTxt;//接收值
+    var checkedNum=3;//选中的数值
+    var surveillanceProDataSource=null;//检测项目数据源
+    var userDataSourceClone=null;//用户信息克隆
+    var userDataSource=/*[[${userDataSource}]]*/ 'userDataSource';//所有用户信息
+    var surveillanceProDataSourceClone=null;//样品分发中的检测项目
+    var currentUserId=/*[[${currentUserId}]]*/ 'currentUserId';//当前登录用户ID
+    var today=new Date();
+    var nextMonth=new Date();
+    nextMonth.setMonth(nextMonth.getMonth()+1);//一个月以后归还
+    var receptId=0;
+    var flag=true;
+    var sampleNum=0;//样品批量数
+    var serialNum;//编号对象
+    var messageSendFlag="";//是否发送短信
+    //var nextUserTel="";//下一步用户手机号码
+    //var msgContentByStatus="";
+    var ii="";
+    //提交数据
+    function submit(){
+
+        //发送短信标记
+        var messageSendFlag="";
+        if(status=="样品接收登记"){
+         messageSendFlag=$("#chkMessageSend").is(":checked");
+            //表示样品接收 将所有数据接收，插入样品接收数据表
+            getSampleInfo();
+        }else if(status=="样品分发"){
+        messageSendFlag=$("#chkMessageSendDis").is(":checked");
+                //表示样品流转以及样品检定
+                getDistributionInfo();//获取样品流转相关信息，插入样品流转数据表
+        }else if(status=="仪器检定"){
+        messageSendFlag=$("#chkMessageSendSur").is(":checked");
+                //表示仪器检定
+                if(currentDistribution.take=="未取"){
+                    swal("请到分发人员: "+currentDistribution.remark+" 处领取样品");
+                    return;
+                }else{
+                    getDistributionAccredited();//获取检定状态下的相关信息，更新样品流转数据表中的样品状态和实际归还日期
+                }
+        }else if(status="收发仪器"){
+        messageSendFlag=$("#chkMessageSend3").is(":checked");
+                //表示收发仪器
+            var isBack=/*[[${isBack}]]*/ 'isBack';//判断是否仪器已归还
+            var accreditedName=/*[[${accreditedName}]]*/ 'accreditedName';//仪器检定人员
+            if(isBack!=null && !isBack){
+                swal("请确认检定人员"+accreditedName+"已归还样品");
+                return;
+            }
+            if($("#distributionIdTran").val==0)
+            {
+                swal("请选择样品分发人员");
+                return;
+            }
+            getTransceiverInfo();
+        }
+         //短信发送服务 通知下一步任务人员
+        if(messageSendFlag){
+            getMessageService();
+        }
+
+
+    }
+
+    //短信服务 张腾飞 20151211 根据不同的任务状态发送不同的短信内容
+    function  getMessageService(){{
+     //根据任务状态获取下一步任务用户及短信内容
+     var nextUserId="";//下一步用户ID
+     var nextUserTel="";//下一步用户手机号码
+     var msgContent="";
+
+     if(status=="样品接收登记"){
+        nextUserId=$("#distributionId")[0].value;//获取到分发人员ID
+     }
+     else if(status=="样品分发"){
+        nextUserId=$("#accreditedId")[0].value;//获取到分发人员ID
+    }
+     else if(status=="仪器检定"){
+        nextUserId=sample.receptId;//获取到分发人员ID
+     }
+               }
+     nextUserTel=getUserTelByUserId(nextUserId);
+     msgContent=getMsgContentByStatus();
+
+     }
+
+      if(status=="收发仪器"){
+      nextUserTel=sample.phone;
+      msgContent=getMsgContentByStatus();
+
+    //请求发送短信服务
+    $.ajax({
+                type:"POST",
+                async:true,
+                url:"/MessageService/sendMsg/"+nextUserTel+"/"+msgContent,
+                success:function(data){
+
+                }
+
+            });
+    }
+
+    //根据用户ID获取手机号码
+    function getUserTelByUserId(nextUserId){
+        var userTel="";
+         $.ajax({
+                type:"GET",
+                async:false,
+                url:"/api/user/getUserTelByUserId/"+nextUserId,
+                success:function(data){
+                   userTel= data;
+                }
+
+            });
+            return userTel;
+    }
+    //根据任务状态获取短信发送内容
+    function getMsgContentByStatus(){
+        var msgContent="";//短信内容
+         $.ajax({
+                type:"GET",
+                async:false,
+                url:"/MetroCen/api/getMsgContentByStatus/"+status,
+                success:function(data){
+                    msgContent= data;
+                }
+            });
+            return msgContent;
+    }
+
+    //加载样品接收信息
+    function loadReceiveSample(){
+        if(status=="样品接收登记"){
+            surveillanceProDataSource={
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getSurveillancePro"
+                    }
+                }
+            };//检测项目数据源样品接收登记
+            //样品收发员
+            $("#receptId").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "name",
+                dataValueField: "id",
+                value:currentUserId,
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getUserByPostId/2"
+                        }
+                    }
+                }
+            });
+
+            //分发人员
+            $("#distributionId").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "name",
+                dataValueField: "id",
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getUserByPostId/2"
+                        }
+                    }
+                },
+                value:currentUserId
+
+            });
+
+            //服务类型
+            $("#serviceType").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "serviceName",
+                dataValueField: "id",
+                dataSource: {
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getServiceType"
+                        }
+                    }
+                }
+            });
+            //服务方式
+            $("#serviceWay").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "serviceWay",
+                dataValueField: "id",
+                dataSource: {
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getServiceWay"
+                        }
+                    }
+                }
+
+            });
+            //取样方式
+            $("#sampleMethod").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "sampleMethod",
+                dataValueField: "id",
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getSampleMethod"
+                        }
+                    }
+                }
+            });
+
+            //特色服务
+            $("#characterService").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "serviceName",
+                dataValueField: "id",
+                enable:false,
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getCharacterService"
+                        }
+                    }
+                }
+            });
+
+            //检测项目
+            $("#surveillanceProId").kendoMultiSelect({
+                placeholder: "请选择...",
+                dataTextField: "surveillanceName",
+                dataValueField: "id",
+                maxSelectedItems:4,
+                dataSource:surveillanceProDataSource,
+                change:function(e) {
+                    try {
+                        var surveillanceName = null;
+                        for (var i = 0; i < this.dataItems().length; i++) {
+                            if (i == 0) {
+                                surveillanceName = this.dataItems()[i].surveillanceName;
+                            }
+                            else surveillanceName = surveillanceName + ", " + this.dataItems()[i].surveillanceName;
+                        }
+                        $("#surveillanceProIdVal")[0].innerText = surveillanceName;
+                    }
+                    catch (ex){}
+                }
+            });
+            //接收样品的状态
+            $("#status").kendoDropDownList({
+//                optionLabel: "请选择...",
+                dataTextField: "statusName",
+                dataValueField: "id",
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getStatus"
+                        }
+                    }
+                }
+            });
+            if(sample==null || sample.processId==""){
+                //生成编号 2015
+                var today=new Date();//当前日期
+                var year = today.getFullYear(); //当前年
+                var serialNumber=year;//编号前缀
+                var month=today.getMonth()+1;//当前月
+                var date=today.getDate();//当前日
+                var dateLong=year*10000+month*100+date;
+                var dateString=dateLong.toString();
+
+                //生成唯一性标识
+                $.ajax({
+                    url: "/config/getSampleCode/" + dateString,
+                    async:false,
+                    success: function (data) {
+                        $("#sampleCodeVal").html(data);
+                        $("#sampleCode").val(data);
+                    },
+                    error:function(data){
+                        alert(data);
+                    }
+                });
+                //获取当前用户姓名作为receptIdVal
+                submitAjaxJ("/config/getUserNameById/"+currentUserId,null,false,"receptIdVal")
+                //请求后台生成文件编号
+                $.ajax(
+                        {
+                            type:"POST",
+                            url:"/MetroCen/api/sample/Identifier/0/"+serialNumber+"/0",
+                            async:false,
+                            success:function(data){
+                                serialNum=data;
+                                $("#fileNo")[0].innerHTML=serialNum.serialNumber;
+                            }
+                        }
+                );
+                //加载条形码
+                $("#bcTarget").empty().barcode(serialNum.serialNumber, "code128",{barWidth:1, barHeight:30,showHRI:true});
+            }else{
+                $("#btnPrint").attr("class","hide");//打印按钮
+                $("#sample").attr("class","hide");//样品接收单
+                $("#submitDiv").removeAttr("style");//提交按钮的位置
+                //加载客户信息
+                $("#contractNo").val(sample.contractNo);//合同编号
+                $("#certiCode").val(sample.certiCode);//证书单位机构代码
+                $("#unitName").val(sample.unitName);//委托单位全称
+                $("#contacts").val(sample.contacts);//委托方联系人
+                $("#certiName").val(sample.certiName);//证书单位全称
+                $("#telephone").val(sample.telephone);//联系电话
+                $("#email").val(sample.email);//电子邮箱(Email)
+                $("#phone").val(sample.phone);//手机(短信通知)
+                $("#unitAddress").val(sample.unitAddress);//委托单位地址
+                //加载样品信息
+                $("#sampleName").val(sample.sampleName);//样品名称
+                $("#sampleCode").val(sample.sampleCode);//唯一性标识
+                $("#factoryName").val(sample.factoryName);//样品制造厂商
+                $("#specificateModel").val(sample.specificateModel);//规格型号
+                $("#accuracyLevel").val(sample.accuracyLevel);//准确度等级
+                $("#measureRange").val(sample.measureRange);//测量范围
+                var serviceType=$("#serviceType").data("kendoDropDownList");//服务类型
+                serviceType.value(sample.serviceType);
+                var sampleMethod=$("#sampleMethod").data("kendoDropDownList");//取样方式
+                sampleMethod.value(sample.sampleMethod);
+                var serviceWay=$("#serviceWay").data("kendoDropDownList");//服务方式
+                serviceWay.value(sample.serviceWay);
+                var characterService=$("#characterService").data("kendoDropDownList");//特色服务
+                characterService.value(sample.characterService);
+                var surveillanceProId=$("#surveillanceProId").data("kendoMultiSelect");//检测项目
+                var surveillanceProIds=sample.surveillancePro.split(",");
+                surveillanceProId.value(surveillanceProIds);
+                //外包装检查
+                $('input[name=sampleTest]').each(function(){
+                    if(this.value==sample.sampleTest){
+                        this.checked = true;
+                    }
+                });
+                //样品外观检查
+                $('input[name=sampleSurface]').each(function(){
+                    if(this.value==sample.sampleSurface){
+                        this.checked = true;
+                    }
+                });
+                //通电检查
+                $('input[name=sampleElectric]').each(function(){
+                    if(this.value==sample.sampleElectric){
+                        this.checked = true;
+                    }
+                });
+                //特殊需求
+                $('input[name=sampleSpecial]').each(function(){
+                    if(this.value==sample.sampleSpecial){
+                        this.checked = true;
+                    }
+                });
+                //委托需求
+                $('input[name=principalRequre]').each(function(){
+                    if(this.value==sample.principalRequre){
+                        this.checked = true;
+                    }
+                });
+
+                //设置出厂编号
+                var factoryCodes=sample.factoryCode.split(",");
+                var sampleFactoryCode=$("#sampleFactoryCode").data("tokenize");
+                for(var i=0;i<factoryCodes.length;++i){
+                    sampleFactoryCode.tokenAdd(factoryCodes[i],factoryCodes[i],true);
+                }
+                $("#principalTestRequre").val(sample.principalTestRequre);//检测要求
+                $("#principalTestBaseOn").val(sample.principalTestBaseOn);//检测依据
+                $("#principalOther").val(sample.principalOther);//其他依据
+                $("#attachment").val(sample.attachment);//附件
+                $("#remark").val(sample.remark);//备注信息
+            }
+        }
+
+    }
+    //加载样品流转信息
+    function loadDistributionInfo() {
+
+        if (status == "样品分发") {
+            receptId=sample.receptId;//设定分发人员
+            $("#sampleNameDis").val(sample.sampleName);//加载样品名称
+            $("#factoryCode").val(sample.factoryCode);//将样品的出厂编号加载
+            if(sample!=null){
+                if(sample.surveillancePro!=null && sample.surveillancePro!=""){
+                    surveillanceProDataSourceClone={
+                        transport:{
+                            read:{
+                                dataType:"json",
+                                url:"/config/getSurveillancePro/"+sample.surveillancePro
+                            }
+                        }
+                    };//检测项目数据源样品分发
+                }
+
+            }
+            //检测项目
+            $("#surveillanceProIdDis").kendoMultiSelect({
+                placeholder: "请选择...",
+                dataTextField: "surveillanceName",
+                dataValueField: "id",
+                maxSelectedItems: 4,
+                dataSource:surveillanceProDataSourceClone
+            });
+
+            //样品接收日期
+            $("#receivedDate").kendoDatePicker({
+                culture:"zh-CN",
+                format:"yyyy-MM-dd",
+                value:today
+            });
+            //建议归还日期
+            $("#recReturnDate").kendoDatePicker({
+                culture:"zh-CN",
+                format:"yyyy-MM-dd",
+                value:nextMonth
+            });
+            //实际归还日期
+            $("#actReturnDate").kendoDatePicker({
+                culture:"zh-CN",
+                format:"yyyy-MM-dd",
+                value:nextMonth
+            });
+
+            //分发中的收发人员
+            $("#receiveId").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "name",
+                dataValueField: "id",
+                dataSource:userDataSource,
+                value: receptId,//设定分发人员
+                enable: false
+            });
+
+            //项目类型
+            $("#projectType").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "serviceName",
+                dataValueField: "id",
+                value:sample.serviceType,
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getServiceType"
+                        }
+                    }
+                }
+            });
+
+            //实验室名称
+            $("#labName").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "labName",
+                dataValueField: "id",
+                dataSource: {
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getLabName"
+                        }
+                    }
+                }
+            });
+            //分发样品的状态
+            $("#statusDis").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "statusName",
+                dataValueField: "id",
+                value:1,
+                dataSource: {
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getStatus"
+                        }
+                    }
+                }
+
+            });
+        }
+    }
+    //加载收发仪器
+    function loadTransceiverInfo(){
+        if(status=="收发仪器"){
+            //加载流程选择
+            for (var i = 0; i < activitiNextStepInfo.length; i++) {
+                var $div=$("<div>").appendTo("#PorcessInfo");
+                $div.append('<input id="option' + (i+1) + '" type="radio" name="process" onchange="statusChange()" value="' + activitiNextStepInfo[i].condition + '"/>');
+                $div.append('<label style="margin-left:10px;" for="option' + (i+1)+ '">'+activitiNextStepInfo[i].name+'</label>');
+            }
+            //获取样品状态数据源
+            $.getJSON("/config/getStatus",function(data){
+                for(var i=0;i<data.length;++i){
+                    if(data[i].id==sample.statusName){
+                        $("#statusNameTran").text(data[i].statusName);//样品状态
+                    }
+                }
+
+            });
+            //获取样品监测数据源
+            $.getJSON("/config/getSurveillancePro",function(data){
+                var sampleDetectedArr=sample.sampleDetected.split(",");//已检测项目数组
+                var surveillanceProArr=sample.surveillancePro.split(",");//需要检测项目数组
+                var sampleDetectedName="";//已检测数据字符串
+                var surveillanceProName="";//需要检测数据字符串
+                var length=sampleDetectedArr.length>surveillanceProArr.length?sampleDetectedArr.length:surveillanceProArr.length;//判断是已检测的项目多还是需要检测的项目多
+                for(var i=0;i<data.length;++i){
+                    for(var j=0;j<length;++j){
+                        if(data[i].id==sampleDetectedArr[j]){
+                            sampleDetectedName+=data[i].surveillanceName+",";//已检测项目
+                        }
+                        if(data[i].id==surveillanceProArr[j]){
+                            surveillanceProName+=data[i].surveillanceName+",";//需要检测项目
+                        }
+                    }
+                }
+                $("#sampleDetectedTran").text(sampleDetectedName);//已检测项目
+                $("#surveillanceProTran").text(surveillanceProName);//需检测项目
+            })
+            //绑定属性
+            $("#sampleNameTran").text(sample.sampleName);//样品名称
+            $("#specificateModelTran").text(sample.specificateModel);//样品规格型号
+            //绑定分发人员数据
+            $("#distributionIdTran").kendoDropDownList({
+                optionLabel: "请选择...",
+                dataTextField: "name",
+                dataValueField: "id",
+                value:currentUserId,
+                dataSource:{
+                    transport:{
+                        read:{
+                            dataType:"json",
+                            url:"/config/getUserByPostId/2"
+                        }
+                    }
+                }
+
+            });
+            $("#Send").hide();//先隐藏需要选择的流程方向
+
+
+        }
+
+
+    }
+     //条码打印
+    function printby_net(str) {
+        $.ajax({
+            url:"http://10.200.21.158/barPrint.asmx/print",
+            type:'post',
+            data:{
+                bar:str
+            },
+            success: function(res){
+                console.log(res);
+            },
+            error:function(e){
+                console.log(e)
+            }
+        });
+    }
+    //条码打印位置矫正
+    function testBar(){
+        printby_net("test");
+    }
+    function printBar(sampleCodeVal){
+    //打印唯一性标识-01
+    if(confirm("是否确定打印?")){
+     var sampleCode=$("#sampleCode").val();
+     var sampleFactoryCode=$("#sampleFactoryCode").val();//样品出厂编号
+     var sampleCodeVals="";
+     for(var i=0;i<sampleFactoryCode.length;++i){
+     var sampleCodeVal="";
+     var j=i+1;
+            if(i<9){//小于10，需要前面加个0
+                ii="0"+j;
+            }else{
+                ii=j;
+            }
+            sampleCodeVal+=sampleCode+"-"+ii;
+            var bar=sampleCodeVal
+
+            printby_net(bar);
+
+       }
+}
+   }
+
+
+    //收发仪器选择流程信息
+    function statusChange(){
+        //radio选中事件
+        $('input:radio[name=process]').click(function() {
+            var checkedVal = $('input:radio[name=process]:checked').val();
+            if(checkedVal=="Send"){
+                $("#Send").show();//显示分发人员
+            }else{
+                $("#Send").hide();
+            }
+        });
+    }
+    //获取样品输入值
+    function getSampleInfo(){
+        <!--客户信息-->
+        var contractNo=$("#contractNo").val();//委托方合同号
+        var certiCode=$("#certiCode").val();//证书机构代码
+        var email=$("#email").val();//Email
+        var unitName=$("#unitName").val();//委托单位全称
+        if(unitName==""){
+            swal("请输入委托单位全称");
+            return;
+        }
+        var contacts=$("#contacts").val();//委托方联系人
+        if(contacts==""){
+            swal("请输入委托方联系人");
+            return;
+        }
+        var phone=$("#phone").val();//手机(短信通知)
+        if(phone==""){
+            swal("请输入手机号码");
+            return;
+        }
+        var certiName=$("#certiName").val();//证书单位全称
+        var unitAddress=$("#unitAddress").val();//委托单位地址
+        if(unitAddress==""){
+            swal("请输入委托单位地址");
+            return;
+        }
+        var telephone=$("#telephone").val();//联系电话
+
+        <!--样品信息-->
+        var sampleName=$("#sampleName").val();//样品名称
+        var sampleCode=$("#sampleCode").val();//样品编号
+        var specificateModel=$("#specificateModel").val();//规格型号
+        if(specificateModel==""){
+            swal("请输入规格型号");
+            return;
+        }
+        var factoryName=$("#factoryName").val();//制造厂商
+        var accuracyLevel=$("#accuracyLevel").val();//准确等级
+        var measureRange=$("#measureRange").val();//测量范围
+        var serviceType=$("#serviceType").val();//服务类型
+        if(serviceType==""){
+            swal("请选择服务类型");
+            return;
+        }
+        var serviceWay=$("#serviceWay").val();//服务方式
+        if(serviceWay==""){
+            swal("请选择服务方式");
+            return;
+        }
+        var sampleMethod=$("#sampleMethod").val();//取样方式
+        if(sampleMethod==""){
+            swal("请选择取样方式");
+            return;
+        }
+        var receptId=$("#receptId").val();//收发员
+        if(receptId==""){
+            swal("请选择收发员");
+            return;
+        }
+        var distributionId=$("#distributionId").val();//分发员
+        if(distributionId==""){
+            //启用暂存功能，先补启动流程
+            distributionId=0;
+        }
+        var status=$("#status").val();//状态信息
+        var sampleTest="";//样品检测
+        var sampleSurface="";//样品外观
+        var sampleElectric="";//通电检查
+        var sampleSpecial="";//特殊检测
+        var dealDate=$("#dealDateVal").val();
+        var sampleFactoryCode=$("#sampleFactoryCode").val();//样品出厂编号
+        var sampleFactoryCodeStr=$.map(sampleFactoryCode, function(val) {
+            var str = val;
+            return str;
+        }).join(",");
+
+        $("input[name='sampleTest']:checked").each(function () {
+            sampleTest=$(this).val();
+        });
+        $("input[name='sampleSurface']:checked").each(function () {
+            sampleSurface=$(this).val();
+        });
+        $("input[name='sampleElectric']:checked").each(function () {
+            sampleElectric=$(this).val();
+        });
+        $("input[name='sampleSpecial']:checked").each(function () {
+            sampleSpecial=$(this).val();
+        });
+
+
+        var principalRequre="";//委托需求
+        $("input[name='principalRequre']:checked").each(function () {
+            principalRequre=$(this).val();
+        });
+        var messageSend="";//短信发送
+        $("input[name='messageSend']:checked").each(function () {
+            messageSend=$(this).val();
+        });
+        var principalTestRequre=$("#principalTestRequre").val();//检测要求
+        var principalTestBaseOn=$("#principalTestBaseOn").val();//检测依据
+        var principalOther=$("#principalOther").val();//其他要求
+        var remark=$("#remark").val();//备注信息
+        var surveillancePro=$("#surveillanceProId").data("kendoMultiSelect").value();//获取检测项目
+        var characterService=$("#characterService").val();//特色服务
+
+        var surveillanceProStr = $.map(surveillancePro, function(val) {
+            var str = val;
+            return str;
+        }).join(",");
+
+
+        <!--提交前端数据至后端-->
+        var submitData={
+            contractNo:contractNo,
+            certiCode:certiCode,
+            email:email,
+            unitName:unitName,
+            contacts:contacts,
+            phone:phone,
+
+            certiName:certiName,
+            unitAddress:unitAddress,
+            telephone:telephone,
+            sampleName:sampleName,
+            sampleCode:sampleCode,
+            specificateModel:specificateModel,
+            factoryName:factoryName,
+            factoryCode:sampleFactoryCodeStr,//出厂编号
+            factoryCodes:sampleFactoryCodeStr,//出厂编号集合
+            accuracyLevel:accuracyLevel,
+            measureRange:measureRange,
+            serviceType:serviceType,
+            serviceWay:serviceWay,
+            sampleMethod:sampleMethod,
+            receptId:receptId,
+            distributionId:distributionId,
+            sampleTest:sampleTest,
+            sampleSurface:sampleSurface,
+            sampleElectric:sampleElectric,
+            sampleSpecial:sampleSpecial,
+            principalRequre:principalRequre,
+            messageSend:messageSend,//短信发送
+            principalTestRequre:principalTestRequre,
+            principalTestBaseOn:principalTestBaseOn,
+            dealDate:dealDate,
+            principalOther:principalOther,
+            remark:remark,
+            statusName:status,
+            surveillancePro:surveillanceProStr,//检测项目
+            characterService:characterService==""?0:characterService//特色服务
+
+        }
+        //提交数据
+        if(sampleInfo.currentStatus=="none"){
+            submitAjax("/MetroCen/api/sample/insert/"+sampleInfo.clientId+"/"+sampleInfo.sampleId+"/"+serialNum.id,submitData,true);
+        }else{
+            submitAjax("/MetroCen/api/sample/insert/"+sampleInfo.clientId+"/"+sampleInfo.sampleId+"/"+sampleInfo.identifierId,submitData,true);
+        }
+
+
+    }
+    //获取样品流转相关信息
+    function getDistributionInfo(){
+        var labName=$("#labName").val();//实验室名称
+        var sampleNameDis=$("#sampleNameDis").val();//样品名称
+        var factoryCode=$("#factoryCode").val();//出厂编号
+        var receivedDate=$("#receivedDate").val();//接收日期
+        var recReturnDate=$("#recReturnDate").val();//建议归还日期
+        var actReturnDate=getCurrentDate();//实际归还日期
+        var projectType=$("#projectType").val();//项目类型
+        var receiveId=$("#receiveId").val();//收发人员
+        var accreditedId=$("#accreditedId").val();//检定人员
+        var remarkDis=$("#remarkDis").val();//备注信息
+        var status=$("#statusDis").val();//状态信息
+        var surveillancePro=$("#surveillanceProIdDis").data("kendoMultiSelect").value();//获取样品分发中的检测项目
+        var surveillanceProStr = $.map(surveillancePro, function(val) {
+            var str = val;
+            return str;
+        }).join(",");
+        if(labName==""){
+            swal("请选择检定实验室!");
+            return;
+        }
+        if(receivedDate>recReturnDate){
+            swal("建议归还日期不应该早于接收日期");
+            return;
+        }
+        if(projectType==""){
+            swal("请选择项目类型！");
+            return;
+        }
+        if(accreditedId==""){
+            swal("请选择检定人员!");
+            return;
+        }
+        if(status==""){
+            swal("请选择样品流转状态!");
+            return;
+        }
+        if(surveillancePro==""){
+            swal("请选择检测项目!");
+            return;
+        }
+        var objData={
+            labName:labName,
+            sampleName:sampleNameDis,
+            factoryCode:factoryCode,
+            receivedDate:new Date(receivedDate),//转换成日期类型
+            recReturnDate:new Date(recReturnDate),//转换成日期类型
+            actReturnDate:new Date(actReturnDate),//转换成日期类型
+            projectType:projectType,
+            receiveId:receiveId,
+            accreditedId:accreditedId,
+            remark:remarkDis,
+            sampleId:sample.id,
+            num:sample.sampleNum,//样品数量
+            processId:sample.processId,
+            statusName:status,
+            sampleCode:sample.sampleCode,//样品编号
+            surveillancePro:surveillanceProStr,//检测项目
+            distributionId:currentUserId,//当前用户为分发人员Id
+            take:"未取",
+            back:"未还"
+
+        }
+        submitAjax("/MetroCen/api/distribution/insert",objData,true);//提交数据
+    }
+    //获取接收样品相关信息
+    function getTransceiverInfo(){
+        var processRadio=$('input[name=process]');//获取选中的流程流转
+        var checkedRadio=processRadio.filter(':checked').val();//获取选中的值
+        var distributionId=$("#distributionIdTran").val();//获取分发者ID
+        var processId=sample.processId;//样品流程ID
+        var sampleId=sample.id;//样品Id
+        if(checkedRadio==undefined){
+            swal("请选择样品流程的流转");//如果没有选中流程流转
+            return;
+        }
+        if(checkedRadio=="Send" && distributionId==""){
+            swal("请选择样品分发人员");
+            return;
+        }
+        if(checkedRadio=="Send" && sample.surveillancePro==""){
+            swal("该样品无未检定项目，请发还");
+            return;
+        }
+        distributionId=distributionId==""?0:distributionId;
+        submitAjax("/MetroCen/api/distribution/sampleTran/"+processId+"/"+sampleId+"/"+checkedRadio+"/"+distributionId,null,true);
+
+    }
+    //获取检定设备状态下的信息
+    function getDistributionAccredited(){
+        var actReturnDate=$("#actReturnDateGen").val();//获取实际归还日期
+        var recReturnDate=currentDistribution.recReturnDateStr;//获取建议归还日期
+        var status=checkedNum;//获取样品状态信息
+        var distributionId=currentDistribution.id;//样品流转Id
+        var accreditedId=$("#receiveIdGen").val();//获取收发员
+        var distributionIdGen=$("#distributionIdGen").val();//获取分发人员ID
+        var processId=currentDistribution.processId;
+        var reason=$("#reason").val();//退检原因
+//        if(actReturnDate<recReturnDate){
+//            swal("实际归还样品日期应该迟于建议归还日期");
+//            return;
+//        }
+        var obj={
+            actReturnDate:new Date(actReturnDate),//转换成日期类型
+            statusName:status,//样品状态
+            accreditedId:accreditedId,//收发员
+            distributionId:distributionIdGen,//分发人员
+            remark:reason,//退检原因
+            processId:processId//流程Id
+
+        }
+        //提交数据
+        submitAjax("/MetroCen/api/distribution/update/"+distributionId,obj,true);
+    }
+    <!--ajax提交数据方法-->
+    function submitAjax(submitURL,objData,async){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"POST",
+                    url:submitURL,
+                    data:objData,
+                    async:async,
+                    success:function(data){
+                        data=false? swal("保存数据失败"):swal("保存数据成功");
+                        self.location="/MetroCen/sample/mySampleTask/1";//页面跳转
+                    }
+                }
+        )
+    }
+
+
+
+
+    function submitAjaxJ(submitURL,objData,async,bindField){
+        //提交数据至后台
+        $.ajax(
+                {
+                    type:"GET",
+                    url:submitURL,
+                    data:objData,
+                    async:async,
+                    success:function(data){
+                        $("#"+bindField).text(data);
+                    }
+                }
+        )
+    }
+    //样品分发选择实验室，加载检定人员数据源
+    function bindAccredited(obj){
+        var labId=obj.value;//实验室Id
+        //检定人员
+        $("#accreditedId").kendoDropDownList({
+            optionLabel: "请选择...",
+            dataTextField: "name",
+            dataValueField: "id",
+            dataSource:{
+                transport:{
+                    read:{
+                        dataType:"json",
+                        url:"/config/getUserByLabId/1/"+labId
+                    }
+                }
+            }
+        });
+
+    }
+    <!--输入内容，列表中的label内容更新-->
+    function change(controls,type){
+        var controlVal="";
+        if(type=="DropDownList"){
+            controlVal=$("#"+controls).find("option:selected").text();
+        }else{
+            controlVal=$("#"+controls)[0].value;
+        }
+
+
+        //控制特色服务可选 常规服务时，无法选择特色服务
+        if(controls=="serviceWay" && controlVal!="常规服务" && controlVal!="请选择..."){
+            var service=$("#characterService").data("kendoDropDownList")
+            service.enable(true);
+
+        }else if(controls=="characterService"){
+            var service=$("#characterService").data("kendoDropDownList")
+            service.enable(true);
+        }
+        else{
+            var service=$("#characterService").data("kendoDropDownList")
+            service.select(0);
+            service.enable(false);
+            $("#characterServiceVal")[0].innerHTML="";
+
+        }
+        $("#"+controls+"Val")[0].innerHTML=controlVal=="请选择..."?"":controlVal;
+//        if(controls=="specificateModel"){//规格型号，加载岛样品名称后面
+//            if($("#sampleName").val()==""){
+//                swal("请先输入样品名称");
+//                return;
+//            }
+//            $("#sampleNameVal")[0].innerHTML=$("#sampleName").val()+"("+controlVal+")";
+//        }else{
+//            $("#"+controls+"Val")[0].innerHTML=controlVal=="请选择..."?"":controlVal;
+//        }
+
+    }
+    <!--收发仪器中的选择需要显示的DIV-->
+    <!--控制checkbox单选-->
+    function chooseOne(cb,controls){
+        //先取得同name的chekcBox的集合物件
+        var obj = document.getElementsByName(controls);
+        var num=0;//用来记住后面span的编号
+
+        for (var i=0; i<obj.length; i++){
+            //判斷obj集合中的i元素是否為cb，若否則表示未被點選
+            if (obj[i]!=cb) {
+                obj[i].checked = false;
+                //若是 但原先未被勾選 則變成勾選；反之 則變為未勾選
+                //else  obj[i].checked = cb.checked;
+            }
+            //若要至少勾選一個的話，則把上面那行else拿掉，換用下面那行
+            else {
+                obj[i].checked = true;
+                num=i+3;
+                if(controls=="sampleSpecial"&&i==1){
+                    $("#principalTestRequre").val("/");
+                    $("#principalTestBaseOn").val("/");
+                    $("#principalOther").val("/");
+                    $("#remark").val("/");
+
+                }
+            }
+        }
+        if($("#"+controls+"Val").length>0){
+             checkedTxt=$("#"+controls+"Span"+num)[0].innerText;
+             checkedNum=num;
+            $("#"+controls+"Val")[0].innerHTML=checkedTxt;
+        }else{
+            checkedTxt=$("#"+controls+"Span"+num)[0].innerText;
+            checkedNum=num;
+        }
+        if(checkedNum==4){
+            $("#reason").attr("hidden",false);//退检，显示输入框
+        }else{
+            $("#reason").attr("hidden",true);//其他
+        }
+
+    }
+    //绑定样品编号下拉菜单
+    function bindSampleCode(){
+        $("#sampleName").autocomplete({
+            source: function (request, response) {
+                $.getJSON("/MetroCen/api/sample/getSample/"+request.term, function (data) {
+                    response($.map(data, function (value, key) {
+                        return {
+                            label: value.sampleName,
+                            value: value.sampleName,
+                            sample:value
+                        };
+                    }));
+                });
+            },
+            select: function(e, ui) {
+                //选中处理函数
+                if(ui.item.sample!=null){
+                    var sampleInfo=ui.item.sample;
+//                    $("#sampleName").val(sampleInfo.sampleName);
+                    $("#sampleNameVal")[0].innerHTML=sampleInfo.sampleName+"("+sampleInfo.specificateModel+")";
+                    $("#factoryName").val(sampleInfo.factoryName);
+                    $("#factoryNameVal")[0].innerHTML=sampleInfo.factoryName;
+                    $("#sampleCodeVal")[0].innerHTML=sampleInfo.sampleCode;
+                    $("#specificateModel").val(sampleInfo.specificateModel);
+                    $("#accuracyLevel").val(sampleInfo.accuracyLevel);
+                    $("#accuracyLevelVal")[0].innerHTML=sampleInfo.accuracyLevel;
+                    $("#measureRange").val(sampleInfo.measureRange);
+                    $("#measureRangeVal")[0].innerHTML=sampleInfo.measureRange;
+                    $("#sampleFactoryCode").val(sampleInfo.factoryCode);
+                    var serviceType=$("#serviceType").data("kendoDropDownList");
+                    serviceType.value(sampleInfo.serviceType);
+                    $("#serviceTypeVal")[0].innerHTML=serviceType.text()=="请选择..."?"":serviceType.text();
+                    var sampleMethod=$("#sampleMethod").data("kendoDropDownList");
+                    sampleMethod.value(sampleInfo.sampleMethod);
+                    $("#sampleMethodVal")[0].innerHTML=sampleMethod.text()=="请选择..."?"":sampleMethod.text();
+                    var serviceWay=$("#serviceWay").data("kendoDropDownList");
+                    serviceWay.value(sampleInfo.serviceWay);
+                    $("#serviceWayVal")[0].innerHTML=serviceWay.text()=="请选择..."?"":serviceWay.text();
+                    var characterService=$("#characterService").data("kendoDropDownList");
+                    characterService.value(sampleInfo.characterService);
+                    $("#characterServiceVal")[0].innerHTML=characterService.text()=="请选择..."?"":characterService.text();
+
+
+
+                }
+
+            }
+
+        });
+
+
+    }
+    //绑定样品客户编号下拉菜单
+    function bindSampleName(){
+        $('#unitName').autocomplete({
+            source: function (request, response) {
+                $.getJSON("/MetroCen/api/sample/getClient/"+request.term, function (data) {
+                    response($.map(data, function (value, key) {
+                        return {
+                            label: value.unitName,
+                            value: value.unitName,
+                            clientInfo:value
+                        };
+                    }));
+                });
+            },
+            select: function(e, ui) {
+                    //选中处理函数
+                    if(ui.item.clientInfo!=null){
+                        $("#certiCode").val(ui.item.clientInfo.certiCode);
+                        $("#unitName").val(ui.item.clientInfo.unitName);
+                        $("#contacts").val(ui.item.clientInfo.contacts);
+                        $("#certiName").val(ui.item.clientInfo.certiName);
+                        $("#telephone").val(ui.item.clientInfo.telephone);
+                        $("#email").val(ui.item.clientInfo.email);
+                        $("#phone").val(ui.item.clientInfo.phone);
+                        $("#unitAddress").val(ui.item.clientInfo.unitAddress);
+                        //打印区域内容
+                       // $("#contractNoVal")[0].innerHTML=ui.item.clientInfo.contractNo;//打印区域的合同编号
+                        //$("#certiCodeVal")[0].innerHTML=ui.item.clientInfo.certiCode;
+                        $("#unitNameVal")[0].innerHTML=ui.item.clientInfo.unitName;
+                        $("#contactsVal")[0].innerHTML=ui.item.clientInfo.contacts;
+                        $("#certiNameVal")[0].innerHTML=ui.item.clientInfo.certiName;
+                        //$("#telephoneVal")[0].innerHTML=ui.item.clientInfo.telephone;
+                        //$("#emailVal")[0].innerHTML=ui.item.clientInfo.email;
+                        $("#phoneVal")[0].innerHTML=ui.item.clientInfo.phone;
+                        $("#unitAddressVal")[0].innerHTML=ui.item.clientInfo.unitAddress;
+                        sampleInfo.clientId=ui.item.clientInfo.id;
+                    }
+
+                    }
+        });
+
+    }
+
+    //出厂编号设置
+    $('#sampleFactoryCode').tokenize({
+        datas:"/config/getSampleInfoBySearch",
+        onAddToken: function(){
+            update_tokenize_result('#sampleFactoryCode');
+            var code=$("#sampleFactoryCode").val();
+            var codeVal="";
+            sampleNum++;
+            $("#num")[0].innerHTML=sampleNum;
+            setFactoryCode(code,codeVal);
+
+        },
+        onRemoveToken: function(){
+            update_tokenize_result('#sampleFactoryCode');
+            var code=$("#sampleFactoryCode").val();
+            var codeVal="";
+            sampleNum--;
+            $("#num")[0].innerHTML=sampleNum;
+            setFactoryCode(code,codeVal);
+        }
+    });
+    //设置出厂编号数据
+    function setFactoryCode(code,codeVal){
+        for(var i=0;i<code.length;++i){
+
+            var j=i+1;
+            if(i<9){//小于10，需要前面加个0
+                ii="0"+j;
+            }else{
+                ii=j;
+            }
+            codeVal+="("+ii+")"+code[i]+",";
+        }
+        codeVal=codeVal.substring(0,codeVal.length-1);
+        $("#factoryCodeVal")[0].innerHTML=codeVal;
+    }
+    //添加删除出厂编号数据
+    function update_tokenize_result(tokenize, result){
+        var output = [];
+        output.push('&lt;select multiple="multiple"&gt;');
+        $(result).html();
+        $(tokenize).children().each(function(){
+            output.push(' &lt;option value="' + $(this).attr('value') + '"' + ($(this).prop('selected') ? ' selected="selected"' : '') + '&gt;' + $(this).html() + '&lt;/option&gt;');
+        });
+        output.push('&lt;/select&gt;');
+        $(result).html(output.join("\n"));
+    }
+    $(function() {
+        //任务名称
+        status=status=="none"?"样品接收登记":status;
+        $("#taskName").text(status);
+        bindSampleName();//客户合同编号自动加载
+        bindSampleCode();//样品编号自动加载
+        $("#dealDateVal")[0].innerHTML=getCurrentDate();
+        //打印按钮
+        $("#btnPrint").click(function () {
+        // if (num.val>=15){
+            $("#factoryCodeVal").css({"margin-top":"-35px","margin-left":"90px"});
+        //  } else{
+        //     $("#factoryCodeVal").css({"margin-top":"10px","margin-left":"90px"});
+        //     }
+            $("#printContent").printArea();
+        });
+        userDataSource={
+            transport:{
+                read:{
+                    dataType:"json",
+                    url:"/api/user/getalluser"
+                }
+            }
+        };//用户数据表
+        if(sample!=null){
+            receptId=sample.receptId;//设定分发人员
+
+        }
+
+        if(status=="仪器检定"){
+            if(currentDistribution!=null){
+                $("#receivedDateGen").val(currentDistribution.receivedDateStr);//样品检定阶段的接收日期
+                $("#recReturnDateGen").val(currentDistribution.recReturnDateStr);//样品检定阶段的建议归还日期
+                //实际归还日期
+                $("#actReturnDateGen").kendoDatePicker({
+                    culture:"zh-CN",
+                    format:"yyyy-MM-dd",
+                    value:today
+                });
+                //检定中的收发人员
+                $("#receiveIdGen").kendoDropDownList({
+                    optionLabel: "请选择...",
+                    dataTextField: "name",
+                    dataValueField: "id",
+                    dataSource: userDataSource,
+                    value: receptId,//设定分发人员
+                    enable: false
+                });
+                //检定分发人员
+                $("#distributionIdGen").kendoDropDownList({
+                    optionLabel: "请选择...",
+                    dataTextField: "name",
+                    dataValueField: "id",
+                    enabled:false,
+                    value:currentDistribution.distributionId,
+                    dataSource: userDataSource
+
+                });
+                var surveillancData=currentDistribution.taskId;//需要检测项目的数据，由于使用taskId接收检测项目ID编号
+
+                var bindData=surveillancData==null?"":surveillancData.split(",");
+
+                if(sample!=null){
+                    if(sample.surveillancePro!=null){
+                        surveillanceProDataSourceClone={
+                            transport:{
+                                read:{
+                                    dataType:"json",
+                                    url:"/config/getSurveillancePro/"+surveillancData
+                                }
+                            }
+                        };//检测项目数据源样品分发
+                    }
+
+                }
+                //检测项目
+                $("#surveillanceProIdGen").kendoMultiSelect({
+                    placeholder: "请选择...",
+                    dataTextField: "surveillanceName",
+                    dataValueField: "id",
+                    maxSelectedItems: 4,
+                    enabled:false,
+                    value:bindData,
+                    dataSource:surveillanceProDataSourceClone
+                });
+            }
+        }
+        //加载页面
+        loadReceiveSample();//加载样品接收信息
+        loadDistributionInfo();//加载样品分发信息
+        loadTransceiverInfo();//加载收发仪器
+         statusChange();//监听radio
+
+    });
+    //获取当前系统日期
+    function getCurrentDate(){
+        var today=new Date();
+        var dd = today.getDate(); //yields day
+        var MM = today.getMonth()+1; //yields month
+        var yyyy = today.getFullYear(); //yields year
+        var fullDate=yyyy+"-"+MM+"-"+dd;
+        return fullDate;
+    }
+
+    <!--局部打印js-->
+    (function ($) {
+        var printAreaCount = 0;
+        $.fn.printArea = function () {
+            var ele = $(this);
+            var idPrefix = "printArea_";
+            removePrintArea(idPrefix + printAreaCount);
+            printAreaCount++;
+            var iframeId = idPrefix + printAreaCount;
+            var iframeStyle = 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;';
+            iframe = document.createElement('IFRAME');
+            $(iframe).attr({
+                style: iframeStyle,
+                id: iframeId
+            });
+            document.body.appendChild(iframe);
+            var doc = iframe.contentWindow.document;
+            $(document).find("link").filter(function () {
+                return $(this).attr("rel") == "stylesheet";
+            }).each(
+                    function () {
+                        doc.write('<link type="text/css" rel="stylesheet" href="'
+                                + $(this).attr("href") + '" >');
+                    });
+            doc.write('<div class="' + $(ele).attr("class") + '">' + $(ele).html()
+                    + '</div>');
+            doc.close();
+            var frameWindow = iframe.contentWindow;
+            frameWindow.close();
+            frameWindow.focus();
+            frameWindow.print();
+        }
+        var removePrintArea = function (id) {
+            $("iframe#" + id).remove();
+        };
+    })(jQuery);
+</script>
+
+
+<style>
+
+
+
+</style>
+</body>
+</html>

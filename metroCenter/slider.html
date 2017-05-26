@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body th:fragment="slidermenu(activeitem)">
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success" title="我的流程">
+                <i class="icon-list"></i>
+            </button>
+
+            <button class="btn btn-info">
+                <i class="icon-pencil"></i>
+            </button>
+
+            <button class="btn btn-warning">
+                <i class="icon-group"></i>
+            </button>
+
+            <button class="btn btn-danger">
+                <i class="icon-cogs"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-success"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-danger"></span>
+        </div>
+    </div><!-- #sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li th:class="${activeitem=='kzt'}?'active'">
+            <a href="/index.html">
+                <i class="icon-home"></i>
+                <span class="menu-text"> 控制台 </span>
+            </a>
+        </li>
+
+        <li th:class="${activeitem=='dbzx'}?'active'">
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-flag"></i>
+                <span class="menu-text"> 代办中心 </span>
+                <b class="arrow icon-angle-down"></b>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a href="/dbzx.html">
+                        <i class="icon-double-angle-right"></i>
+                        <i class="icon-book"></i>
+                        我的任务
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html">
+                        <i class="icon-double-angle-right"></i>
+                        <i class="icon-glass"></i>
+                        我的流程
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/xjlc.html">
+                        <i class="icon-double-angle-right"></i>
+                        <i class="icon-edit"></i>
+                        新建公文
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html">
+                        <i class="icon-double-angle-right"></i>
+                        <i class="icon-folder-open"></i>
+
+                        我的公文
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+        <li th:class="${activeitem=='wdrc'}?'active'">
+            <a href="/scheduler.html" class="dropdown-toggle">
+                <i class="icon-user"></i>
+                <span class="menu-text"> 我的日程 </span>
+
+
+            </a>
+
+
+        </li>
+
+        <li th:class="${activeitem=='tzgg'}?'active'">
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-envelope"></i>
+                <span class="menu-text"> 通知公告 </span>
+
+
+            </a>
+        </li>
+
+        <li th:class="${activeitem=='wjgx'}?'active'">
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-share"></i>
+                <span class="menu-text"> 文件共享 </span>
+
+
+            </a>
+
+
+        </li>
+        <li th:class="${activeitem=='xtsz'}?'active'"  ><!--th:style="${!session.user.haveAuthority('admin')}?'display:none'"-->
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-cog"></i>
+                <span class="menu-text"> 系统设置 </span>
+                <b class="arrow icon-angle-down"></b>
+
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a href="form-elements.html">
+                        <i class="icon-double-angle-right"></i>
+                        表单组件
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+    </script>
+</div>
+
+</body>
+
+</html>
